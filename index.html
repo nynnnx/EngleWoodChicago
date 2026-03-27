@@ -58,7 +58,7 @@
         .theme-select {
             cursor: pointer;
             outline: none;
-            appearance: none; /* Removes default arrow */
+            appearance: none;
             -webkit-appearance: none;
             padding-right: 40px;
             background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2300aaff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
@@ -82,10 +82,10 @@
             margin-bottom: 30px;
         }
 
-        /* ================= GALLERY & GLOW ================= */
+        /* ================= GALLERY & GRID ================= */
         .weapon-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 20px;
         }
 
@@ -94,10 +94,19 @@
             border: 1px solid #00aaff33;
             border-radius: 10px;
             padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        img { transition: filter 0.3s, transform 0.3s; }
-        img:hover {
+        .weapon-card img { 
+            width: 100%;
+            height: 120px;
+            object-fit: contain;
+            transition: filter 0.3s, transform 0.3s; 
+        }
+        
+        .weapon-card img:hover {
             filter: drop-shadow(0 0 15px #00aaff);
             transform: scale(1.05);
         }
@@ -110,6 +119,7 @@
             width: 90%;
             margin-top: 10px;
             font-family: 'Poppins', sans-serif;
+            padding: 5px;
         }
 
         /* ================= WHEEL SYSTEM ================= */
@@ -184,6 +194,7 @@
             <div class="nav-btn" onclick="showTab('tier1')">Tier 1</div>
             <div class="nav-btn" onclick="showTab('tier15')">Tier 1.5</div>
             <div class="nav-btn" onclick="showTab('tier2')">Tier 2</div>
+            <div class="nav-btn" onclick="showTab('halloween')">Halloween</div>
             <div class="nav-btn" onclick="showTab('attachments')">Attachments</div>
             <div class="nav-btn active" onclick="showTab('randomize')">Randomize</div>
         </div>
@@ -204,6 +215,7 @@
                     <option value="tier1">Tier 1</option>
                     <option value="tier15">Tier 1.5</option>
                     <option value="tier2">Tier 2</option>
+                    <option value="halloween">Halloween</option>
                     <option value="attachments">Attachments</option>
                 </select>
                 <button class="spin-btn" id="masterSpinBtn" onclick="processFullDrop()">Start Drop</button>
@@ -225,24 +237,47 @@ const DB = {
         {name:"Sentinel", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721564048523264/WEAPON_RMSENTINELNINE.png?ex=69c782c8&is=69c63148&hm=c10984ab3c4e907ed35b75e1dc5e0eb889d5d407301a74f0d0ec804f1db0f3b5&=&format=webp&quality=lossless&width=563&height=563"}, 
         {name:"FN509", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png?ex=69c78264&is=69c630e4&hm=6d55ffed1773c8970ad32ad206de26bcd6444abf6166aa4d8e7457b268636f5e&=&format=webp&quality=lossless&width=563&height=563"}, 
         {name:"365X", img:"https://cdn.discordapp.com/attachments/1428113909616869387/1487234175541969068/27dfae38-4cee-494d-9a51-284bd928dedf.png?ex=69c86642&is=69c714c2&hm=817a5a01aa3100c0f02d98092635ef3f16defab5a8b864355da6ba8bcb85e03e&"}, 
-        {name:"Glock22", img:"https://via.placeholder.com/150/000/00aaff?text=G22"}, 
-        {name:"Glock19X", img:"https://via.placeholder.com/150/000/00aaff?text=19X"}
+        {name:"Glock 22", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"} // Placeholder for Glock 22 from your list
     ],
-    tier0: [{name:"Glock 20", img:"https://via.placeholder.com/150/000/00aaff?text=G20"}, {name:"Glock 26", img:"https://via.placeholder.com/150/000/00aaff?text=G26"}],
-    tier1: [{name:"HK45", img:"https://via.placeholder.com/150/000/00aaff?text=HK45"}, {name:"Sig P320", img:"https://via.placeholder.com/150/000/00aaff?text=P320"}],
-    tier15: [{name:"G19 Gflex", img:"https://via.placeholder.com/150/000/00aaff?text=GFlex"}, {name:"1911", img:"https://via.placeholder.com/150/000/00aaff?text=1911"}],
-    tier2: [{name:"Elite Sniper", img:"https://via.placeholder.com/150/000/00aaff?text=Sniper"}, {name:"Heavy LMG", img:"https://via.placeholder.com/150/000/00aaff?text=LMG"}],
-    attachments: [{name:"Red Dot", img:"https://via.placeholder.com/150/000/00aaff?text=Sight"}, {name:"Suppressor", img:"https://via.placeholder.com/150/000/00aaff?text=Silencer"}]
+    tier0: [
+        {name:"Glock 20", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+        {name:"Glock 26", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}
+    ],
+    tier1: [
+        {name:"HK45", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+        {name:"Sig P320", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+        {name:"Glock 19X", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}
+    ],
+    tier15: [
+        {name:"G19 Gflex", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+        {name:"1911", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}
+    ],
+    tier2: [
+        {name:"Elite Sniper", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+        {name:"Heavy LMG", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}
+    ],
+    halloween: [
+        {name:"Spooky Glock", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}
+    ],
+    attachments: [
+        {name:"Red Dot", img:"https://via.placeholder.com/150/000/00aaff?text=Sight"}, 
+        {name:"Suppressor", img:"https://via.placeholder.com/150/000/00aaff?text=Silencer"}
+    ]
 };
 
-const config = { test: 2, tier0: 4, tier1: 5, tier15: 5, tier2: 7, attachments: 1 };
+const config = { test: 2, tier0: 4, tier1: 5, tier15: 5, tier2: 7, halloween: 5, attachments: 1 };
 const ITEM_WIDTH = 180;
 
 function showTab(tier) {
     const gallery = document.getElementById('gallery-view');
     const randomize = document.getElementById('randomize-view');
     document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-    if(event) event.currentTarget.classList.add('active');
+    
+    // Find button to activate
+    const buttons = document.querySelectorAll('.nav-btn');
+    buttons.forEach(b => {
+        if(b.innerText.toLowerCase().includes(tier.toLowerCase())) b.classList.add('active');
+    });
 
     if(tier === 'randomize') {
         gallery.style.display = 'none';
