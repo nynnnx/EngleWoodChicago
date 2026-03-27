@@ -91,9 +91,23 @@
             border-radius: 10px;
             padding: 15px;
             text-align: center;
+            transition: 0.3s;
         }
 
-        .weapon-card img { width: 100%; height: 110px; object-fit: contain; }
+        /* --- THE GLOW EFFECT --- */
+        .weapon-card img, .reward-pill img, .reel-item img {
+            width: 100%;
+            height: 110px;
+            object-fit: contain;
+            transition: filter 0.3s ease, transform 0.3s ease;
+        }
+
+        .weapon-card img:hover, .reward-pill img:hover {
+            filter: drop-shadow(0 0 15px #00aaff) drop-shadow(0 0 30px #00aaff);
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+
         .weapon-card input {
             background: #02121f;
             border: 1px solid #00aaff44;
@@ -118,7 +132,7 @@
         select {
             padding: 12px;
             background: #000;
-            color: #ffcc00; /* Yellow text */
+            color: #ffcc00; 
             border: 1px solid #00aaff;
             border-radius: 5px;
             font-weight: 900;
@@ -127,7 +141,7 @@
 
         .spin-btn {
             padding: 12px 45px;
-            background: #6b46c1; /* Purple */
+            background: #6b46c1; 
             color: white;
             border: none;
             font-weight: 700;
@@ -159,7 +173,6 @@
 
         .reel { display: flex; align-items: center; transition: transform 4s cubic-bezier(.15,.8,.2,1); }
         .reel-item { min-width: 180px; text-align: center; }
-        .reel-item img { height: 100px; object-fit: contain; }
 
         #rewards-tray {
             display: flex;
@@ -175,10 +188,14 @@
             padding: 12px;
             border-radius: 8px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 10px;
             animation: slideUp 0.4s ease-out;
+            min-width: 120px;
         }
+
+        .reward-pill img { width: 80px; height: 80px; }
 
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -236,7 +253,13 @@
 <script>
 /* ================= DATABASE ================= */
 const DB = {
-    test: [{name:"Sentinel", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721564048523264/WEAPON_RMSENTINELNINE.png?ex=69c782c8&is=69c63148&hm=c10984ab3c4e907ed35b75e1dc5e0eb889d5d407301a74f0d0ec804f1db0f3b5&=&format=webp&quality=lossless&width=563&height=563"}, {name:"FN509", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png?ex=69c78264&is=69c630e4&hm=6d55ffed1773c8970ad32ad206de26bcd6444abf6166aa4d8e7457b268636f5e&=&format=webp&quality=lossless&width=563&height=563"}, {name:"365X", img:"https://via.placeholder.com/150/000/00aaff?text=G17"}, {name:"Glock22", img:"https://via.placeholder.com/150/000/00aaff?text=G17"}, {name:"Glock19X", img:"https://via.placeholder.com/150/000/00aaff?text=P88"}],
+    test: [
+        {name:"Sentinel", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721564048523264/WEAPON_RMSENTINELNINE.png?ex=69c782c8&is=69c63148&hm=c10984ab3c4e907ed35b75e1dc5e0eb889d5d407301a74f0d0ec804f1db0f3b5&=&format=webp&quality=lossless&width=563&height=563"}, 
+        {name:"FN509", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png?ex=69c78264&is=69c630e4&hm=6d55ffed1773c8970ad32ad206de26bcd6444abf6166aa4d8e7457b268636f5e&=&format=webp&quality=lossless&width=563&height=563"}, 
+        {name:"365X", img:"https://via.placeholder.com/150/000/00aaff?text=365X"}, 
+        {name:"Glock22", img:"https://via.placeholder.com/150/000/00aaff?text=G22"}, 
+        {name:"Glock19X", img:"https://via.placeholder.com/150/000/00aaff?text=19X"}
+    ],
     tier0: [{name:"Glock 20", img:"https://via.placeholder.com/150/000/00aaff?text=G20"}, {name:"Glock 26", img:"https://via.placeholder.com/150/000/00aaff?text=G26"}],
     tier1: [{name:"HK45", img:"https://via.placeholder.com/150/000/00aaff?text=HK45"}, {name:"Sig P320", img:"https://via.placeholder.com/150/000/00aaff?text=P320"}],
     tier15: [{name:"G19 Gflex", img:"https://via.placeholder.com/150/000/00aaff?text=GFlex"}, {name:"1911", img:"https://via.placeholder.com/150/000/00aaff?text=1911"}],
@@ -251,9 +274,8 @@ function showTab(tier) {
     const gallery = document.getElementById('gallery-view');
     const randomize = document.getElementById('randomize-view');
     
-    // Manage Button States
     document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-    event.currentTarget.classList.add('active');
+    if (event) event.currentTarget.classList.add('active');
 
     if(tier === 'randomize') {
         gallery.style.display = 'none';
@@ -291,7 +313,6 @@ function buildReel() {
     
     const all = [...DB.test, ...DB.tier0, ...DB.tier1, ...DB.tier15, ...DB.tier2, ...DB.attachments];
     
-    // Create long randomized reel
     for(let i=0; i<80; i++) {
         const item = all[Math.floor(Math.random()*all.length)];
         const div = document.createElement('div');
@@ -324,7 +345,7 @@ function startSpin() {
             const winner = DB[tier][Math.floor(Math.random()*DB[tier].length)];
             const p = document.createElement('div');
             p.className = "reward-pill";
-            p.innerHTML = `<img src="${winner.img}" width="40"> <span>${winner.name}</span>`;
+            p.innerHTML = `<img src="${winner.img}"> <span>${winner.name}</span>`;
             tray.appendChild(p);
         }
         spinBtn.disabled = false;
