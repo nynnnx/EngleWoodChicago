@@ -1,298 +1,321 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Faction Drop Spin</title>
+    <meta charset="UTF-8">
+    <title>Faction Drop Spin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* ================= GLOBAL & BACKGROUND ================= */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            background-color: #000000; /* Pure Black Background */
+            display: flex;
+            min-height: 100vh;
+        }
 
-<style>
+        /* ================= SIDEBAR MENU (From Image) ================= */
+        .side-menu {
+            width: 250px;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border-right: 1px solid #00aaff33;
+        }
 
-/* ================= BACKGROUND ================= */
+        .menu-btn {
+            background: #1a1b26;
+            color: #b085ff; /* Purple text from image */
+            border: 2px solid #6b46c1;
+            padding: 12px;
+            font-size: 1.2rem;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: none;
+            font-weight: 400;
+        }
 
-body{
-margin:0;
-font-family:Poppins;
-color:white;
-background:
-radial-gradient(circle at 30% 20%,#00263f,transparent),
-radial-gradient(circle at 80% 80%,#00101c,transparent),
-linear-gradient(160deg,#00060d,#020f1c,#00060d);
-}
+        .menu-btn:hover {
+            background: #2d2e3f;
+            box-shadow: 0 0 15px #6b46c155;
+        }
 
-/* ================= TOP ================= */
+        /* ================= MAIN CONTENT ================= */
+        .content {
+            flex-grow: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-.topbar{
-height:70px;
-background:#000;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:0 25px;
-border-bottom:2px solid #00aaff55;
-}
+        .logo {
+            font-weight: 900;
+            font-size: 2rem;
+            color: #00aaff;
+            text-shadow: 0 0 10px #00aaff;
+            margin-bottom: 30px;
+        }
 
-.logo{
-font-weight:900;
-font-size:1.6rem;
-color:#00aaff;
-}
+        .spinner-box {
+            width: 100%;
+            max-width: 900px;
+            background: #050505;
+            border: 2px solid #00aaff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 170, 255, 0.1);
+            text-align: center;
+        }
 
-/* ================= MAIN ================= */
+        select {
+            padding: 12px 20px;
+            background: #000;
+            color: #00aaff;
+            border: 1px solid #00aaff;
+            font-weight: 700;
+            margin-bottom: 25px;
+            border-radius: 5px;
+        }
 
-.main{
-text-align:center;
-padding:30px;
-}
+        /* ================= SPINNER VISUALS ================= */
+        .viewport {
+            height: 220px;
+            overflow: hidden;
+            border: 2px solid #00aaff;
+            position: relative;
+            background: #0a0a0a;
+            border-radius: 10px;
+        }
 
-.spinner-box{
-margin:auto;
-max-width:950px;
-background:#010912;
-border:2px solid #00aaff55;
-padding:25px;
-}
+        .center-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #00aaff;
+            box-shadow: 0 0 20px #00aaff;
+            z-index: 10;
+            transform: translateX(-50%);
+        }
 
-/* ================= SELECT ================= */
+        .reel {
+            display: flex;
+            align-items: center;
+            transition: transform 5s cubic-bezier(.15,.8,.2,1);
+            height: 100%;
+        }
 
-select{
-padding:10px;
-background:#02121f;
-color:white;
-border:1px solid #00aaff;
-font-weight:700;
-margin-bottom:15px;
-}
+        .item {
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
-/* ================= SPINNER ================= */
+        .item img {
+            width: 130px;
+            height: 130px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 5px #00aaff33);
+        }
 
-.viewport{
-height:200px;
-overflow:hidden;
-border:2px solid #00aaff;
-position:relative;
-}
+        .item span {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
 
-.center-line{
-position:absolute;
-left:50%;
-top:0;
-bottom:0;
-width:4px;
-background:#00aaff;
-box-shadow:0 0 25px #00aaff;
-}
+        /* ================= BUTTON ================= */
+        .spin-btn {
+            margin-top: 30px;
+            padding: 15px 80px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: transparent;
+            color: #00aaff;
+            border: 2px solid #00aaff;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: 0.3s;
+        }
 
-.reel{
-display:flex;
-transition:transform 5s cubic-bezier(.15,.8,.2,1);
-}
+        .spin-btn:hover {
+            background: #00aaff;
+            color: #000;
+            box-shadow: 0 0 25px #00aaff;
+        }
 
-.item{
-width:180px;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-}
+        #result {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
 
-.item img{
-width:120px;
-height:120px;
-object-fit:contain;
-}
+        .reward {
+            background: #111;
+            padding: 15px;
+            border: 1px solid #00aaff44;
+            border-radius: 10px;
+            width: 120px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
 
-/* ================= BUTTON ================= */
-
-.spin-btn{
-margin-top:20px;
-padding:15px 55px;
-font-weight:900;
-background:linear-gradient(45deg,#008cff,#00e1ff);
-border:none;
-cursor:pointer;
-}
-
-#result{
-margin-top:20px;
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:20px;
-}
-
-.reward{
-text-align:center;
-}
-
-.reward img{
-width:90px;
-}
-
-</style>
+        .reward img {
+            width: 80px;
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="topbar">
-<div class="logo">Faction Drop System</div>
-</div>
+    <div class="side-menu">
+        <div class="menu-btn" onclick="setTier('test')">Show Test Drop</div>
+        <div class="menu-btn" onclick="setTier('tier0')">Show Tier 0</div>
+        <div class="menu-btn" onclick="setTier('tier1')">Show Tier 1</div>
+        <div class="menu-btn" onclick="setTier('tier15')">Show Tier 1.5</div>
+        <div class="menu-btn" onclick="setTier('tier2')">Show Tier 2</div>
+        <div class="menu-btn" onclick="setTier('attachments')">Attachment Spin</div>
+    </div>
 
-<div class="main">
+    <div class="content">
+        <div class="logo">FACTION DROP SYSTEM</div>
 
-<div class="spinner-box">
+        <div class="spinner-box">
+            <select id="tierSelect" onchange="buildReelFromSelect()">
+                <option value="test">Test Drop</option>
+                <option value="tier0">Tier 0</option>
+                <option value="tier1">Tier 1</option>
+                <option value="tier15">Tier 1.5</option>
+                <option value="tier2">Tier 2</option>
+                <option value="attachments">Attachments</option>
+            </select>
 
-<h2>Select Spin Tier</h2>
+            <div class="viewport">
+                <div class="center-line"></div>
+                <div id="reel" class="reel"></div>
+            </div>
 
-<select id="tierSelect">
-<option value="test">Test Drop</option>
-<option value="tier0">Tier 0</option>
-<option value="tier1">Tier 1</option>
-<option value="tier15">Tier 1.5</option>
-<option value="tier2">Tier 2</option>
-</select>
-
-<div class="viewport">
-<div class="center-line"></div>
-<div id="reel" class="reel"></div>
-</div>
-
-<button class="spin-btn" onclick="spin()">SPIN</button>
-
-<div id="result"></div>
-
-</div>
-</div>
+            <button class="spin-btn" onclick="spin()">SPIN</button>
+            <div id="result"></div>
+        </div>
+    </div>
 
 <script>
-
 /* ================= DATABASE ================= */
-
-const DB={
-
-test:[
-{name:"Prototype SMG",img:"images/test1.png"},
-{name:"Debug Rifle",img:"images/test2.png"}
-],
-
-tier0:[
-{name:"Faction AR",img:"images/t0_1.png"},
-{name:"Commander Pistol",img:"images/t0_2.png"}
-],
-
-tier1:[
-{name:"Glock",img:"images/glock.png"},
-{name:"MP5",img:"images/mp5.png"}
-],
-
-tier15:[
-{name:"AK Variant",img:"images/ak.png"},
-{name:"Combat Shotgun",img:"images/shotgun.png"}
-],
-
-tier2:[
-{name:"Sniper Elite",img:"images/sniper.png"},
-{name:"Heavy LMG",img:"images/lmg.png"}
-]
-
+const DB = {
+    test: [
+        {name:"Prototype SMG", img:"images/test1.png"},
+        {name:"Debug Rifle", img:"images/test2.png"}
+    ],
+    tier0: [
+        {name:"Faction AR", img:"images/t0_1.png"},
+        {name:"Commander Pistol", img:"images/t0_2.png"}
+    ],
+    tier1: [
+        {name:"Glock", img:"images/glock.png"},
+        {name:"MP5", img:"images/mp5.png"}
+    ],
+    tier15: [
+        {name:"AK Variant", img:"images/ak.png"},
+        {name:"Combat Shotgun", img:"images/shotgun.png"}
+    ],
+    tier2: [
+        {name:"Sniper Elite", img:"images/sniper.png"},
+        {name:"Heavy LMG", img:"images/lmg.png"}
+    ],
+    attachments: [
+        {name:"Red Dot Sight", img:"images/red_dot.png"},
+        {name:"Suppressor", img:"images/silencer.png"},
+        {name:"Extended Mag", img:"images/mag.png"},
+        {name:"Laser Sight", img:"images/laser.png"}
+    ]
 };
 
-/* ================= DROP AMOUNTS ================= */
-
-const dropAmount={
-test:2,
-tier0:4,
-tier1:5,
-tier15:5,
-tier2:7
+const dropAmount = { test:2, tier0:4, tier1:5, tier15:5, tier2:7, attachments:3 };
+const tierPools = {
+    test: ["test"],
+    tier0: ["test","tier0"],
+    tier1: ["tier0","tier1"],
+    tier15: ["tier1","tier15"],
+    tier2: ["tier15","tier2"],
+    attachments: ["attachments"]
 };
 
-/* ================= CROSS TIER CHANCES ================= */
-/* EDIT THESE VALUES */
+const reel = document.getElementById("reel");
 
-const tierPools={
-test:["test"],
-
-tier0:["test","tier0"],
-
-tier1:["tier0","tier1"],
-
-tier15:["tier1","tier15"],
-
-tier2:["tier15","tier2"]
-};
-
-/* ================= BUILD REEL ================= */
-
-const reel=document.getElementById("reel");
-
-function buildReel(pool){
-
-reel.innerHTML="";
-
-let weapons=[];
-
-pool.forEach(t=>{
-weapons=weapons.concat(DB[t]);
-});
-
-for(let i=0;i<60;i++){
-
-let w=weapons[Math.floor(Math.random()*weapons.length)];
-
-let div=document.createElement("div");
-div.className="item";
-div.innerHTML=`<img src="${w.img}"><span>${w.name}</span>`;
-reel.appendChild(div);
+/* Helper to set tier via side menu */
+function setTier(val) {
+    document.getElementById("tierSelect").value = val;
+    buildReelFromSelect();
 }
 
-return weapons;
+function buildReelFromSelect() {
+    const tier = document.getElementById("tierSelect").value;
+    buildReel(tierPools[tier]);
 }
 
-/* ================= SPIN ================= */
+function buildReel(pool) {
+    reel.style.transition = "none";
+    reel.style.transform = "translateX(0px)";
+    reel.innerHTML = "";
+    
+    let weapons = [];
+    pool.forEach(t => { weapons = weapons.concat(DB[t]); });
 
-function spin(){
-
-const tier=document.getElementById("tierSelect").value;
-
-const pool=tierPools[tier];
-
-const weapons=buildReel(pool);
-
-const items=document.querySelectorAll(".item");
-
-let winIndex=Math.floor(Math.random()*items.length);
-
-let offset=(winIndex*180)-(window.innerWidth/2)+90;
-
-reel.style.transform=`translateX(-${offset}px)`;
-
-/* GIVE MULTIPLE REWARDS */
-
-setTimeout(()=>{
-
-const rewards=document.getElementById("result");
-rewards.innerHTML="";
-
-for(let i=0;i<dropAmount[tier];i++){
-
-let w=weapons[Math.floor(Math.random()*weapons.length)];
-
-let div=document.createElement("div");
-div.className="reward";
-div.innerHTML=`<img src="${w.img}"><br>${w.name}`;
-
-rewards.appendChild(div);
+    for(let i=0; i<60; i++) {
+        let w = weapons[Math.floor(Math.random() * weapons.length)];
+        let div = document.createElement("div");
+        div.className = "item";
+        div.innerHTML = `<img src="${w.img}"><span>${w.name}</span>`;
+        reel.appendChild(div);
+    }
+    return weapons;
 }
 
-},5000);
+function spin() {
+    const tier = document.getElementById("tierSelect").value;
+    const pool = tierPools[tier];
+    const weapons = buildReel(pool);
+    
+    // Force reflow for transition
+    reel.offsetHeight; 
+    reel.style.transition = "transform 5s cubic-bezier(.15,.8,.2,1)";
 
+    const itemWidth = 200;
+    const winIndex = 45 + Math.floor(Math.random() * 10); // Spin deep into the reel
+    const viewportWidth = document.querySelector(".viewport").offsetWidth;
+    const offset = (winIndex * itemWidth) - (viewportWidth / 2) + (itemWidth / 2);
+
+    reel.style.transform = `translateX(-${offset}px)`;
+
+    setTimeout(() => {
+        const rewards = document.getElementById("result");
+        rewards.innerHTML = "";
+        for(let i=0; i < dropAmount[tier]; i++){
+            let w = weapons[Math.floor(Math.random() * weapons.length)];
+            let div = document.createElement("div");
+            div.className = "reward";
+            div.innerHTML = `<img src="${w.img}"><br>${w.name}`;
+            rewards.appendChild(div);
+        }
+    }, 5000);
 }
 
-/* build first reel */
+// Initial Build
 buildReel(["test"]);
-
 </script>
-
 </body>
 </html>
