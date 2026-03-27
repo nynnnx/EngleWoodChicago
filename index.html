@@ -185,14 +185,14 @@
         </div>
 
         <div id="randomize-view" class="section-box">
-            <h2 style="color:#00aaff;">Faction Drop Randomizer</h2>
+            <h2 style="color:#00aaff;">Simulate a faction drop spin</h2>
             <div style="margin: 20px 0;">
                 <select id="spinTierSelect" style="padding:10px; background:#000; color:#ffcc00; border:1px solid #00aaff;">
-                    <option value="test">Test Drop (2 Spins)</option>
-                    <option value="tier0">Tier 0 (4 Spins)</option>
-                    <option value="tier1">Tier 1 (5 Spins)</option>
-                    <option value="tier15">Tier 1.5 (5 Spins)</option>
-                    <option value="tier2">Tier 2 (7 Spins)</option>
+                    <option value="test">Test Drop</option>
+                    <option value="tier0">Tier 0</option>
+                    <option value="tier1">Tier 1</option>
+                    <option value="tier15">Tier 1.5</option>
+                    <option value="tier2">Tier 2</option>
                     <option value="attachments">Attachments (1 Spin)</option>
                 </select>
                 <button class="spin-btn" id="masterSpinBtn" onclick="processFullDrop()">Start Drop</button>
@@ -203,7 +203,7 @@
                 <div id="reel" class="reel"></div>
             </div>
 
-            <h3 id="spin-status" style="color:#00aaff;">Ready...</h3>
+            <h3 id="spin-status" style="color:#00aaff;"></h3>
             <div id="rewards-tray"></div>
         </div>
     </div>
