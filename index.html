@@ -35,7 +35,7 @@
             gap: 15px;
         }
 
-        .nav-btn {
+        .nav-btn, .spin-btn, .theme-select {
             padding: 10px 25px;
             background: #02121f;
             border: 1px solid #00aaff;
@@ -44,12 +44,27 @@
             cursor: pointer;
             font-weight: 700;
             transition: 0.3s;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.9rem;
         }
 
-        .nav-btn:hover, .nav-btn.active {
+        .nav-btn:hover, .nav-btn.active, .spin-btn:hover:not(:disabled) {
             background: #00aaff;
             color: #000;
             box-shadow: 0 0 15px #00aaff;
+        }
+
+        .theme-select {
+            cursor: pointer;
+            outline: none;
+            appearance: none; /* Removes default arrow */
+            -webkit-appearance: none;
+            padding-right: 40px;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2300aaff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px top 50%;
+            background-size: 12px auto;
         }
 
         .main-wrapper {
@@ -94,6 +109,7 @@
             text-align: center;
             width: 90%;
             margin-top: 10px;
+            font-family: 'Poppins', sans-serif;
         }
 
         /* ================= WHEEL SYSTEM ================= */
@@ -130,18 +146,13 @@
         
         .reel-item img { height: 100px; width: 150px; object-fit: contain; }
 
-        .spin-btn {
-            padding: 12px 45px;
-            background: #6b46c1;
-            color: white;
-            border: none;
-            font-weight: 700;
-            cursor: pointer;
-            border-radius: 5px;
-            text-transform: uppercase;
+        .spin-btn:disabled { 
+            background: #111; 
+            border-color: #333; 
+            color: #555; 
+            cursor: not-allowed; 
+            box-shadow: none;
         }
-
-        .spin-btn:disabled { background: #444; cursor: not-allowed; }
 
         #rewards-tray {
             display: flex;
@@ -180,14 +191,14 @@
 
     <div class="main-wrapper">
         <div id="gallery-view" class="section-box" style="display:none;">
-            <h2 id="gallery-title">WEAPONS</h2>
+            <h2 id="gallery-title" style="color:#00aaff">WEAPONS</h2>
             <div class="weapon-grid" id="wpn-grid"></div>
         </div>
 
         <div id="randomize-view" class="section-box">
             <h2 style="color:#00aaff;">Simulate a faction drop spin</h2>
-            <div style="margin: 20px 0;">
-                <select id="spinTierSelect" style="padding:10px; background:#000; color:#ffcc00; border:1px solid #00aaff;">
+            <div style="margin: 20px 0; display: flex; justify-content: center; gap: 15px; align-items: center;">
+                <select id="spinTierSelect" class="theme-select">
                     <option value="test">Test Drop</option>
                     <option value="tier0">Tier 0</option>
                     <option value="tier1">Tier 1</option>
@@ -203,7 +214,7 @@
                 <div id="reel" class="reel"></div>
             </div>
 
-            <h3 id="spin-status" style="color:#00aaff;"></h3>
+            <h3 id="spin-status" style="color:#00aaff; min-height: 1.5em;"></h3>
             <div id="rewards-tray"></div>
         </div>
     </div>
@@ -217,8 +228,8 @@ const DB = {
         {name:"Glock22", img:"https://via.placeholder.com/150/000/00aaff?text=G22"}, 
         {name:"Glock19X", img:"https://via.placeholder.com/150/000/00aaff?text=19X"}
     ],
-    tier0: [{name:"1911", img:"https://via.placeholder.com/150/000/00aaff?text=G20"}, {name:"PX4", img:"https://via.placeholder.com/150/000/00aaff?text=G20"}, {name:"Glock 19Gen 5", img:"https://via.placeholder.com/150/000/00aaff?text=G20"}, {name:"Glock 17", img:"https://via.placeholder.com/150/000/00aaff?text=G26"}],
-    tier1: [{name:"RMGlock17", img:"https://via.placeholder.com/150/000/00aaff?text=HK45"}, {name:"Glock22", img:"https://via.placeholder.com/150/000/00aaff?text=HK45"}, {name:"Glock 19 Gen 5", img:"https://via.placeholder.com/150/000/00aaff?text=HK45"},  {name:"Glock 19x8", img:"https://via.placeholder.com/150/000/00aaff?text=HK45"},  {name:"Glock45", img:"https://via.placeholder.com/150/000/00aaff?text=HK45"}, {name:"RMGlock17 Gen 5", img:"https://via.placeholder.com/150/000/00aaff?text=HK45"},  {name:"Sig P320", img:"https://via.placeholder.com/150/000/00aaff?text=P320"}],
+    tier0: [{name:"Glock 20", img:"https://via.placeholder.com/150/000/00aaff?text=G20"}, {name:"Glock 26", img:"https://via.placeholder.com/150/000/00aaff?text=G26"}],
+    tier1: [{name:"HK45", img:"https://via.placeholder.com/150/000/00aaff?text=HK45"}, {name:"Sig P320", img:"https://via.placeholder.com/150/000/00aaff?text=P320"}],
     tier15: [{name:"G19 Gflex", img:"https://via.placeholder.com/150/000/00aaff?text=GFlex"}, {name:"1911", img:"https://via.placeholder.com/150/000/00aaff?text=1911"}],
     tier2: [{name:"Elite Sniper", img:"https://via.placeholder.com/150/000/00aaff?text=Sniper"}, {name:"Heavy LMG", img:"https://via.placeholder.com/150/000/00aaff?text=LMG"}],
     attachments: [{name:"Red Dot", img:"https://via.placeholder.com/150/000/00aaff?text=Sight"}, {name:"Suppressor", img:"https://via.placeholder.com/150/000/00aaff?text=Silencer"}]
@@ -285,7 +296,6 @@ async function processFullDrop() {
     for(let i=0; i<count; i++) {
         status.innerText = `Spinning ${i+1} of ${count}...`;
         await performSingleSpin(tier);
-        // Small pause between spins
         await new Promise(r => setTimeout(r, 1000));
     }
     
@@ -299,29 +309,20 @@ function performSingleSpin(tier) {
         const viewport = document.querySelector('.viewport');
         const tray = document.getElementById('rewards-tray');
         
-        // 1. Build a new randomized reel for this specific spin
         const currentReelItems = buildReel(DB[tier]);
-        
-        // 2. Pick the winner index (near the end of the reel)
         const winIndex = 70 + Math.floor(Math.random() * 10);
         const winner = currentReelItems[winIndex];
 
-        // 3. Reset position instantly
         reel.style.transition = "none";
         reel.style.transform = "translateX(0px)";
-
-        // 4. Force reflow
         reel.offsetHeight;
 
-        // 5. Calculate exact offset to center the winner
         const centerOffset = (viewport.offsetWidth / 2) - (ITEM_WIDTH / 2);
         const targetX = (winIndex * ITEM_WIDTH) - centerOffset;
 
-        // 6. Animate
         reel.style.transition = "transform 3s cubic-bezier(0.15, 0.8, 0.2, 1)";
         reel.style.transform = `translateX(-${targetX}px)`;
 
-        // 7. On finish, add to tray
         setTimeout(() => {
             const p = document.createElement('div');
             p.className = "reward-pill";
@@ -332,7 +333,6 @@ function performSingleSpin(tier) {
     });
 }
 
-// Init
 buildReel(DB.test);
 </script>
 </body>
