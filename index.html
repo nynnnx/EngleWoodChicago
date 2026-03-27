@@ -1,33 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>EngleWoodChicago Spin</title>
+<title>Faction Drop Spin</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
 
-/* ========= CUSTOM BACKGROUND ========= */
+/* ================= BACKGROUND ================= */
 
 body{
 margin:0;
 font-family:Poppins;
 color:white;
-overflow:hidden;
 background:
-radial-gradient(circle at 20% 20%,#00233b,transparent),
-radial-gradient(circle at 80% 70%,#00101c,transparent),
+radial-gradient(circle at 30% 20%,#00263f,transparent),
+radial-gradient(circle at 80% 80%,#00101c,transparent),
 linear-gradient(160deg,#00060d,#020f1c,#00060d);
-animation:bgMove 10s infinite alternate;
 }
 
-@keyframes bgMove{
-from{background-position:0 0;}
-to{background-position:200px 100px;}
-}
-
-/* ========= TOPBAR ========= */
+/* ================= TOP ================= */
 
 .topbar{
 height:70px;
@@ -36,66 +29,42 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 padding:0 25px;
-border-bottom:2px solid #00aaff44;
+border-bottom:2px solid #00aaff55;
 }
 
 .logo{
-font-size:1.7rem;
 font-weight:900;
+font-size:1.6rem;
 color:#00aaff;
 }
 
-/* ========= SIDE PANEL ========= */
-
-.weapon-panel{
-position:fixed;
-right:-340px;
-top:0;
-height:100%;
-width:340px;
-background:#020d18;
-transition:.4s;
-overflow:auto;
-padding:20px;
-}
-
-.weapon-panel.open{
-right:0;
-}
-
-.category h3{
-color:#00aaff;
-cursor:pointer;
-}
-
-/* WEAPON IMAGE LIST */
-.weapon{
-display:flex;
-align-items:center;
-gap:10px;
-margin:8px 0;
-}
-
-.weapon img{
-width:45px;
-height:45px;
-object-fit:contain;
-}
-
-/* ========= SPINNER ========= */
+/* ================= MAIN ================= */
 
 .main{
 text-align:center;
-padding-top:40px;
+padding:30px;
 }
 
 .spinner-box{
 margin:auto;
-max-width:900px;
+max-width:950px;
 background:#010912;
 border:2px solid #00aaff55;
-padding:30px;
+padding:25px;
 }
+
+/* ================= SELECT ================= */
+
+select{
+padding:10px;
+background:#02121f;
+color:white;
+border:1px solid #00aaff;
+font-weight:700;
+margin-bottom:15px;
+}
+
+/* ================= SPINNER ================= */
 
 .viewport{
 height:200px;
@@ -107,12 +76,11 @@ position:relative;
 .center-line{
 position:absolute;
 left:50%;
-width:4px;
 top:0;
 bottom:0;
+width:4px;
 background:#00aaff;
 box-shadow:0 0 25px #00aaff;
-z-index:10;
 }
 
 .reel{
@@ -124,8 +92,8 @@ transition:transform 5s cubic-bezier(.15,.8,.2,1);
 width:180px;
 display:flex;
 flex-direction:column;
-justify-content:center;
 align-items:center;
+justify-content:center;
 }
 
 .item img{
@@ -134,21 +102,31 @@ height:120px;
 object-fit:contain;
 }
 
-/* ========= BUTTON ========= */
+/* ================= BUTTON ================= */
 
 .spin-btn{
 margin-top:20px;
-padding:15px 50px;
+padding:15px 55px;
 font-weight:900;
-border:none;
 background:linear-gradient(45deg,#008cff,#00e1ff);
+border:none;
 cursor:pointer;
-color:white;
 }
 
-#result img{
-width:100px;
-margin-top:15px;
+#result{
+margin-top:20px;
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:20px;
+}
+
+.reward{
+text-align:center;
+}
+
+.reward img{
+width:90px;
 }
 
 </style>
@@ -157,50 +135,22 @@ margin-top:15px;
 <body>
 
 <div class="topbar">
-<div class="logo">EngleWoodChicago Spin</div>
-<div onclick="togglePanel()">☰ Weapons</div>
+<div class="logo">Faction Drop System</div>
 </div>
 
-<!-- SIDE PANEL -->
-<div id="panel" class="weapon-panel">
-
-<div class="category">
-<h3 onclick="toggleList(this)">Tier 1</h3>
-<div class="weapon-list">
-
-<div class="weapon"><img src="images/glock.png"> Glock</div>
-<div class="weapon"><img src="images/mp5.png"> MP5</div>
-
-</div>
-</div>
-
-<div class="category">
-<h3 onclick="toggleList(this)">Tier 1.5</h3>
-<div class="weapon-list">
-
-<div class="weapon"><img src="images/ak.png"> AK Variant</div>
-
-</div>
-</div>
-
-<div class="category">
-<h3 onclick="toggleList(this)">Tier 2</h3>
-<div class="weapon-list">
-
-<div class="weapon"><img src="images/sniper.png"> Sniper</div>
-<div class="weapon"><img src="images/lmg.png"> Heavy LMG</div>
-
-</div>
-</div>
-
-</div>
-
-<!-- MAIN -->
 <div class="main">
 
-<h1>Faction Drop Spin</h1>
-
 <div class="spinner-box">
+
+<h2>Select Spin Tier</h2>
+
+<select id="tierSelect">
+<option value="test">Test Drop</option>
+<option value="tier0">Tier 0</option>
+<option value="tier1">Tier 1</option>
+<option value="tier15">Tier 1.5</option>
+<option value="tier2">Tier 2</option>
+</select>
 
 <div class="viewport">
 <div class="center-line"></div>
@@ -216,61 +166,131 @@ margin-top:15px;
 
 <script>
 
-/* PANEL */
-function togglePanel(){
-panel.classList.toggle("open");
-}
+/* ================= DATABASE ================= */
 
-function toggleList(el){
-let list=el.nextElementSibling;
-list.style.display=list.style.display==="block"?"none":"block";
-}
+const DB={
 
-/* WEAPON DATABASE */
-const weapons=[
+test:[
+{name:"Prototype SMG",img:"images/test1.png"},
+{name:"Debug Rifle",img:"images/test2.png"}
+],
+
+tier0:[
+{name:"Faction AR",img:"images/t0_1.png"},
+{name:"Commander Pistol",img:"images/t0_2.png"}
+],
+
+tier1:[
 {name:"Glock",img:"images/glock.png"},
-{name:"MP5",img:"images/mp5.png"},
+{name:"MP5",img:"images/mp5.png"}
+],
+
+tier15:[
 {name:"AK Variant",img:"images/ak.png"},
-{name:"Sniper",img:"images/sniper.png"},
+{name:"Combat Shotgun",img:"images/shotgun.png"}
+],
+
+tier2:[
+{name:"Sniper Elite",img:"images/sniper.png"},
 {name:"Heavy LMG",img:"images/lmg.png"}
-];
+]
+
+};
+
+/* ================= DROP AMOUNTS ================= */
+
+const dropAmount={
+test:2,
+tier0:4,
+tier1:5,
+tier15:5,
+tier2:7
+};
+
+/* ================= CROSS TIER CHANCES ================= */
+/* EDIT THESE VALUES */
+
+const tierPools={
+test:["test"],
+
+tier0:["test","tier0"],
+
+tier1:["tier0","tier1"],
+
+tier15:["tier1","tier15"],
+
+tier2:["tier15","tier2"]
+};
+
+/* ================= BUILD REEL ================= */
 
 const reel=document.getElementById("reel");
 
-/* BUILD REAL REEL */
-let reelItems=[];
+function buildReel(pool){
+
+reel.innerHTML="";
+
+let weapons=[];
+
+pool.forEach(t=>{
+weapons=weapons.concat(DB[t]);
+});
 
 for(let i=0;i<60;i++){
-let weapon=weapons[Math.floor(Math.random()*weapons.length)];
+
+let w=weapons[Math.floor(Math.random()*weapons.length)];
 
 let div=document.createElement("div");
 div.className="item";
-div.innerHTML=`<img src="${weapon.img}"><span>${weapon.name}</span>`;
-
+div.innerHTML=`<img src="${w.img}"><span>${w.name}</span>`;
 reel.appendChild(div);
-reelItems.push(div);
 }
 
-/* REAL SPIN SYSTEM */
+return weapons;
+}
+
+/* ================= SPIN ================= */
+
 function spin(){
 
-let winnerIndex=Math.floor(Math.random()*reelItems.length);
+const tier=document.getElementById("tierSelect").value;
 
-let offset=
-winnerIndex*180
--(window.innerWidth/2)
-+90;
+const pool=tierPools[tier];
+
+const weapons=buildReel(pool);
+
+const items=document.querySelectorAll(".item");
+
+let winIndex=Math.floor(Math.random()*items.length);
+
+let offset=(winIndex*180)-(window.innerWidth/2)+90;
 
 reel.style.transform=`translateX(-${offset}px)`;
 
-let weapon=reelItems[winnerIndex].innerHTML;
+/* GIVE MULTIPLE REWARDS */
 
 setTimeout(()=>{
-result.innerHTML=
-`YOU RECEIVED<br>${weapon}`;
+
+const rewards=document.getElementById("result");
+rewards.innerHTML="";
+
+for(let i=0;i<dropAmount[tier];i++){
+
+let w=weapons[Math.floor(Math.random()*weapons.length)];
+
+let div=document.createElement("div");
+div.className="reward";
+div.innerHTML=`<img src="${w.img}"><br>${w.name}`;
+
+rewards.appendChild(div);
+}
+
 },5000);
 
 }
+
+/* build first reel */
+buildReel(["test"]);
 
 </script>
 
