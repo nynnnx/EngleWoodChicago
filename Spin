@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Blue Ops Spin System</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+
+/* ================= THEME ================= */
+:root{
+--blue:#00aaff;
+--dark:#050b14;
+--panel:#0c1524;
+--light:#e8f6ff;
+}
+
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:Poppins;
+background:radial-gradient(circle at top,#081324,#01050b);
+color:white;
+overflow-x:hidden;
+}
+
+/* ================= TOP BAR ================= */
+.topbar{
+height:70px;
+background:#02060d;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 30px;
+border-bottom:1px solid #11263c;
+}
+
+.logo{
+font-size:1.7rem;
+font-weight:900;
+color:var(--blue);
+}
+
+.menu-btn{
+cursor:pointer;
+font-size:22px;
+}
+
+/* ================= SIDE PANEL ================= */
+.weapon-panel{
+position:fixed;
+top:0;
+right:-320px;
+width:320px;
+height:100%;
+background:var(--panel);
+transition:.4s;
+padding:25px;
+overflow:auto;
+border-left:2px solid #102d47;
+}
+
+.weapon-panel.open{
+right:0;
+}
+
+.category{
+margin-bottom:25px;
+}
+
+.category h3{
+cursor:pointer;
+color:var(--blue);
+margin-bottom:8px;
+}
+
+.weapon-list{
+display:none;
+padding-left:15px;
+opacity:.8;
+}
+
+.weapon-list div{
+margin:6px 0;
+}
+
+/* ================= MAIN ================= */
+.main{
+padding:40px;
+text-align:center;
+}
+
+/* ================= SPINNER ================= */
+.spinner-box{
+margin:auto;
+max-width:900px;
+background:linear-gradient(180deg,#081324,#02060d);
+border:2px solid #143e5f;
+padding:30px;
+}
+
+.viewport{
+height:200px;
+overflow:hidden;
+border:2px solid #1a4f7a;
+position:relative;
+background:black;
+}
+
+.center-line{
+position:absolute;
+left:50%;
+top:0;
+bottom:0;
+width:4px;
+background:var(--blue);
+box-shadow:0 0 25px var(--blue);
+z-index:10;
+}
+
+.reel{
+display:flex;
+height:100%;
+}
+
+.item{
+width:180px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#07101c;
+font-weight:700;
+}
+
+/* ================= BUTTON ================= */
+.spin-btn{
+margin-top:25px;
+background:linear-gradient(135deg,#008cff,#00d4ff);
+border:none;
+padding:16px 55px;
+font-weight:900;
+color:white;
+cursor:pointer;
+transition:.3s;
+}
+
+.spin-btn:hover{
+transform:scale(1.1);
+box-shadow:0 0 25px #00aaff;
+}
+
+/* ================= RESULT ================= */
+#result{
+margin-top:25px;
+font-size:1.4rem;
+color:var(--light);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+<div class="logo">BLUE OPS SYSTEM</div>
+<div class="menu-btn" onclick="togglePanel()">☰ Weapons</div>
+</div>
+
+<!-- SIDE WEAPON PANEL -->
+<div id="panel" class="weapon-panel">
+
+<div class="category">
+<h3 onclick="toggleList(this)">Test Drop Weapons</h3>
+<div class="weapon-list">
+<div>Prototype SMG</div>
+<div>Debug Rifle</div>
+</div>
+</div>
+
+<div class="category">
+<h3 onclick="toggleList(this)">Official Faction Weapons</h3>
+<div class="weapon-list">
+<div>Faction AR</div>
+<div>Commander Pistol</div>
+</div>
+</div>
+
+<div class="category">
+<h3 onclick="toggleList(this)">Tier 1 Weapons</h3>
+<div class="weapon-list">
+<div>Glock</div>
+<div>MP5</div>
+</div>
+</div>
+
+<div class="category">
+<h3 onclick="toggleList(this)">Tier 1.5 Weapons</h3>
+<div class="weapon-list">
+<div>AK Variant</div>
+<div>Combat Shotgun</div>
+</div>
+</div>
+
+<div class="category">
+<h3 onclick="toggleList(this)">Tier 2 Weapons</h3>
+<div class="weapon-list">
+<div>Sniper Elite</div>
+<div>Heavy LMG</div>
+</div>
+</div>
+
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<h1>Faction Weapon Drop</h1>
+
+<div class="spinner-box">
+
+<div class="viewport">
+<div class="center-line"></div>
+<div id="reel" class="reel"></div>
+</div>
+
+<button class="spin-btn" onclick="spin()">SPIN</button>
+
+<div id="result"></div>
+
+</div>
+</div>
+
+<script>
+
+/* ================= PANEL ================= */
+function togglePanel(){
+document.getElementById("panel").classList.toggle("open");
+}
+
+function toggleList(el){
+let list=el.nextElementSibling;
+list.style.display=
+list.style.display==="block"?"none":"block";
+}
+
+/* ================= DATA ================= */
+const weapons=[
+"Prototype SMG",
+"Glock",
+"MP5",
+"AK Variant",
+"Combat Shotgun",
+"Sniper Elite",
+"Heavy LMG"
+];
+
+const reel=document.getElementById("reel");
+
+/* build reel */
+for(let i=0;i<40;i++){
+let div=document.createElement("div");
+div.className="item";
+div.innerText=weapons[Math.floor(Math.random()*weapons.length)];
+reel.appendChild(div);
+}
+
+/* ================= SPIN ================= */
+function spin(){
+
+const distance=Math.floor(Math.random()*3000)+2000;
+
+reel.style.transition="transform 4s cubic-bezier(.15,.8,.2,1)";
+reel.style.transform=`translateX(-${distance}px)`;
+
+setTimeout(()=>{
+let win=weapons[Math.floor(Math.random()*weapons.length)];
+document.getElementById("result").innerText=
+"YOU RECEIVED: "+win;
+},4000);
+
+}
+
+</script>
+
+</body>
+</html>
