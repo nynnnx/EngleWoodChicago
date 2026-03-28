@@ -25,7 +25,7 @@
             overflow-x: hidden;
         }
 
-        /* Video Background - Configured to hide as much YT UI as possible */
+        /* Video Background */
         .video-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -37,7 +37,7 @@
             width: 100vw; height: 56.25vw;
             min-height: 100vh; min-width: 177.77vh;
             position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(1.2); /* Scale up slightly to hide borders/branding */
+            transform: translate(-50%, -50%) scale(1.2);
         }
         .vignette {
             position: fixed;
@@ -112,7 +112,8 @@
         }
         .album-art { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid #00aaff33; }
         .track-info { flex-grow: 1; overflow: hidden; }
-        .status-label { font-size: 0.6rem; color: var(--accent-green); font-weight: 900; }
+        /* Changed to light blue as requested */
+        .status-label { font-size: 0.6rem; color: var(--accent-blue); font-weight: 900; }
         .song-name { font-size: 0.85rem; font-weight: 700; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .controls { display: flex; gap: 12px; margin-top: 5px; align-items: center; }
         .ctrl-btn { cursor: pointer; color: white; transition: 0.2s; font-size: 0.9rem; }
@@ -188,7 +189,6 @@
                     <option value="tier2">Tier 2</option>
                     <option value="attachments">Attachments</option>
                 </select>
-                <button class="spin-btn" id="sync-btn" onclick="syncAudio()" style="border-color: var(--accent-green); color: var(--accent-green);">Sync Audio</button>
                 <button class="spin-btn" id="masterSpinBtn" onclick="processFullDrop()">Start Drop</button>
             </div>
 
@@ -232,21 +232,13 @@
                 'mute': 1, 
                 'loop': 1, 
                 'playlist': playlist[currentIdx].id,
-                'modestbranding': 1, /* Removes large YT logo */
-                'rel': 0,            /* Don't show related videos at the end */
-                'iv_load_policy': 3, /* Hide annotations/ads */
-                'showinfo': 0        /* Deprecated but keeps some old browsers cleaner */
+                'modestbranding': 1,
+                'rel': 0,
+                'iv_load_policy': 3,
+                'showinfo': 0
             },
             events: { 'onReady': (e) => e.target.playVideo() }
         });
-    }
-
-    function syncAudio() {
-        ytPlayer.unMute();
-        ytPlayer.playVideo();
-        document.getElementById('mute-btn').className = "fas fa-volume-up ctrl-btn";
-        document.getElementById('play-btn').className = "fas fa-pause ctrl-btn";
-        document.getElementById('sync-btn').style.display = "none";
     }
 
     function togglePlay() {
@@ -276,7 +268,6 @@
         document.getElementById('m-art').src = playlist[currentIdx].art;
     }
 
-    // Star Rain System
     function createStar() {
         const container = document.getElementById('star-container');
         const star = document.createElement('div');
@@ -290,7 +281,6 @@
     }
     setInterval(createStar, 150);
 
-    // Database
     const DB = {
         test: [{name:"Sentinel", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721564048523264/WEAPON_RMSENTINELNINE.png"}],
         tier0: [{name:"1911", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721149903077649/WEAPON_RMTTI2011.png"}],
