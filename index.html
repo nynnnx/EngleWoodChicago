@@ -9,6 +9,7 @@
         /* ================= EDITABLE SETTINGS ================= */
         :root {
             --accent-blue: #00aaff;
+            --accent-green: #00ff44;
             --star-image: url('https://media.discordapp.net/attachments/1438728810265579610/1487566258802135110/image.png?ex=69c99b89&is=69c84a09&hm=af538650e9c2742490672875991a9597c72d3171d88fc675605330044264095e&=&format=webp&quality=lossless&width=550&height=550');
         }
 
@@ -24,6 +25,7 @@
             overflow-x: hidden;
         }
 
+        /* Video Background - Now Local MP4 */
         .video-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -44,6 +46,7 @@
             z-index: -1;
         }
 
+        /* Star Rain */
         #star-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -53,4 +56,311 @@
         .star {
             position: absolute;
             width: 15px; height: 15px;
-            background-image: var(--star-
+            background-image: var(--star-image);
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.5;
+            animation: fall linear forwards;
+        }
+        @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
+
+        /* Navigation */
+        .nav-container {
+            width: 100%;
+            background: #000;
+            border-bottom: 2px solid #00aaff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+        }
+        .top-nav { display: flex; overflow-x: auto; padding: 15px; gap: 15px; }
+        .nav-btn, .spin-btn, .theme-select {
+            padding: 10px 25px;
+            background: #02121f;
+            border: 1px solid #00aaff;
+            color: #00aaff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .nav-btn:hover, .nav-btn.active, .spin-btn:hover:not(:disabled) {
+            background: #00aaff;
+            color: #000;
+            box-shadow: 0 0 15px #00aaff;
+        }
+
+        /* Music Player Tray */
+        .music-card {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 320px;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 101;
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        .track-info { width: 100%; overflow: hidden; }
+        .status-label { font-size: 0.6rem; color: var(--accent-blue); font-weight: 900; }
+        .song-name { font-size: 0.85rem; font-weight: 700; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .controls { display: flex; gap: 15px; align-items: center; margin: 5px 0; }
+        .ctrl-btn { cursor: pointer; color: white; transition: 0.2s; font-size: 1.1rem; }
+        .ctrl-btn:hover { color: var(--accent-blue); }
+
+        .volume-container { display: flex; align-items: center; gap: 10px; width: 100%; }
+        .volume-slider { flex-grow: 1; height: 4px; accent-color: var(--accent-blue); cursor: pointer; }
+
+        /* Content Area */
+        .main-wrapper {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        .section-box {
+            background: rgba(2, 18, 31, 0.85);
+            border: 1px solid #00aaff44;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(5px);
+        }
+        .weapon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .weapon-card { background: #000; border: 1px solid #00aaff33; border-radius: 10px; padding: 15px; display: flex; flex-direction: column; align-items: center; }
+        .weapon-card img { width: 100%; height: 120px; object-fit: contain; transition: 0.3s; }
+        .weapon-card img:hover { filter: drop-shadow(0 0 15px #00aaff); transform: scale(1.05); }
+        .weapon-name-label { margin-top: 12px; font-weight: 700; color: #00aaff; font-size: 0.9rem; text-transform: uppercase; }
+
+        /* Wheel System */
+        .viewport { height: 200px; overflow: hidden; border: 2px solid #00aaff; position: relative; background: #000; border-radius: 10px; margin: 20px auto; width: 100%; }
+        .center-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: #00aaff; z-index: 10; transform: translateX(-50%); box-shadow: 0 0 15px #00aaff; }
+        .reel { display: flex; align-items: center; position: absolute; left: 0; height: 100%; }
+        .reel-item { min-width: 180px; width: 180px; text-align: center; }
+        .reel-item img { height: 100px; width: 150px; object-fit: contain; }
+        #rewards-tray { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 25px; }
+        .reward-pill { background: #001a2e; border: 1px solid #00aaff; padding: 10px; border-radius: 8px; text-align: center; animation: slideUp 0.4s ease-out; }
+        .reward-pill img { width: 80px; display: block; margin: 0 auto; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="video-bg">
+        <video id="bg-video" loop playsinline>
+            <source src="video1.mp4" id="video-source" type="video/mp4">
+        </video>
+    </div>
+    <div class="vignette"></div>
+    <div id="star-container"></div>
+
+    <div class="nav-container">
+        <div class="top-nav">
+            <div class="nav-btn" onclick="showTab('test')">Test Drop</div>
+            <div class="nav-btn" onclick="showTab('tier0')">Tier 0</div>
+            <div class="nav-btn" onclick="showTab('tier1')">Tier 1</div>
+            <div class="nav-btn" onclick="showTab('tier15')">Tier 1.5</div>
+            <div class="nav-btn" onclick="showTab('tier2')">Tier 2</div>
+            <div class="nav-btn" onclick="showTab('attachments')">Attachments</div>
+            <div class="nav-btn active" onclick="showTab('randomize')">Randomize</div>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        <div id="gallery-view" class="section-box" style="display:none;">
+            <h2 id="gallery-title" style="color:#00aaff">WEAPONS</h2>
+            <div class="weapon-grid" id="wpn-grid"></div>
+        </div>
+
+        <div id="randomize-view" class="section-box">
+            <h2 style="color:#00aaff;">Simulate a faction drop spin</h2>
+            <div style="margin: 20px 0; display: flex; justify-content: center; gap: 15px; align-items: center;">
+                <select id="spinTierSelect" class="theme-select">
+                    <option value="test">Test Drop</option>
+                    <option value="tier0">Tier 0</option>
+                    <option value="tier1">Tier 1</option>
+                    <option value="tier15">Tier 1.5</option>
+                    <option value="tier2">Tier 2</option>
+                    <option value="attachments">Attachments</option>
+                </select>
+                <button class="spin-btn" id="masterSpinBtn" onclick="processFullDrop()">Start Drop</button>
+            </div>
+
+            <div class="viewport">
+                <div class="center-line"></div>
+                <div id="reel" class="reel"></div>
+            </div>
+            <h3 id="spin-status" style="color:#00aaff; min-height: 1.5em;"></h3>
+            <div id="rewards-tray"></div>
+        </div>
+    </div>
+
+    <div class="music-card">
+        <div class="track-info">
+            <div class="status-label">NOW PLAYING</div>
+            <span id="m-title" class="song-name">video1.mp4</span>
+            
+            <div class="controls">
+                <i class="fas fa-step-backward ctrl-btn" onclick="changeVideo(-1)"></i>
+                <i class="fas fa-play ctrl-btn" id="play-btn" onclick="toggleVideo()"></i>
+                <i class="fas fa-step-forward ctrl-btn" onclick="changeVideo(1)"></i>
+            </div>
+
+            <div class="volume-container">
+                <i class="fas fa-volume-down" style="font-size: 0.7rem;"></i>
+                <input type="range" class="volume-slider" min="0" max="1" step="0.1" value="0.5" oninput="setVolume(this.value)">
+                <i class="fas fa-volume-up" style="font-size: 0.7rem;"></i>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Playlist of local files
+    const playlist = ["video1.mp4", "video2.mp4", "video3.mp4"];
+    let currentIdx = 0;
+
+    const video = document.getElementById('bg-video');
+    const songName = document.getElementById('m-title');
+    const playBtn = document.getElementById('play-btn');
+
+    video.volume = 0.5;
+
+    function toggleVideo() {
+        if (video.paused) {
+            video.play();
+            playBtn.className = "fas fa-pause ctrl-btn";
+        } else {
+            video.pause();
+            playBtn.className = "fas fa-play ctrl-btn";
+        }
+    }
+
+    function changeVideo(dir) {
+        currentIdx = (currentIdx + dir + playlist.length) % playlist.length;
+        video.src = playlist[currentIdx];
+        songName.innerText = playlist[currentIdx];
+        video.load();
+        video.play();
+        playBtn.className = "fas fa-pause ctrl-btn";
+    }
+
+    function setVolume(val) {
+        video.volume = val;
+    }
+
+    // Original Star Rain System
+    function createStar() {
+        const container = document.getElementById('star-container');
+        const star = document.createElement('div');
+        star.className = 'star';
+        const duration = Math.random() * 3 + 2;
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.top = '-20px';
+        star.style.animationDuration = duration + 's';
+        container.appendChild(star);
+        setTimeout(() => star.remove(), duration * 1000);
+    }
+    setInterval(createStar, 150);
+
+    // Original Database
+    const DB = {
+        test: [{name:"Sentinel", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721564048523264/WEAPON_RMSENTINELNINE.png"}],
+        tier0: [{name:"1911", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721149903077649/WEAPON_RMTTI2011.png"}],
+        tier1: [{name:"Glock 17", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721145243074850/WEAPON_RMG17.png"}],
+        tier15: [{name:"Psa Dagger", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721563520176229/WEAPON_RMPSADAGGER.png"}],
+        tier2: [{name:"Glock 19 FDE", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721328613982340/WEAPON_RMG19FDEGEN4.png"}],
+        attachments: [{name:"Clip", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187729396662353/at_clip_custom_clear.png"}]
+    };
+
+    const config = { test: 2, tier0: 4, tier1: 5, tier15: 5, tier2: 7, attachments: 1 };
+    const ITEM_WIDTH = 180;
+
+    function showTab(tier) {
+        const gallery = document.getElementById('gallery-view');
+        const randomize = document.getElementById('randomize-view');
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        const buttons = document.querySelectorAll('.nav-btn');
+        buttons.forEach(b => { if(b.innerText.toLowerCase().includes(tier.toLowerCase())) b.classList.add('active'); });
+        if(tier === 'randomize') { gallery.style.display = 'none'; randomize.style.display = 'block'; } 
+        else { gallery.style.display = 'block'; randomize.style.display = 'none'; document.getElementById('gallery-title').innerText = tier.toUpperCase(); renderGrid(tier); }
+    }
+
+    function renderGrid(tier) {
+        const grid = document.getElementById('wpn-grid');
+        grid.innerHTML = "";
+        DB[tier].forEach((item) => {
+            const div = document.createElement('div');
+            div.className = "weapon-card";
+            div.innerHTML = `<img src="${item.img}"><span class="weapon-name-label">${item.name}</span>`;
+            grid.appendChild(div);
+        });
+    }
+
+    function buildReel(targetPool) {
+        const reel = document.getElementById('reel');
+        reel.innerHTML = "";
+        const items = [];
+        for(let i=0; i<100; i++) {
+            const weapon = targetPool[Math.floor(Math.random()*targetPool.length)];
+            const div = document.createElement('div');
+            div.className = "reel-item";
+            div.innerHTML = `<img src="${weapon.img}"><br><span>${weapon.name}</span>`;
+            reel.appendChild(div);
+            items.push(weapon);
+        }
+        return items;
+    }
+
+    async function processFullDrop() {
+        const tier = document.getElementById('spinTierSelect').value;
+        const count = config[tier];
+        const btn = document.getElementById('masterSpinBtn');
+        const tray = document.getElementById('rewards-tray');
+        const status = document.getElementById('spin-status');
+        btn.disabled = true; tray.innerHTML = "";
+        for(let i=0; i<count; i++) {
+            status.innerText = `Spinning ${i+1} of ${count}...`;
+            await performSingleSpin(tier);
+            await new Promise(r => setTimeout(r, 1000));
+        }
+        status.innerText = "Drop Complete!";
+        btn.disabled = false;
+    }
+
+    function performSingleSpin(tier) {
+        return new Promise((resolve) => {
+            const reel = document.getElementById('reel');
+            const viewport = document.querySelector('.viewport');
+            const tray = document.getElementById('rewards-tray');
+            const currentReelItems = buildReel(DB[tier]);
+            const winIndex = 75;
+            reel.style.transition = "none";
+            reel.style.transform = "translateX(0px)";
+            reel.offsetHeight;
+            const targetX = (winIndex * ITEM_WIDTH) - (viewport.offsetWidth / 2) + (ITEM_WIDTH / 2);
+            reel.style.transition = "transform 3s cubic-bezier(0.15, 0.8, 0.2, 1)";
+            reel.style.transform = `translateX(-${targetX}px)`;
+            setTimeout(() => {
+                const p = document.createElement('div');
+                p.className = "reward-pill";
+                p.innerHTML = `<img src="${currentReelItems[winIndex].img}"><span>${currentReelItems[winIndex].name}</span>`;
+                tray.appendChild(p);
+                resolve();
+            }, 3200);
+        });
+    }
+    </script>
+</body>
+</html>
