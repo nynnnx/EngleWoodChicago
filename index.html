@@ -25,19 +25,19 @@
             overflow-x: hidden;
         }
 
-        /* Video Background - Now Local MP4 */
+        /* Video Background */
         .video-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -2;
+            pointer-events: none;
             overflow: hidden;
-            background: #000;
         }
-        #bg-video {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0; left: 0;
+        .video-bg iframe {
+            width: 100vw; height: 56.25vw;
+            min-height: 100vh; min-width: 177.77vh;
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(1.2);
         }
         .vignette {
             position: fixed;
@@ -99,27 +99,25 @@
             position: fixed;
             bottom: 30px;
             left: 30px;
-            width: 320px;
+            width: 300px;
             background: rgba(0, 0, 0, 0.9);
             border-radius: 12px;
             padding: 15px;
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            align-items: center;
+            gap: 15px;
             z-index: 101;
             border: 1px solid rgba(0, 170, 255, 0.3);
             backdrop-filter: blur(10px);
         }
-        .track-info { width: 100%; overflow: hidden; }
+        .album-art { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid #00aaff33; }
+        .track-info { flex-grow: 1; overflow: hidden; }
+        /* Changed to light blue as requested */
         .status-label { font-size: 0.6rem; color: var(--accent-blue); font-weight: 900; }
         .song-name { font-size: 0.85rem; font-weight: 700; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        
-        .controls { display: flex; gap: 15px; align-items: center; margin: 5px 0; }
-        .ctrl-btn { cursor: pointer; color: white; transition: 0.2s; font-size: 1.1rem; }
+        .controls { display: flex; gap: 12px; margin-top: 5px; align-items: center; }
+        .ctrl-btn { cursor: pointer; color: white; transition: 0.2s; font-size: 0.9rem; }
         .ctrl-btn:hover { color: var(--accent-blue); }
-
-        .volume-container { display: flex; align-items: center; gap: 10px; width: 100%; }
-        .volume-slider { flex-grow: 1; height: 4px; accent-color: var(--accent-blue); cursor: pointer; }
 
         /* Content Area */
         .main-wrapper {
@@ -158,11 +156,7 @@
 </head>
 <body>
 
-    <div class="video-bg">
-        <video id="bg-video" loop playsinline>
-            <source src="video1.mp4" id="video-source" type="video/mp4">
-        </video>
-    </div>
+    <div class="video-bg"><div id="player"></div></div>
     <div class="vignette"></div>
     <div id="star-container"></div>
 
@@ -208,59 +202,72 @@
     </div>
 
     <div class="music-card">
+        <img src="https://i.ytimg.com/vi/W5_RPT0WPYw/maxresdefault.jpg" id="m-art" class="album-art">
         <div class="track-info">
             <div class="status-label">NOW PLAYING</div>
-            <span id="m-title" class="song-name">video1.mp4</span>
-            
+            <span id="m-title" class="song-name">NBA YoungBoy - Speed Racing</span>
             <div class="controls">
-                <i class="fas fa-step-backward ctrl-btn" onclick="changeVideo(-1)"></i>
-                <i class="fas fa-play ctrl-btn" id="play-btn" onclick="toggleVideo()"></i>
-                <i class="fas fa-step-forward ctrl-btn" onclick="changeVideo(1)"></i>
-            </div>
-
-            <div class="volume-container">
-                <i class="fas fa-volume-down" style="font-size: 0.7rem;"></i>
-                <input type="range" class="volume-slider" min="0" max="1" step="0.1" value="0.5" oninput="setVolume(this.value)">
-                <i class="fas fa-volume-up" style="font-size: 0.7rem;"></i>
+                <i class="fas fa-backward ctrl-btn" onclick="changeSong(-1)"></i>
+                <i class="fas fa-play ctrl-btn" id="play-btn" onclick="togglePlay()"></i>
+                <i class="fas fa-forward ctrl-btn" onclick="changeSong(1)"></i>
+                <i class="fas fa-volume-mute ctrl-btn" id="mute-btn" onclick="toggleMute()" style="margin-left:auto;"></i>
             </div>
         </div>
     </div>
 
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-    // Playlist of local files
-    const playlist = ["video1.mp4", "video2.mp4", "video3.mp4"];
+    const playlist = [
+        { id: 'W5_RPT0WPYw', title: 'NBA YoungBoy - Speed Racing', art: 'https://i.ytimg.com/vi/W5_RPT0WPYw/maxresdefault.jpg' }
+    ];
     let currentIdx = 0;
+    let ytPlayer;
 
-    const video = document.getElementById('bg-video');
-    const songName = document.getElementById('m-title');
-    const playBtn = document.getElementById('play-btn');
+    function onYouTubeIframeAPIReady() {
+        ytPlayer = new YT.Player('player', {
+            videoId: playlist[currentIdx].id,
+            playerVars: { 
+                'autoplay': 1, 
+                'controls': 0, 
+                'mute': 1, 
+                'loop': 1, 
+                'playlist': playlist[currentIdx].id,
+                'modestbranding': 1,
+                'rel': 0,
+                'iv_load_policy': 3,
+                'showinfo': 0
+            },
+            events: { 'onReady': (e) => e.target.playVideo() }
+        });
+    }
 
-    video.volume = 0.5;
-
-    function toggleVideo() {
-        if (video.paused) {
-            video.play();
-            playBtn.className = "fas fa-pause ctrl-btn";
+    function togglePlay() {
+        if (ytPlayer.getPlayerState() === 1) {
+            ytPlayer.pauseVideo();
+            document.getElementById('play-btn').className = "fas fa-play ctrl-btn";
         } else {
-            video.pause();
-            playBtn.className = "fas fa-play ctrl-btn";
+            ytPlayer.playVideo();
+            document.getElementById('play-btn').className = "fas fa-pause ctrl-btn";
         }
     }
 
-    function changeVideo(dir) {
+    function toggleMute() {
+        if (ytPlayer.isMuted()) {
+            ytPlayer.unMute();
+            document.getElementById('mute-btn').className = "fas fa-volume-up ctrl-btn";
+        } else {
+            ytPlayer.mute();
+            document.getElementById('mute-btn').className = "fas fa-volume-mute ctrl-btn";
+        }
+    }
+
+    function changeSong(dir) {
         currentIdx = (currentIdx + dir + playlist.length) % playlist.length;
-        video.src = playlist[currentIdx];
-        songName.innerText = playlist[currentIdx];
-        video.load();
-        video.play();
-        playBtn.className = "fas fa-pause ctrl-btn";
+        ytPlayer.loadVideoById(playlist[currentIdx].id);
+        document.getElementById('m-title').innerText = playlist[currentIdx].title;
+        document.getElementById('m-art').src = playlist[currentIdx].art;
     }
 
-    function setVolume(val) {
-        video.volume = val;
-    }
-
-    // Original Star Rain System
     function createStar() {
         const container = document.getElementById('star-container');
         const star = document.createElement('div');
@@ -274,7 +281,6 @@
     }
     setInterval(createStar, 150);
 
-    // Original Database
     const DB = {
         test: [{name:"Sentinel", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721564048523264/WEAPON_RMSENTINELNINE.png"}],
         tier0: [{name:"1911", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721149903077649/WEAPON_RMTTI2011.png"}],
@@ -311,8 +317,9 @@
     function buildReel(targetPool) {
         const reel = document.getElementById('reel');
         reel.innerHTML = "";
+        const totalItems = 100;
         const items = [];
-        for(let i=0; i<100; i++) {
+        for(let i=0; i<totalItems; i++) {
             const weapon = targetPool[Math.floor(Math.random()*targetPool.length)];
             const div = document.createElement('div');
             div.className = "reel-item";
@@ -344,18 +351,21 @@
             const reel = document.getElementById('reel');
             const viewport = document.querySelector('.viewport');
             const tray = document.getElementById('rewards-tray');
-            const currentReelItems = buildReel(DB[tier]);
+            let spinPool = [...DB[tier]];
+            const currentReelItems = buildReel(spinPool);
             const winIndex = 75;
+            const winner = currentReelItems[winIndex];
             reel.style.transition = "none";
             reel.style.transform = "translateX(0px)";
             reel.offsetHeight;
-            const targetX = (winIndex * ITEM_WIDTH) - (viewport.offsetWidth / 2) + (ITEM_WIDTH / 2);
+            const centerOffset = (viewport.offsetWidth / 2) - (ITEM_WIDTH / 2);
+            const targetX = (winIndex * ITEM_WIDTH) - centerOffset;
             reel.style.transition = "transform 3s cubic-bezier(0.15, 0.8, 0.2, 1)";
             reel.style.transform = `translateX(-${targetX}px)`;
             setTimeout(() => {
                 const p = document.createElement('div');
                 p.className = "reward-pill";
-                p.innerHTML = `<img src="${currentReelItems[winIndex].img}"><span>${currentReelItems[winIndex].name}</span>`;
+                p.innerHTML = `<img src="${winner.img}"><span>${winner.name}</span>`;
                 tray.appendChild(p);
                 resolve();
             }, 3200);
