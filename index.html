@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* ================= THEME COLORS ================= */
+        /* ================= THEME & STAR IMAGE ================= */
         :root {
             --accent-blue: #00aaff;
             --accent-green: #00ff44;
@@ -21,8 +21,11 @@
             font-family: 'Poppins', sans-serif;
             color: white;
             background: var(--bg-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
             overflow-x: hidden;
-            height: 100vh;
         }
 
         /* Video Background */
@@ -41,7 +44,7 @@
         .vignette {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%);
+            background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.9) 100%);
             z-index: -1;
         }
 
@@ -50,7 +53,7 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
-            z-index: 1;
+            z-index: 0;
         }
         .star {
             position: absolute;
@@ -59,27 +62,27 @@
             background-image: var(--star-image);
             background-size: contain;
             background-repeat: no-repeat;
-            opacity: 0.6;
-            filter: drop-shadow(0 0 5px white);
+            opacity: 0.5;
             animation: fall linear forwards;
         }
         @keyframes fall {
             to { transform: translateY(105vh) rotate(360deg); }
         }
 
-        /* NAVIGATION */
+        /* ORIGINAL NAVIGATION */
         .nav-container {
             width: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.8);
             border-bottom: 2px solid var(--accent-blue);
-            position: relative;
+            position: sticky;
+            top: 0;
             z-index: 100;
             display: flex;
             justify-content: center;
         }
         .top-nav { display: flex; padding: 15px; gap: 15px; }
-        .nav-btn {
-            padding: 10px 20px;
+        .nav-btn, .spin-btn {
+            padding: 10px 25px;
             background: #02121f;
             border: 1px solid var(--accent-blue);
             color: var(--accent-blue);
@@ -89,63 +92,64 @@
             text-transform: uppercase;
             transition: 0.3s;
         }
-        .nav-btn.active, .nav-btn:hover {
+        .nav-btn:hover, .nav-btn.active, .spin-btn:hover {
             background: var(--accent-blue);
             color: #000;
             box-shadow: 0 0 15px var(--accent-blue);
         }
 
-        /* MAIN CONTENT */
+        /* ORIGINAL MAIN CONTENT BOX */
         .main-wrapper {
-            position: relative;
-            z-index: 10;
-            max-width: 900px;
-            margin: 50px auto;
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
             text-align: center;
+            position: relative;
+            z-index: 2;
         }
         .section-box {
-            background: rgba(2, 18, 31, 0.8);
-            border: 1px solid rgba(0, 170, 255, 0.2);
+            background: rgba(2, 18, 31, 0.85);
+            border: 1px solid #00aaff44;
             border-radius: 15px;
             padding: 40px;
             backdrop-filter: blur(10px);
         }
 
-        /* MUSIC PLAYER (BOTTOM LEFT - AS REQUESTED) */
+        /* MUSIC PLAYER (NOW ON LEFT SIDE) */
         .music-card {
             position: fixed;
             bottom: 30px;
             left: 30px;
-            width: 320px;
+            width: 300px;
             background: rgba(0, 0, 0, 0.85);
-            border-radius: 15px;
+            border-radius: 12px;
             padding: 15px;
             display: flex;
             align-items: center;
             gap: 15px;
-            z-index: 100;
+            z-index: 101;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .album-art { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; }
-        .track-info { flex-grow: 1; }
-        .status-label { font-size: 0.65rem; color: var(--accent-green); font-weight: 900; letter-spacing: 1px; }
-        .song-name { font-size: 0.9rem; font-weight: 700; margin: 2px 0; display: block; }
-        .controls { display: flex; gap: 15px; margin-top: 8px; align-items: center; }
-        .ctrl-btn { cursor: pointer; font-size: 1rem; transition: 0.2s; color: white; }
-        .ctrl-btn:hover { color: var(--accent-green); transform: scale(1.1); }
+        .album-art { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
+        .track-info { flex-grow: 1; overflow: hidden; }
+        .status-label { font-size: 0.6rem; color: var(--accent-green); font-weight: 900; }
+        .song-name { font-size: 0.85rem; font-weight: 700; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .controls { display: flex; gap: 12px; margin-top: 5px; align-items: center; }
+        .ctrl-btn { cursor: pointer; color: white; transition: 0.2s; font-size: 0.9rem; }
+        .ctrl-btn:hover { color: var(--accent-green); }
 
-        /* SPINNER STYLES */
-        .viewport { height: 200px; overflow: hidden; border: 2px solid var(--accent-blue); position: relative; background: #000; border-radius: 10px; margin: 20px 0; }
-        .center-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: var(--accent-blue); z-index: 10; transform: translateX(-50%); box-shadow: 0 0 10px var(--accent-blue); }
+        /* SPINNER VIEWPORT */
+        .viewport { height: 200px; overflow: hidden; border: 2px solid var(--accent-blue); position: relative; background: #000; border-radius: 10px; margin: 20px auto; width: 100%; }
+        .center-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: var(--accent-blue); z-index: 10; transform: translateX(-50%); box-shadow: 0 0 15px var(--accent-blue); }
         .reel { display: flex; align-items: center; position: absolute; left: 0; height: 100%; }
         .reel-item { min-width: 180px; text-align: center; }
-        .reel-item img { height: 100px; width: 140px; object-fit: contain; }
+        .reel-item img { height: 100px; width: 150px; object-fit: contain; }
     </style>
 </head>
 <body>
 
     <div class="video-bg">
-        <div id="yt-video"></div>
+        <div id="player"></div>
     </div>
     <div class="vignette"></div>
 
@@ -153,38 +157,38 @@
 
     <div class="nav-container">
         <div class="top-nav">
+            <div class="nav-btn">Test Drop</div>
+            <div class="nav-btn">Tier 1</div>
             <div class="nav-btn active">Randomize</div>
-            <div class="nav-btn">Weapon Gallery</div>
         </div>
     </div>
 
     <div class="main-wrapper">
         <div class="section-box">
-            <h2 style="color: var(--accent-blue); margin:0;">System Drop Sequence</h2>
-            <p style="color: #888; font-size: 0.8rem;">Click Sync Audio to enable sound, then start the drop.</p>
+            <h2 style="color: var(--accent-blue);">Simulate Faction Drop</h2>
             
-            <div style="margin: 20px 0; display: flex; justify-content: center; gap: 10px;">
-                <button class="nav-btn" onclick="syncAudio()" id="sync-btn" style="border-color: var(--accent-green); color: var(--accent-green);">Sync Audio</button>
-                <button class="nav-btn" id="spinBtn" onclick="startSpin()">Start Drop</button>
+            <div style="margin: 20px 0; display: flex; justify-content: center; gap: 15px;">
+                <button class="spin-btn" id="sync-btn" onclick="syncAudio()" style="border-color: var(--accent-green); color: var(--accent-green);">Sync & Play Music</button>
+                <button class="spin-btn" id="spinBtn" onclick="startSpin()">Start Drop</button>
             </div>
 
             <div class="viewport">
                 <div class="center-line"></div>
                 <div id="reel" class="reel"></div>
             </div>
-            <div id="status-text" style="color: var(--accent-blue); font-weight: bold;">READY</div>
+            <h3 id="status" style="color: var(--accent-blue);">READY</h3>
         </div>
     </div>
 
     <div class="music-card">
-        <img src="https://i.ytimg.com/vi/1-vS-L7o_mQ/hqdefault.jpg" id="m-img" class="album-art">
+        <img src="https://i.ytimg.com/vi/1-vS-L7o_mQ/hqdefault.jpg" id="m-art" class="album-art">
         <div class="track-info">
             <div class="status-label">NOW PLAYING</div>
             <span id="m-title" class="song-name">First Day Out</span>
             <div class="controls">
-                <i class="fas fa-step-backward ctrl-btn" onclick="prevTrack()"></i>
-                <i class="fas fa-play ctrl-btn" id="play-pause" onclick="togglePlay()"></i>
-                <i class="fas fa-step-forward ctrl-btn" onclick="nextTrack()"></i>
+                <i class="fas fa-backward ctrl-btn" onclick="changeSong(-1)"></i>
+                <i class="fas fa-play ctrl-btn" id="play-btn" onclick="togglePlay()"></i>
+                <i class="fas fa-forward ctrl-btn" onclick="changeSong(1)"></i>
                 <i class="fas fa-volume-mute ctrl-btn" id="mute-btn" onclick="toggleMute()" style="margin-left:auto;"></i>
             </div>
         </div>
@@ -192,108 +196,91 @@
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        // --- MUSIC CONFIG ---
-        const tracks = [
-            { id: '1-vS-L7o_mQ', title: 'First Day Out', img: 'https://i.ytimg.com/vi/1-vS-L7o_mQ/hqdefault.jpg' },
-            { id: 'dQw4w9WgXcQ', title: 'Alternative Track', img: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg' }
+        const playlist = [
+            { id: '1-vS-L7o_mQ', title: 'First Day Out', art: 'https://i.ytimg.com/vi/1-vS-L7o_mQ/hqdefault.jpg' },
+            { id: 'dQw4w9WgXcQ', title: 'Next Track', art: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg' }
         ];
-        let currentTrack = 0;
-        let player;
+        let currentIdx = 0;
+        let ytPlayer;
 
+        // --- YOUTUBE SETUP ---
         function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-video', {
-                videoId: tracks[currentTrack].id,
-                playerVars: { 'autoplay': 1, 'controls': 0, 'mute': 1, 'loop': 1, 'playlist': tracks[currentTrack].id },
+            ytPlayer = new YT.Player('player', {
+                videoId: playlist[currentIdx].id,
+                playerVars: { 'autoplay': 1, 'controls': 0, 'mute': 1, 'loop': 1, 'playlist': playlist[currentIdx].id },
                 events: { 'onReady': (e) => e.target.playVideo() }
             });
         }
 
+        // --- MUSIC FUNCTIONS ---
         function syncAudio() {
-            player.unMute();
-            player.playVideo();
+            ytPlayer.unMute();
+            ytPlayer.playVideo();
             document.getElementById('mute-btn').className = "fas fa-volume-up ctrl-btn";
-            document.getElementById('play-pause').className = "fas fa-pause ctrl-btn";
+            document.getElementById('play-btn').className = "fas fa-pause ctrl-btn";
             document.getElementById('sync-btn').style.display = "none";
         }
 
         function togglePlay() {
-            if (player.getPlayerState() === 1) {
-                player.pauseVideo();
-                document.getElementById('play-pause').className = "fas fa-play ctrl-btn";
+            if (ytPlayer.getPlayerState() === 1) {
+                ytPlayer.pauseVideo();
+                document.getElementById('play-btn').className = "fas fa-play ctrl-btn";
             } else {
-                player.playVideo();
-                document.getElementById('play-pause').className = "fas fa-pause ctrl-btn";
+                ytPlayer.playVideo();
+                document.getElementById('play-btn').className = "fas fa-pause ctrl-btn";
             }
         }
 
         function toggleMute() {
-            if (player.isMuted()) {
-                player.unMute();
+            if (ytPlayer.isMuted()) {
+                ytPlayer.unMute();
                 document.getElementById('mute-btn').className = "fas fa-volume-up ctrl-btn";
             } else {
-                player.mute();
+                ytPlayer.mute();
                 document.getElementById('mute-btn').className = "fas fa-volume-mute ctrl-btn";
             }
         }
 
-        function nextTrack() {
-            currentTrack = (currentTrack + 1) % tracks.length;
-            updatePlayer();
+        function changeSong(dir) {
+            currentIdx = (currentIdx + dir + playlist.length) % playlist.length;
+            ytPlayer.loadVideoById(playlist[currentIdx].id);
+            document.getElementById('m-title').innerText = playlist[currentIdx].title;
+            document.getElementById('m-art').src = playlist[currentIdx].art;
         }
 
-        function prevTrack() {
-            currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
-            updatePlayer();
-        }
-
-        function updatePlayer() {
-            player.loadVideoById(tracks[currentTrack].id);
-            document.getElementById('m-title').innerText = tracks[currentTrack].title;
-            document.getElementById('m-img').src = tracks[currentTrack].img;
-        }
-
-        // --- STAR RAIN SYSTEM ---
-        function spawnStar() {
+        // --- STAR RAIN ---
+        function createStar() {
             const container = document.getElementById('star-container');
             const star = document.createElement('div');
             star.className = 'star';
-            
-            const startX = Math.random() * window.innerWidth;
-            const duration = Math.random() * 3 + 2; // 2 to 5 seconds
-            
-            star.style.left = startX + 'px';
+            const duration = Math.random() * 3 + 2;
+            star.style.left = Math.random() * 100 + 'vw';
             star.style.top = '-20px';
             star.style.animationDuration = duration + 's';
-            
             container.appendChild(star);
             setTimeout(() => star.remove(), duration * 1000);
         }
-        setInterval(spawnStar, 150); // Speed of rain
+        setInterval(createStar, 150);
 
-        // --- SPINNER LOGIC ---
-        const itemImg = "https://media.discordapp.net/attachments/1428113909616869387/1485721564048523264/WEAPON_RMSENTINELNINE.png";
-        
+        // --- ORIGINAL SPIN LOGIC ---
         function startSpin() {
             const reel = document.getElementById('reel');
             reel.innerHTML = "";
-            for(let i=0; i<50; i++) {
+            const img = "https://media.discordapp.net/attachments/1428113909616869387/1485721564048523264/WEAPON_RMSENTINELNINE.png";
+            for(let i=0; i<60; i++) {
                 const div = document.createElement('div');
                 div.className = "reel-item";
-                div.innerHTML = `<img src="${itemImg}"><br><span style="font-size:10px; color:var(--accent-blue)">ITEM ${i}</span>`;
+                div.innerHTML = `<img src="${img}">`;
                 reel.appendChild(div);
             }
             reel.style.transition = "none";
             reel.style.transform = "translateX(0)";
-            
             setTimeout(() => {
                 reel.style.transition = "transform 4s cubic-bezier(0.1, 0, 0.1, 1)";
-                reel.style.transform = "translateX(-7000px)";
-                document.getElementById('status-text').innerText = "SPINNING...";
+                reel.style.transform = "translateX(-8000px)";
+                document.getElementById('status').innerText = "SPINNING...";
             }, 50);
-            
-            setTimeout(() => {
-                document.getElementById('status-text').innerText = "WINNER: SENTINEL 9";
-            }, 4100);
+            setTimeout(() => { document.getElementById('status').innerText = "WINNER!"; }, 4100);
         }
     </script>
 </body>
