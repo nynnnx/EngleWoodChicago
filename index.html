@@ -367,6 +367,9 @@ function performSingleSpin(tier) {
         } else if (tier === 'tier1') {
             const extra = DB.tier0.filter(w => CROSS_TIER_LOGIC.tier0_into_tier1.includes(w.name));
             spinPool = [...spinPool, ...extra];
+        } else if (tier === 'tier0') {
+            const extra = DB.tier0.filter(w => CROSS_TIER_LOGIC.tier0_into_tier15.includes(w.name));
+            spinPool = [...spinPool, ...extra];
         } else if (tier === 'tier15') {
             const extra = DB.tier1.filter(w => CROSS_TIER_LOGIC.tier1_into_tier15.includes(w.name));
             spinPool = [...spinPool, ...extra];
