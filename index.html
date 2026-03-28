@@ -5,18 +5,45 @@
     <title>EngleWoodChicago Weapon System</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* ================= GLOBAL & THEME (UNCHANGED) ================= */
+        /* ================= GLOBAL & THEME (UPDATED) ================= */
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
             color: white;
-            background: #00050a;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
+
+            /* STAR BACKGROUND - uses your image */
+            background-color: #00050a; /* Fallback color */
+            background-image: url('https://i.ibb.co/XF8gY7X/image.png'); /* Replace this URL with your star image path */
+            background-size: cover; /* or 'auto' for repeating stars */
+            background-attachment: fixed;
+            background-repeat: repeat; /* repeat if 'auto', doesn't hurt with 'cover' */
+            animation: starsFalling 60s linear infinite; /* Animation name, duration, timing, repetition */
+
+            /* CUSTOM CURSOR - uses your image */
+            cursor: url('https://i.ibb.co/XF8gY7X/image.png') 16 16, auto; /* Replace this URL, 16 16 is the hotspot */
         }
 
+        /* Animation for falling stars */
+        @keyframes starsFalling {
+            from { background-position: 0 0; }
+            to { background-position: 0 1000px; } /* Adjust 1000px based on image height for seamless repeat */
+        }
+
+        /* Set cursor for clickable elements too, or use inherit in them */
+        .nav-btn, .spin-btn, .theme-select, .weapon-card img {
+            cursor: url('https://i.ibb.co/XF8gY7X/image.png') 16 16, pointer; /* Hotspot same as body, fallback to pointer */
+        }
+
+        /* Ensure text is selectable if needed, but not on all clickable areas */
+        .nav-btn, .spin-btn {
+            user-select: none;
+        }
+
+        /* ================= UI ELEMENTS (UNCHANGED from original) ================= */
         .nav-container {
             width: 100%;
             background: #000;
@@ -41,7 +68,6 @@
             border: 1px solid #00aaff;
             color: #00aaff;
             border-radius: 5px;
-            cursor: pointer;
             font-weight: 700;
             transition: 0.3s;
             font-family: 'Poppins', sans-serif;
@@ -56,7 +82,6 @@
         }
 
         .theme-select {
-            cursor: pointer;
             outline: none;
             appearance: none;
             -webkit-appearance: none;
@@ -274,10 +299,6 @@ const DB = {
     ]
 };
 
-/* ============================================================
-   CROSS-TIER CONFIGURATION
-   (Enter names from the lists above to add them to other wheels)
-   ============================================================ */
 const CROSS_TIER_LOGIC = {
     test_into_tier0: ["Sentinel", "FN509", "Glock 22"],
     tier0_into_tier1: ["1911", "Glock 17 Gen 3"],
