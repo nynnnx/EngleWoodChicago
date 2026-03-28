@@ -2,366 +2,307 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>EngleWoodChicago Weapon System</title>
+    <title>EngleWoodChicago | Weapon System</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* ================= GLOBAL & BACKGROUND ================= */
+        /* ================= CUSTOM HUD THEME ================= */
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
             color: white;
             background: #000;
-            overflow-x: hidden;
-            min-height: 100vh;
+            overflow: hidden;
+            height: 100vh;
         }
 
-        .video-background {
+        /* Video Background Layer */
+        .video-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -2;
             pointer-events: none;
-            overflow: hidden;
         }
-
-        .video-background iframe {
-            width: 100vw;
-            height: 56.25vw; /* 16:9 ratio */
-            min-height: 100vh;
-            min-width: 177.77vh; /* 16:9 ratio */
-            position: absolute;
-            top: 50%; left: 50%;
+        .video-container iframe {
+            width: 100vw; height: 56.25vw; /* 16:9 */
+            min-height: 100vh; min-width: 177.77vh;
+            position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
         }
-
-        .overlay-vignette {
+        .vignette {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%);
+            background: radial-gradient(circle, rgba(0,0,0,0) 20%, rgba(0,0,0,0.9) 100%);
             z-index: -1;
         }
 
-        /* ================= NAVIGATION ================= */
-        .nav-container {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            border-bottom: 2px solid #00aaff;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            display: flex;
-            justify-content: center;
-        }
-
-        .top-nav { display: flex; overflow-x: auto; padding: 15px; gap: 15px; }
-
-        .nav-btn, .spin-btn, .theme-select {
-            padding: 10px 25px;
-            background: rgba(2, 18, 31, 0.9);
-            border: 1px solid #00aaff;
-            color: #00aaff;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: 0.3s;
-            text-transform: uppercase;
-        }
-
-        .nav-btn:hover, .nav-btn.active, .spin-btn:hover:not(:disabled) {
-            background: #00aaff;
-            color: #000;
-            box-shadow: 0 0 15px #00aaff;
-        }
-
-        /* ================= INFO TAB (BOTTOM LEFT) ================= */
-        .info-panel {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            width: 280px;
-            background: rgba(0, 0, 0, 0.7);
-            border-left: 4px solid #00ff44; /* Accent color */
-            padding: 20px;
-            border-radius: 5px;
-            backdrop-filter: blur(5px);
-            z-index: 10;
-        }
-
-        .info-header {
-            color: #00ff44;
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
-        .info-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .info-avatar {
-            width: 35px;
-            height: 35px;
-            border-radius: 4px;
-            background: #333;
-        }
-
-        .info-text .name { font-weight: 700; font-size: 0.9rem; display: block; }
-        .info-text .role { font-size: 0.65rem; color: #00ff44; text-transform: uppercase; font-weight: 900; }
-
-        /* ================= MUSIC PLAYER (BOTTOM RIGHT) ================= */
-        .music-player {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 15px;
-            border-radius: 12px;
-            width: 320px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 10;
-        }
-
-        .music-art { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
-        
-        .music-info { flex-grow: 1; }
-        .music-status { font-size: 0.6rem; color: #00ff44; font-weight: 900; margin-bottom: 2px; }
-        .music-title { font-size: 0.85rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .music-artist { font-size: 0.7rem; color: #aaa; }
-
-        .music-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-top: 8px;
-        }
-
-        .music-btn { cursor: pointer; color: white; transition: 0.2s; font-size: 0.9rem; }
-        .music-btn:hover { color: #00ff44; }
-
-        /* ================= SNOW EFFECT ================= */
-        #snow-canvas {
+        /* Snow Overlay */
+        #snow {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             z-index: 1;
         }
 
-        /* ================= EXISTING UI TWEAKS ================= */
-        .main-wrapper { position: relative; z-index: 2; margin-top: 40px; }
-        .section-box { background: rgba(0, 5, 15, 0.85); backdrop-filter: blur(10px); }
-        .viewport { background: #000; }
-        .weapon-card { background: rgba(255,255,255,0.05); }
+        /* Navigation */
+        .nav-container {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            border-bottom: 2px solid #00ff44; /* Custom Accent */
+            position: relative;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+        }
+        .top-nav { display: flex; padding: 15px; gap: 15px; }
+        .nav-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #00ff44;
+            color: #00ff44;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+        .nav-btn.active, .nav-btn:hover {
+            background: #00ff44;
+            color: #000;
+            box-shadow: 0 0 15px #00ff44;
+        }
 
+        /* Main UI Content */
+        .main-wrapper {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            margin: 50px auto;
+        }
+        .section-box {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* CUSTOM INFO TAB (Bottom Left) */
+        .custom-info-tab {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            width: 300px;
+            z-index: 20;
+        }
+        .info-category {
+            font-size: 0.7rem;
+            color: #00ff44;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 12px;
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 3px solid #00ff44;
+        }
+        .user-card img { width: 40px; height: 40px; border-radius: 5px; }
+        .user-name { font-weight: 700; font-size: 0.9rem; display: block; }
+        .user-role { font-size: 0.65rem; color: #00ff44; text-transform: uppercase; }
+
+        /* MUSIC PLAYER (Bottom Right) */
+        .music-widget {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: rgba(0,0,0,0.85);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 350px;
+            z-index: 20;
+            backdrop-filter: blur(10px);
+        }
+        .album-art { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
+        .track-info { flex-grow: 1; }
+        .now-playing-label { font-size: 0.6rem; color: #00ff44; font-weight: 900; }
+        .track-name { font-size: 0.9rem; font-weight: 700; margin: 2px 0; }
+        .track-artist { font-size: 0.75rem; color: #aaa; }
+        .player-btns { display: flex; gap: 15px; margin-top: 10px; align-items: center; }
+        .p-btn { cursor: pointer; color: white; transition: 0.2s; font-size: 1rem; }
+        .p-btn:hover { color: #00ff44; transform: scale(1.1); }
+
+        /* Spinner Viewport Overrides */
+        .viewport { height: 180px; border: 2px solid #00ff44; background: #000; border-radius: 8px; position: relative; overflow: hidden; margin-top: 20px; }
+        .center-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: #00ff44; z-index: 10; transform: translateX(-50%); box-shadow: 0 0 10px #00ff44; }
+        .reel { display: flex; align-items: center; position: absolute; left: 0; height: 100%; }
+        .reel-item { min-width: 160px; text-align: center; }
+        .reel-item img { height: 80px; width: 130px; object-fit: contain; }
     </style>
 </head>
 <body>
 
-    <div class="video-background">
-        <div id="player"></div>
+    <div class="video-container">
+        <div id="yt-player"></div>
     </div>
-    <div class="overlay-vignette"></div>
+    <div class="vignette"></div>
 
-    <canvas id="snow-canvas"></canvas>
+    <canvas id="snow"></canvas>
 
     <div class="nav-container">
         <div class="top-nav">
             <div class="nav-btn" onclick="showTab('test')">Test Drop</div>
-            <div class="nav-btn" onclick="showTab('tier0')">Tier 0</div>
-            <div class="nav-btn" onclick="showTab('tier1')">Tier 1</div>
-            <div class="nav-btn" onclick="showTab('tier15')">Tier 1.5</div>
-            <div class="nav-btn" onclick="showTab('tier2')">Tier 2</div>
             <div class="nav-btn active" onclick="showTab('randomize')">Randomize</div>
         </div>
     </div>
 
     <div class="main-wrapper">
-        <div id="gallery-view" class="section-box" style="display:none;">
-            <h2 id="gallery-title" style="color:#00aaff">WEAPONS</h2>
-            <div class="weapon-grid" id="wpn-grid"></div>
-        </div>
-
         <div id="randomize-view" class="section-box">
-            <h2 style="color:#00aaff;">Faction Drop Simulation</h2>
-            <div style="margin: 20px 0; display: flex; justify-content: center; gap: 15px; align-items: center;">
-                <select id="spinTierSelect" class="theme-select">
+            <h2 style="color:#00ff44; margin:0;">System Drop</h2>
+            <p style="font-size: 0.8rem; color: #888;">Select a tier and initiate the drop sequence.</p>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <select id="spinTierSelect" class="nav-btn" style="background: black;">
                     <option value="test">Test Drop</option>
-                    <option value="tier0">Tier 0</option>
-                    <option value="tier1">Tier 1</option>
-                    <option value="tier15">Tier 1.5</option>
-                    <option value="tier2">Tier 2</option>
                 </select>
-                <button class="spin-btn" id="masterSpinBtn" onclick="processFullDrop()">Start Drop</button>
+                <button class="nav-btn" id="masterSpinBtn" onclick="processFullDrop()" style="flex-grow: 1;">Start Sequence</button>
             </div>
+
             <div class="viewport">
                 <div class="center-line"></div>
                 <div id="reel" class="reel"></div>
             </div>
-            <h3 id="spin-status" style="color:#00aaff; min-height: 1.5em;"></h3>
-            <div id="rewards-tray"></div>
+            <div id="rewards-tray" style="display:flex; justify-content:center; gap:10px; margin-top:20px;"></div>
         </div>
     </div>
 
-    <div class="info-panel">
-        <div class="info-header">● Staff Management</div>
+    <div class="custom-info-tab">
+        <div class="info-category">Project Staff</div>
         
-        <div class="info-item">
-            <img src="https://i.imgur.com/8Q9Z56f.png" class="info-avatar">
-            <div class="info-text">
-                <span class="name">DrewskiiCapone</span>
-                <span class="role">Management</span>
+        <div class="user-card">
+            <img src="https://i.imgur.com/8Q9Z56f.png" alt="pfp">
+            <div>
+                <span class="user-name">DrewskiiCapone</span>
+                <span class="user-role">Management</span>
             </div>
         </div>
 
-        <div class="info-item">
-            <img src="https://i.imgur.com/8Q9Z56f.png" class="info-avatar">
-            <div class="info-text">
-                <span class="name">Wack</span>
-                <span class="role">Management</span>
-            </div>
-        </div>
-
-        <div class="info-item">
-            <img src="https://i.imgur.com/8Q9Z56f.png" class="info-avatar">
-            <div class="info-text">
-                <span class="name">Paid</span>
-                <span class="role">Management</span>
+        <div class="user-card">
+            <img src="https://i.imgur.com/8Q9Z56f.png" alt="pfp">
+            <div>
+                <span class="user-name">Wack</span>
+                <span class="user-role">Lead Developer</span>
             </div>
         </div>
     </div>
 
-    <div class="music-player">
-        <img src="https://i.imgur.com/M5b6VfT.jpeg" id="track-art" class="music-art">
-        <div class="music-info">
-            <div class="music-status">NOW PLAYING</div>
-            <div id="track-title" class="music-title">First Day Out (Official)</div>
-            <div id="track-artist" class="music-artist">9BMeechie</div>
+    <div class="music-widget">
+        <img src="https://i.imgur.com/M5b6VfT.jpeg" id="m-art" class="album-art">
+        <div class="track-info">
+            <div class="now-playing-label">SYSTEM AUDIO</div>
+            <div id="m-title" class="track-name">First Day Out</div>
+            <div id="m-artist" class="track-artist">9BMeechie</div>
             
-            <div class="music-controls">
-                <i class="fas fa-step-backward music-btn" onclick="changeTrack(-1)"></i>
-                <i class="fas fa-play music-btn" id="play-icon" onclick="toggleMusic()"></i>
-                <i class="fas fa-step-forward music-btn" onclick="changeTrack(1)"></i>
-                <i class="fas fa-volume-up music-btn" id="mute-icon" onclick="toggleMute()" style="margin-left: 10px;"></i>
+            <div class="player-btns">
+                <i class="fas fa-backward-step p-btn" onclick="nextTrack()"></i>
+                <i class="fas fa-play p-btn" id="play-pause" onclick="togglePlay()"></i>
+                <i class="fas fa-forward-step p-btn" onclick="nextTrack()"></i>
+                <i class="fas fa-volume-high p-btn" id="mute-btn" onclick="toggleMute()" style="margin-left:auto;"></i>
             </div>
         </div>
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        // --- MUSIC & VIDEO CONFIG ---
+        // --- MUSIC VIDEO CONFIG ---
         const playlist = [
             { id: '1-vS-L7o_mQ', title: 'First Day Out', artist: '9BMeechie', art: 'https://i.ytimg.com/vi/1-vS-L7o_mQ/hqdefault.jpg' },
             { id: 'dQw4w9WgXcQ', title: 'Never Gonna Give You Up', artist: 'Rick Astley', art: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg' }
         ];
-        let currentTrackIdx = 0;
-        let player;
-        let isMuted = false;
+        let trackIdx = 0;
+        let ytPlayer;
 
         function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                videoId: playlist[currentTrackIdx].id,
-                playerVars: { 
-                    'autoplay': 1, 'controls': 0, 'showinfo': 0, 
-                    'rel': 0, 'loop': 1, 'playlist': playlist[currentTrackIdx].id,
-                    'mute': 1 // Start muted due to browser policies
-                },
-                events: { 'onReady': onPlayerReady }
+            ytPlayer = new YT.Player('yt-player', {
+                videoId: playlist[trackIdx].id,
+                playerVars: { 'autoplay': 1, 'controls': 0, 'mute': 1, 'loop': 1, 'playlist': playlist[trackIdx].id },
+                events: { 'onReady': (e) => e.target.playVideo() }
             });
         }
 
-        function onPlayerReady(event) {
-            updateUI();
-        }
-
-        function toggleMusic() {
-            const state = player.getPlayerState();
-            const icon = document.getElementById('play-icon');
-            if (state === 1) {
-                player.pauseVideo();
-                icon.className = "fas fa-play music-btn";
-            } else {
-                player.playVideo();
-                icon.className = "fas fa-pause music-btn";
-            }
+        function togglePlay() {
+            const state = ytPlayer.getPlayerState();
+            const btn = document.getElementById('play-pause');
+            if (state === 1) { ytPlayer.pauseVideo(); btn.className = "fas fa-play p-btn"; }
+            else { ytPlayer.playVideo(); btn.className = "fas fa-pause p-btn"; }
         }
 
         function toggleMute() {
-            const icon = document.getElementById('mute-icon');
-            if (player.isMuted()) {
-                player.unMute();
-                icon.className = "fas fa-volume-up music-btn";
-            } else {
-                player.mute();
-                icon.className = "fas fa-volume-mute music-btn";
-            }
+            const btn = document.getElementById('mute-btn');
+            if (ytPlayer.isMuted()) { ytPlayer.unMute(); btn.className = "fas fa-volume-high p-btn"; }
+            else { ytPlayer.mute(); btn.className = "fas fa-volume-mute p-btn"; }
         }
 
-        function changeTrack(dir) {
-            currentTrackIdx = (currentTrackIdx + dir + playlist.length) % playlist.length;
-            player.loadVideoById(playlist[currentTrackIdx].id);
-            updateUI();
+        function nextTrack() {
+            trackIdx = (trackIdx + 1) % playlist.length;
+            ytPlayer.loadVideoById(playlist[trackIdx].id);
+            document.getElementById('m-title').innerText = playlist[trackIdx].title;
+            document.getElementById('m-artist').innerText = playlist[trackIdx].artist;
+            document.getElementById('m-art').src = playlist[trackIdx].art;
         }
 
-        function updateUI() {
-            document.getElementById('track-title').innerText = playlist[currentTrackIdx].title;
-            document.getElementById('track-artist').innerText = playlist[currentTrackIdx].artist;
-            document.getElementById('track-art').src = playlist[currentTrackIdx].art;
-        }
-
-        // --- SNOW EFFECT ---
-        const canvas = document.getElementById('snow-canvas');
+        // --- SNOW ANIMATION ---
+        const canvas = document.getElementById('snow');
         const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        let flakes = [];
+        function initSnow() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            flakes = Array.from({length: 100}, () => ({
+                x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                r: Math.random() * 3 + 1, d: Math.random() * 1
+            }));
         }
-        window.onresize = resize;
-        resize();
-
-        class Particle {
-            constructor() {
-                this.reset();
-            }
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3 + 1;
-                this.speed = Math.random() * 1 + 0.5;
-                this.velX = Math.random() * 0.5 - 0.25;
-            }
-            update() {
-                this.y += this.speed;
-                this.x += this.velX;
-                if (this.y > canvas.height) this.y = -10;
-            }
-            draw() {
-                ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
+        function drawSnow() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            ctx.fillStyle = "white"; ctx.beginPath();
+            flakes.forEach(f => {
+                ctx.moveTo(f.x, f.y); ctx.arc(f.x, f.y, f.r, 0, Math.PI*2, true);
+                f.y += Math.cos(f.d) + 1 + f.r/2; f.x += Math.sin(f.d) * 2;
+                if(f.y > canvas.height) { f.y = -10; f.x = Math.random()*canvas.width; }
+            });
+            ctx.fill(); requestAnimationFrame(drawSnow);
         }
+        window.onresize = initSnow; initSnow(); drawSnow();
 
-        for (let i = 0; i < 50; i++) particles.push(new Particle());
-
-        function animateSnow() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animateSnow);
+        // --- CORE WEAPON LOGIC ---
+        const DB = { test: [{name:"Sentinel", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721564048523264/WEAPON_RMSENTINELNINE.png?width=563&height=563"}] };
+        function processFullDrop() {
+            const reel = document.getElementById('reel');
+            reel.innerHTML = "";
+            for(let i=0; i<60; i++) {
+                const item = DB.test[0];
+                const div = document.createElement('div');
+                div.className = "reel-item";
+                div.innerHTML = `<img src="${item.img}"><br><span style="font-size:0.7rem;">${item.name}</span>`;
+                reel.appendChild(div);
+            }
+            reel.style.transition = "none"; reel.style.transform = "translateX(0)";
+            setTimeout(() => {
+                reel.style.transition = "transform 4s cubic-bezier(0.1, 0, 0.1, 1)";
+                reel.style.transform = "translateX(-5000px)";
+            }, 50);
         }
-        animateSnow();
-
-        // --- YOUR ORIGINAL JS DB & LOGIC ---
-        // (Keep the DB, processFullDrop, and performSingleSpin functions here as they were)
     </script>
 </body>
 </html>
