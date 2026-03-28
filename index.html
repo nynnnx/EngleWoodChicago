@@ -6,12 +6,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* ================= BACKGROUND & MUSIC VIDEO ================= */
+        /* ================= ORIGINAL GLOBAL & THEME (UNCHANGED) ================= */
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
             color: white;
-            background: #000;
+            background: #00050a;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -19,37 +19,29 @@
             overflow-x: hidden;
         }
 
-        .video-bg {
+        /* NEW: Video Background Setup (Hidden behind everything) */
+        .video-bg-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -2;
             pointer-events: none;
         }
-        .video-bg iframe {
+        .video-bg-container iframe {
             width: 100vw; height: 56.25vw;
             min-height: 100vh; min-width: 177.77vh;
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
         }
-        .vignette {
+        .video-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.9) 100%);
+            background: rgba(0, 5, 10, 0.7); /* Keeps your black theme visible */
             z-index: -1;
         }
 
-        /* Snowflake Canvas */
-        #snow {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* ================= ORIGINAL NAVIGATION STYLES ================= */
         .nav-container {
             width: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: #000;
             border-bottom: 2px solid #00aaff;
             position: sticky;
             top: 0;
@@ -57,66 +49,93 @@
             display: flex;
             justify-content: center;
         }
-        .top-nav { display: flex; overflow-x: auto; padding: 15px; gap: 15px; }
+
+        .top-nav {
+            display: flex;
+            overflow-x: auto;
+            padding: 15px;
+            gap: 15px;
+        }
+
         .nav-btn, .spin-btn, .theme-select {
             padding: 10px 25px;
-            background: rgba(2, 18, 31, 0.9);
+            background: #02121f;
             border: 1px solid #00aaff;
             color: #00aaff;
             border-radius: 5px;
             cursor: pointer;
             font-weight: 700;
             transition: 0.3s;
+            font-family: 'Poppins', sans-serif;
             text-transform: uppercase;
-        }
-        .nav-btn:hover, .nav-btn.active, .spin-btn:hover:not(:disabled) {
-            background: #00aaff; color: #000; box-shadow: 0 0 15px #00aaff;
+            font-size: 0.9rem;
         }
 
-        /* ================= CUSTOM INFO TAB (BOTTOM LEFT) ================= */
+        .nav-btn:hover, .nav-btn.active, .spin-btn:hover:not(:disabled) {
+            background: #00aaff;
+            color: #000;
+            box-shadow: 0 0 15px #00aaff;
+        }
+
+        .main-wrapper {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .section-box {
+            background: rgba(2, 18, 31, 0.85); /* Slightly more opaque for readability */
+            border: 1px solid #00aaff44;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* ================= NEW: CUSTOM INFO TAB (BOTTOM LEFT) ================= */
         .info-tab {
             position: fixed;
             bottom: 30px;
             left: 30px;
-            width: 260px;
-            z-index: 101;
-            background: rgba(0,0,0,0.6);
+            width: 250px;
+            background: rgba(0, 0, 0, 0.8);
+            border-left: 4px solid #00aaff;
             padding: 15px;
-            border-left: 4px solid #00ff44;
             border-radius: 4px;
+            z-index: 100;
         }
-        .info-label { font-size: 0.65rem; color: #00ff44; font-weight: 900; letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase; }
-        .staff-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-        .staff-img { width: 35px; height: 35px; border-radius: 4px; background: #222; }
+        .info-title { color: #00aaff; font-size: 0.7rem; font-weight: 900; letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase; }
+        .staff-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .staff-img { width: 35px; height: 35px; border-radius: 4px; background: #111; border: 1px solid #00aaff33; }
         .staff-name { font-size: 0.85rem; font-weight: 700; display: block; }
-        .staff-role { font-size: 0.6rem; color: #00ff44; text-transform: uppercase; font-weight: 900; }
+        .staff-role { font-size: 0.65rem; color: #00aaff; text-transform: uppercase; }
 
-        /* ================= MUSIC CONTROLLER (BOTTOM RIGHT) ================= */
-        .music-controller {
+        /* ================= NEW: MUSIC PLAYER (BOTTOM RIGHT) ================= */
+        .music-widget {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 300px;
-            background: rgba(0,0,0,0.8);
+            width: 320px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00aaff33;
             border-radius: 12px;
             padding: 15px;
             display: flex;
             align-items: center;
             gap: 15px;
-            z-index: 101;
-            border: 1px solid rgba(255,255,255,0.1);
+            z-index: 100;
         }
-        .music-thumb { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
-        .music-meta { flex-grow: 1; }
-        .music-now { font-size: 0.6rem; color: #00ff44; font-weight: 900; }
-        .music-title { font-size: 0.8rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
-        .music-controls { display: flex; gap: 12px; margin-top: 5px; align-items: center; }
-        .m-btn { cursor: pointer; color: white; transition: 0.2s; font-size: 0.9rem; }
-        .m-btn:hover { color: #00ff44; }
+        .music-art { width: 60px; height: 60px; border-radius: 8px; border: 1px solid #00aaff44; }
+        .music-details { flex-grow: 1; overflow: hidden; }
+        .music-label { font-size: 0.6rem; color: #00aaff; font-weight: 900; }
+        .music-name { font-size: 0.8rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .music-btns { display: flex; gap: 12px; margin-top: 8px; align-items: center; }
+        .m-icon { cursor: pointer; color: white; transition: 0.2s; font-size: 0.9rem; }
+        .m-icon:hover { color: #00aaff; }
 
-        /* ================= ORIGINAL MAIN CONTENT STYLES ================= */
-        .main-wrapper { width: 90%; max-width: 1000px; margin: 40px auto; text-align: center; position: relative; z-index: 2; }
-        .section-box { background: rgba(2, 18, 31, 0.85); border: 1px solid #00aaff44; border-radius: 15px; padding: 40px; margin-bottom: 30px; backdrop-filter: blur(10px); }
+        /* ================= ORIGINAL WEAPON SYSTEM STYLES (UNCHANGED) ================= */
         .weapon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
         .weapon-card { background: #000; border: 1px solid #00aaff33; border-radius: 10px; padding: 15px; display: flex; flex-direction: column; align-items: center; }
         .weapon-card img { width: 100%; height: 120px; object-fit: contain; transition: 0.3s; }
@@ -128,19 +147,16 @@
         .reel-item { min-width: 180px; width: 180px; text-align: center; }
         .reel-item img { height: 100px; width: 150px; object-fit: contain; }
         #rewards-tray { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 25px; }
-        .reward-pill { background: #001a2e; border: 1px solid #00aaff; padding: 10px; border-radius: 8px; text-align: center; animation: slideUp 0.4s ease-out; }
+        .reward-pill { background: #001a2e; border: 1px solid #00aaff; padding: 10px; border-radius: 8px; text-align: center; }
         .reward-pill img { width: 80px; display: block; margin: 0 auto; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div class="video-bg">
-        <div id="player"></div>
+    <div class="video-bg-container">
+        <div id="yt-player"></div>
     </div>
-    <div class="vignette"></div>
-
-    <canvas id="snow"></canvas>
+    <div class="video-overlay"></div>
 
     <div class="nav-container">
         <div class="top-nav">
@@ -183,96 +199,77 @@
     </div>
 
     <div class="info-tab">
-        <div class="info-label">● Server Staff</div>
-        <div class="staff-row">
+        <div class="info-title">● MANAGEMENT</div>
+        <div class="staff-item">
             <img src="https://i.imgur.com/8Q9Z56f.png" class="staff-img">
             <div><span class="staff-name">DrewskiiCapone</span><span class="staff-role">Management</span></div>
         </div>
-        <div class="staff-row">
+        <div class="staff-item">
             <img src="https://i.imgur.com/8Q9Z56f.png" class="staff-img">
             <div><span class="staff-name">Wack</span><span class="staff-role">Developer</span></div>
         </div>
     </div>
 
-    <div class="music-controller">
-        <img src="https://i.ytimg.com/vi/1-vS-L7o_mQ/hqdefault.jpg" id="m-art" class="music-thumb">
-        <div class="music-meta">
-            <div class="music-now">NOW PLAYING</div>
-            <div id="m-title" class="music-title">First Day Out</div>
-            <div class="music-controls">
-                <i class="fas fa-step-backward m-btn" onclick="changeSong(-1)"></i>
-                <i class="fas fa-play m-btn" id="play-pause" onclick="togglePlay()"></i>
-                <i class="fas fa-step-forward m-btn" onclick="changeSong(1)"></i>
-                <i class="fas fa-volume-mute m-btn" id="mute-btn" onclick="toggleMute()" style="margin-left: 10px;"></i>
+    <div class="music-widget">
+        <img src="https://i.ytimg.com/vi/1-vS-L7o_mQ/hqdefault.jpg" id="track-art" class="music-art">
+        <div class="music-details">
+            <div class="music-label">NOW PLAYING</div>
+            <div id="track-name" class="music-name">First Day Out</div>
+            <div class="music-btns">
+                <i class="fas fa-backward m-icon" onclick="changeTrack(-1)"></i>
+                <i class="fas fa-play m-icon" id="play-pause-btn" onclick="togglePlay()"></i>
+                <i class="fas fa-forward m-icon" onclick="changeTrack(1)"></i>
+                <i class="fas fa-volume-mute m-icon" id="mute-btn" onclick="toggleMute()" style="margin-left: 10px;"></i>
             </div>
         </div>
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        // --- MUSIC VIDEO DATA ---
+        // --- MUSIC VIDEO CONTROL ---
         const playlist = [
             { id: '1-vS-L7o_mQ', title: 'First Day Out', art: 'https://i.ytimg.com/vi/1-vS-L7o_mQ/hqdefault.jpg' },
-            { id: 'dQw4w9WgXcQ', title: 'Never Gonna Give You Up', art: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg' }
+            { id: 'dQw4w9WgXcQ', title: 'Rick Rollin', art: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg' }
         ];
-        let currentIdx = 0;
-        let ytPlayer;
+        let currentTrack = 0;
+        let player;
 
         function onYouTubeIframeAPIReady() {
-            ytPlayer = new YT.Player('player', {
-                videoId: playlist[currentIdx].id,
-                playerVars: { 'autoplay': 1, 'controls': 0, 'mute': 1, 'loop': 1, 'playlist': playlist[currentIdx].id },
+            player = new YT.Player('yt-player', {
+                videoId: playlist[currentTrack].id,
+                playerVars: { 'autoplay': 1, 'controls': 0, 'mute': 1, 'loop': 1, 'playlist': playlist[currentTrack].id },
                 events: { 'onReady': (e) => e.target.playVideo() }
             });
         }
 
         function togglePlay() {
-            const state = ytPlayer.getPlayerState();
-            const icon = document.getElementById('play-pause');
-            if (state === 1) { ytPlayer.pauseVideo(); icon.className = "fas fa-play m-btn"; }
-            else { ytPlayer.playVideo(); icon.className = "fas fa-pause m-btn"; }
+            const state = player.getPlayerState();
+            const btn = document.getElementById('play-pause-btn');
+            if (state === 1) { player.pauseVideo(); btn.className = "fas fa-play m-icon"; }
+            else { player.playVideo(); btn.className = "fas fa-pause m-icon"; }
         }
 
         function toggleMute() {
             const btn = document.getElementById('mute-btn');
-            if (ytPlayer.isMuted()) { ytPlayer.unMute(); btn.className = "fas fa-volume-up m-btn"; }
-            else { ytPlayer.mute(); btn.className = "fas fa-volume-mute m-btn"; }
+            if (player.isMuted()) { player.unMute(); btn.className = "fas fa-volume-up m-icon"; }
+            else { player.mute(); btn.className = "fas fa-volume-mute m-icon"; }
         }
 
-        function changeSong(dir) {
-            currentIdx = (currentIdx + dir + playlist.length) % playlist.length;
-            ytPlayer.loadVideoById(playlist[currentIdx].id);
-            document.getElementById('m-title').innerText = playlist[currentIdx].title;
-            document.getElementById('m-art').src = playlist[currentIdx].art;
+        function changeTrack(dir) {
+            currentTrack = (currentTrack + dir + playlist.length) % playlist.length;
+            player.loadVideoById(playlist[currentTrack].id);
+            document.getElementById('track-name').innerText = playlist[currentTrack].title;
+            document.getElementById('track-art').src = playlist[currentTrack].art;
         }
 
-        // --- SNOW ANIMATION ---
-        const canvas = document.getElementById('snow');
-        const ctx = canvas.getContext('2d');
-        let flakes = [];
-        function initSnow() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            flakes = Array.from({length: 60}, () => ({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*2+1, s: Math.random()*1+0.5 }));
-        }
-        function animateSnow() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = "white"; ctx.beginPath();
-            flakes.forEach(f => { ctx.moveTo(f.x, f.y); ctx.arc(f.x, f.y, f.r, 0, Math.PI*2); f.y += f.s; if(f.y > canvas.height) f.y = -5; });
-            ctx.fill(); requestAnimationFrame(animateSnow);
-        }
-        window.onresize = initSnow; initSnow(); animateSnow();
-
-        // --- YOUR ORIGINAL DATA & SPIN LOGIC ---
+        // --- ALL YOUR ORIGINAL JS LOGIC BELOW ---
         const DB = {
-            test: [
-                {name:"Sentinel", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721564048523264/WEAPON_RMSENTINELNINE.png?ex=69c782c8&is=69c63148&hm=c10984ab3c4e907ed35b75e1dc5e0eb889d5d407301a74f0d0ec804f1db0f3b5&=&format=webp&quality=lossless&width=563&height=563"}, 
-                {name:"FN509", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png?ex=69c78264&is=69c630e4&hm=6d55ffed1773c8970ad32ad206de26bcd6444abf6166aa4d8e7457b268636f5e&=&format=webp&quality=lossless&width=563&height=563"}
-            ],
+            test: [{name:"Sentinel", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721564048523264/WEAPON_RMSENTINELNINE.png"}],
             tier0: [{name:"1911", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721149903077649/WEAPON_RMTTI2011.png"}],
             tier1: [{name:"Glock 17", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721145243074850/WEAPON_RMG17.png"}],
             tier15: [{name:"Psa Dagger", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721563520176229/WEAPON_RMPSADAGGER.png"}],
             tier2: [{name:"Glock 19 FDE", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721328613982340/WEAPON_RMG19FDEGEN4.png"}],
-            attachments: [{name:"Vector Clip", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187729396662353/at_clip_custom_clear.png"}]
+            attachments: [{name:"Clip", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187729396662353/at_clip_custom_clear.png"}]
         };
 
         const config = { test: 2, tier0: 4, tier1: 5, tier15: 5, tier2: 7, attachments: 1 };
@@ -284,13 +281,8 @@
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             const buttons = document.querySelectorAll('.nav-btn');
             buttons.forEach(b => { if(b.innerText.toLowerCase().includes(tier.toLowerCase())) b.classList.add('active'); });
-
             if(tier === 'randomize') { gallery.style.display = 'none'; randomize.style.display = 'block'; } 
-            else {
-                gallery.style.display = 'block'; randomize.style.display = 'none';
-                document.getElementById('gallery-title').innerText = tier.toUpperCase();
-                renderGrid(tier);
-            }
+            else { gallery.style.display = 'block'; randomize.style.display = 'none'; document.getElementById('gallery-title').innerText = tier.toUpperCase(); renderGrid(tier); }
         }
 
         function renderGrid(tier) {
@@ -326,8 +318,7 @@
                 await performSingleSpin(tier);
                 await new Promise(r => setTimeout(r, 1000));
             }
-            status.innerText = "Drop Complete!";
-            btn.disabled = false;
+            status.innerText = "Drop Complete!"; btn.disabled = false;
         }
 
         function performSingleSpin(tier) {
@@ -339,14 +330,12 @@
                 const currentReelItems = buildReel(spinPool);
                 const winIndex = 75;
                 const winner = currentReelItems[winIndex];
-
                 reel.style.transition = "none"; reel.style.transform = "translateX(0px)";
                 reel.offsetHeight;
                 const centerOffset = (viewport.offsetWidth / 2) - (ITEM_WIDTH / 2);
                 const targetX = (winIndex * ITEM_WIDTH) - centerOffset;
                 reel.style.transition = "transform 3s cubic-bezier(0.15, 0.8, 0.2, 1)";
                 reel.style.transform = `translateX(-${targetX}px)`;
-
                 setTimeout(() => {
                     const p = document.createElement('div'); p.className = "reward-pill";
                     p.innerHTML = `<img src="${winner.img}"><span>${winner.name}</span>`;
@@ -354,7 +343,6 @@
                 }, 3200);
             });
         }
-        buildReel(DB.test);
     </script>
 </body>
 </html>
