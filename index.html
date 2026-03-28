@@ -361,6 +361,18 @@ function performSingleSpin(tier) {
         let spinPool = DB[tier];
         if (tier === 'tier0') {
             spinPool = [...DB.tier0, ...DB.test];
+
+            let spinPool = DB[tier];
+            if (tier === 'tier1') {
+                spinPool = [...DB.tier1, ...DB.tier0];
+
+                let spinPool = DB[tier];
+                if (tier === 'tier15') {
+                    spinPool = [...DB.tier15, ...DB.tier1];
+
+                    let spinPool = DB[tier];
+                    if (tier === 'tier2') {
+                        spinPool = [...DB.tier2, ...DB.tier15];
         }
 
         const currentReelItems = buildReel(spinPool);
