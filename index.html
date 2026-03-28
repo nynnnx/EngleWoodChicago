@@ -218,10 +218,10 @@
     </div>
 
     <div class="music-card">
-        <img src="https://i.ytimg.com/vi/1-vS-L7o_mQ/hqdefault.jpg" id="m-art" class="album-art">
+        <img src="https://www.youtube.com/watch?v=W5_RPT0WPYw" id="m-art" class="album-art">
         <div class="track-info">
             <div class="status-label">NOW PLAYING</div>
-            <span id="m-title" class="song-name">First Day Out</span>
+            <span id="m-title" class="song-name">YoungBoy</span>
             <div class="controls">
                 <i class="fas fa-backward ctrl-btn" onclick="changeSong(-1)"></i>
                 <i class="fas fa-play ctrl-btn" id="play-btn" onclick="togglePlay()"></i>
@@ -235,7 +235,7 @@
     <script>
     // --- MUSIC DATA & YOUTUBE ---
     const playlist = [
-        { id: '1-vS-L7o_mQ', title: 'First Day Out', art: 'https://i.ytimg.com/vi/1-vS-L7o_mQ/hqdefault.jpg' },
+        { id: '1-vS-L7o_mQ', title: 'YoungBoy', art: 'https://www.youtube.com/watch?v=W5_RPT0WPYw' },
         { id: 'dQw4w9WgXcQ', title: 'Next Track', art: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg' }
     ];
     let currentIdx = 0;
@@ -244,7 +244,7 @@
     function onYouTubeIframeAPIReady() {
         ytPlayer = new YT.Player('player', {
             videoId: playlist[currentIdx].id,
-            playerVars: { 'autoplay': 1, 'controls': 0, 'mute': 1, 'loop': 1, 'playlist': playlist[currentIdx].id },
+            playerVars: { 'autoplay': 60, 'controls': 0, 'mute': 1, 'loop': 60, 'playlist': playlist[currentIdx].id },
             events: { 'onReady': (e) => e.target.playVideo() }
         });
     }
