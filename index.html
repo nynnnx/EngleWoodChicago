@@ -237,16 +237,10 @@ const DB = {
         {name:"Glock19X", img:""},
     ],
     tier0: [
-        /* Standard Tier 0 */
         {name:"1911", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
         {name:"Glock 17", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
         {name:"Glock 19Gen 5", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
-        {name:"PX4", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
-        /* Added Test Drop Weapons */
-        {name:"Sentinel", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721564048523264/WEAPON_RMSENTINELNINE.png?ex=69c782c8&is=69c63148&hm=c10984ab3c4e907ed35b75e1dc5e0eb889d5d407301a74f0d0ec804f1db0f3b5&=&format=webp&quality=lossless&width=563&height=563"}, 
-        {name:"FN509", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png?ex=69c78264&is=69c630e4&hm=6d55ffed1773c8970ad32ad206de26bcd6444abf6166aa4d8e7457b268636f5e&=&format=webp&quality=lossless&width=563&height=563"}, 
-        {name:"365X", img:"https://cdn.discordapp.com/attachments/1428113909616869387/1487234175541969068/27dfae38-4cee-494d-9a51-284bd928dedf.png?ex=69c86642&is=69c714c2&hm=817a5a01aa3100c0f02d98092635ef3f16defab5a8b864355da6ba8bcb85e03e&"}, 
-        {name:"Glock 22", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}
+        {name:"PX4", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}
     ],
     tier1: [
         {name:"RMGlock 17", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
@@ -363,7 +357,13 @@ function performSingleSpin(tier) {
         const viewport = document.querySelector('.viewport');
         const tray = document.getElementById('rewards-tray');
         
-        const currentReelItems = buildReel(DB[tier]);
+        // CUSTOM LOGIC: If Tier 0 is selected, combine Tier 0 and Test Drop for the spinner only
+        let spinPool = DB[tier];
+        if (tier === 'tier0') {
+            spinPool = [...DB.tier0, ...DB.test];
+        }
+
+        const currentReelItems = buildReel(spinPool);
         const winIndex = 70 + Math.floor(Math.random() * 10);
         const winner = currentReelItems[winIndex];
 
