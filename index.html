@@ -228,7 +228,7 @@
     <script>
         // --- MUSIC VIDEO CONTROL ---
         const playlist = [
-            { id: '1-vS-L7o_mQ', title: 'YFG Fatso - Thinkin', art: 'https://www.youtube.com/watch?v=kxMthTGjRd4' },
+            { id: '1-vS-L7o_mQ', title: 'YFG Fatso - Thinkin', art: 'https://www.youtube.com/watch?v=kxMthTGjRd4.jpg' },
             { id: 'dQw4w9WgXcQ', title: 'Rick Rollin', art: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg' }
         ];
         let currentTrack = 0;
@@ -237,7 +237,7 @@
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('yt-player', {
                 videoId: playlist[currentTrack].id,
-                playerVars: { 'autoplay': 1, 'controls': 0, 'mute': 1, 'loop': 60, 'playlist': playlist[currentTrack].id },
+                playerVars: { 'autoplay': 60, 'controls': 0, 'mute': 1, 'loop': 60, 'playlist': playlist[currentTrack].id },
                 events: { 'onReady': (e) => e.target.playVideo() }
             });
         }
