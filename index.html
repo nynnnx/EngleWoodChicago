@@ -9,6 +9,7 @@
         /* ================= EDITABLE SETTINGS ================= */
         :root {
             --accent-blue: #00aaff;
+            --accent-green: #00ff44;
             --star-image: url('https://media.discordapp.net/attachments/1438728810265579610/1487566258802135110/image.png?ex=69c99b89&is=69c84a09&hm=af538650e9c2742490672875991a9597c72d3171d88fc675605330044264095e&=&format=webp&quality=lossless&width=550&height=550');
         }
 
@@ -200,10 +201,10 @@
     </div>
 
     <div class="music-card">
-        <img src="https://i.ytimg.com/vi/L53sPldsHhw/maxresdefault.jpg" id="m-art" class="album-art">
+        <img src="https://i.ytimg.com/vi/W5_RPT0WPYw/maxresdefault.jpg" id="m-art" class="album-art">
         <div class="track-info">
             <div class="status-label">NOW PLAYING</div>
-            <span id="m-title" class="song-name">YFG Fatso - U or Me</span>
+            <span id="m-title" class="song-name">NBA YoungBoy - Speed Racing</span>
             <div class="controls">
                 <i class="fas fa-backward ctrl-btn" onclick="changeSong(-1)"></i>
                 <i class="fas fa-play ctrl-btn" id="play-btn" onclick="togglePlay()"></i>
@@ -216,7 +217,6 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
     const playlist = [
-        { id: 'L53sPldsHhw', title: 'YFG Fatso - U or Me', art: 'https://i.ytimg.com/vi/L53sPldsHhw/maxresdefault.jpg' },
         { id: 'W5_RPT0WPYw', title: 'NBA YoungBoy - Speed Racing', art: 'https://i.ytimg.com/vi/W5_RPT0WPYw/maxresdefault.jpg' },
         { id: 'GqYiG9YJ6Ig', title: 'Topoppgen - Cute Like Aspen', art: 'https://i.ytimg.com/vi/GqYiG9YJ6Ig/sddefault.jpg' }
     ];
@@ -237,12 +237,7 @@
                 'iv_load_policy': 3,
                 'showinfo': 0
             },
-            events: { 
-                'onReady': (e) => {
-                    e.target.playVideo();
-                    document.getElementById('play-btn').className = "fas fa-pause ctrl-btn";
-                }
-            }
+            events: { 'onReady': (e) => e.target.playVideo() }
         });
     }
 
@@ -268,16 +263,11 @@
 
     function changeSong(dir) {
         currentIdx = (currentIdx + dir + playlist.length) % playlist.length;
-        ytPlayer.loadVideoById({
-            videoId: playlist[currentIdx].id,
-            suggestedQuality: 'hd1080'
-        });
+        ytPlayer.loadVideoById(playlist[currentIdx].id);
         document.getElementById('m-title').innerText = playlist[currentIdx].title;
         document.getElementById('m-art').src = playlist[currentIdx].art;
-        document.getElementById('play-btn').className = "fas fa-pause ctrl-btn";
     }
 
-    // Star Rain
     function createStar() {
         const container = document.getElementById('star-container');
         const star = document.createElement('div');
