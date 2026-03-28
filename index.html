@@ -9,7 +9,6 @@
         /* ================= EDITABLE SETTINGS ================= */
         :root {
             --accent-blue: #00aaff;
-            --accent-green: #00ff44;
             --star-image: url('https://media.discordapp.net/attachments/1438728810265579610/1487566258802135110/image.png?ex=69c99b89&is=69c84a09&hm=af538650e9c2742490672875991a9597c72d3171d88fc675605330044264095e&=&format=webp&quality=lossless&width=550&height=550');
         }
 
@@ -25,7 +24,7 @@
             overflow-x: hidden;
         }
 
-        /* Native Video Background (No Ads) */
+        /* Video Background (Local = No Ads) */
         .video-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -94,12 +93,12 @@
             box-shadow: 0 0 15px #00aaff;
         }
 
-        /* Music Player Tray */
+        /* Music Card Layout */
         .music-card {
             position: fixed;
             bottom: 30px;
             left: 30px;
-            width: 320px;
+            width: 300px;
             background: rgba(0, 0, 0, 0.9);
             border-radius: 12px;
             padding: 15px;
@@ -112,20 +111,13 @@
         }
         .track-info { width: 100%; overflow: hidden; }
         .status-label { font-size: 0.6rem; color: var(--accent-blue); font-weight: 900; }
-        .song-name { font-size: 0.85rem; font-weight: 700; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 5px; }
-        
-        .controls { display: flex; gap: 15px; align-items: center; margin-bottom: 10px; }
+        .song-name { font-size: 0.85rem; font-weight: 700; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .controls { display: flex; gap: 15px; align-items: center; margin-top: 5px; }
         .ctrl-btn { cursor: pointer; color: white; transition: 0.2s; font-size: 1rem; }
         .ctrl-btn:hover { color: var(--accent-blue); }
-        
-        /* Volume Slider */
+
         .volume-container { display: flex; align-items: center; gap: 10px; width: 100%; }
-        .volume-slider {
-            flex-grow: 1;
-            height: 4px;
-            accent-color: var(--accent-blue);
-            cursor: pointer;
-        }
+        .volume-slider { flex-grow: 1; height: 4px; accent-color: var(--accent-blue); cursor: pointer; }
 
         /* Content Area */
         .main-wrapper {
@@ -217,13 +209,11 @@
         <div class="track-info">
             <div class="status-label">NOW PLAYING</div>
             <span id="m-title" class="song-name">video1.mp4</span>
-            
             <div class="controls">
                 <i class="fas fa-backward ctrl-btn" onclick="changeSong(-1)"></i>
                 <i class="fas fa-play ctrl-btn" id="play-btn" onclick="togglePlay()"></i>
                 <i class="fas fa-forward ctrl-btn" onclick="changeSong(1)"></i>
             </div>
-
             <div class="volume-container">
                 <i class="fas fa-volume-down" style="font-size: 0.7rem;"></i>
                 <input type="range" class="volume-slider" min="0" max="1" step="0.1" value="0.5" oninput="setVolume(this.value)">
@@ -233,15 +223,12 @@
     </div>
 
     <script>
-    // LIST YOUR MP4 FILES HERE
     const playlist = ["video1.mp4", "video2.mp4", "video3.mp4"];
     let currentIdx = 0;
-
     const video = document.getElementById('bg-video');
     const songName = document.getElementById('m-title');
     const playBtn = document.getElementById('play-btn');
 
-    // Default volume (0.5 = 50%)
     video.volume = 0.5;
 
     function togglePlay() {
