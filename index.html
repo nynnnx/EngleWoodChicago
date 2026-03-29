@@ -4,15 +4,8 @@
     <meta charset="UTF-8">
     <title>EngleWoodChicago Weapon System</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* ================= EDITABLE SETTINGS ================= */
-        :root {
-            --accent-blue: #00aaff;
-            --accent-green: #00ff44;
-            --star-image: url('https://media.discordapp.net/attachments/1438728810265579610/1487566258802135110/image.png?ex=69c99b89&is=69c84a09&hm=af538650e9c2742490672875991a9597c72d3171d88fc675605330044264095e&=&format=webp&quality=lossless&width=550&height=550');
-        }
-
+        /* ================= GLOBAL & THEME ================= */
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
@@ -22,49 +15,8 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            overflow-x: hidden;
         }
 
-        /* Video Background */
-        .video-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        .video-bg iframe {
-            width: 100vw; height: 56.25vw;
-            min-height: 100vh; min-width: 177.77vh;
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(1.2);
-        }
-        .vignette {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.95) 100%);
-            z-index: -1;
-        }
-
-        /* Star Rain */
-        #star-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-        .star {
-            position: absolute;
-            width: 15px; height: 15px;
-            background-image: var(--star-image);
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0.5;
-            animation: fall linear forwards;
-        }
-        @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
-
-        /* Navigation */
         .nav-container {
             width: 100%;
             background: #000;
@@ -75,7 +27,14 @@
             display: flex;
             justify-content: center;
         }
-        .top-nav { display: flex; overflow-x: auto; padding: 15px; gap: 15px; }
+
+        .top-nav {
+            display: flex;
+            overflow-x: auto;
+            padding: 15px;
+            gap: 15px;
+        }
+
         .nav-btn, .spin-btn, .theme-select {
             padding: 10px 25px;
             background: #02121f;
@@ -84,80 +43,148 @@
             border-radius: 5px;
             cursor: pointer;
             font-weight: 700;
+            transition: 0.3s;
+            font-family: 'Poppins', sans-serif;
             text-transform: uppercase;
             font-size: 0.9rem;
-            transition: 0.3s;
         }
+
         .nav-btn:hover, .nav-btn.active, .spin-btn:hover:not(:disabled) {
             background: #00aaff;
             color: #000;
             box-shadow: 0 0 15px #00aaff;
         }
 
-        /* Music Player Tray */
-        .music-card {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            width: 300px;
-            background: rgba(0, 0, 0, 0.9);
-            border-radius: 12px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 101;
-            border: 1px solid rgba(0, 170, 255, 0.3);
-            backdrop-filter: blur(10px);
+        .theme-select {
+            cursor: pointer;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            padding-right: 40px;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2300aaff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px top 50%;
+            background-size: 12px auto;
         }
-        .album-art { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid #00aaff33; }
-        .track-info { flex-grow: 1; overflow: hidden; }
-        .status-label { font-size: 0.6rem; color: var(--accent-blue); font-weight: 900; }
-        .song-name { font-size: 0.85rem; font-weight: 700; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .controls { display: flex; gap: 12px; margin-top: 5px; align-items: center; }
-        .ctrl-btn { cursor: pointer; color: white; transition: 0.2s; font-size: 0.9rem; }
-        .ctrl-btn:hover { color: var(--accent-blue); }
 
-        /* Content Area */
         .main-wrapper {
             width: 90%;
             max-width: 1000px;
             margin: 40px auto;
             text-align: center;
-            position: relative;
-            z-index: 2;
         }
+
         .section-box {
-            background: rgba(2, 18, 31, 0.85);
+            background: rgba(2, 18, 31, 0.8);
             border: 1px solid #00aaff44;
             border-radius: 15px;
             padding: 40px;
             margin-bottom: 30px;
-            backdrop-filter: blur(5px);
         }
-        .weapon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
-        .weapon-card { background: #000; border: 1px solid #00aaff33; border-radius: 10px; padding: 15px; display: flex; flex-direction: column; align-items: center; }
-        .weapon-card img { width: 100%; height: 120px; object-fit: contain; transition: 0.3s; }
-        .weapon-card img:hover { filter: drop-shadow(0 0 15px #00aaff); transform: scale(1.05); }
-        .weapon-name-label { margin-top: 12px; font-weight: 700; color: #00aaff; font-size: 0.9rem; text-transform: uppercase; }
 
-        /* Wheel System */
-        .viewport { height: 200px; overflow: hidden; border: 2px solid #00aaff; position: relative; background: #000; border-radius: 10px; margin: 20px auto; width: 100%; }
-        .center-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: #00aaff; z-index: 10; transform: translateX(-50%); box-shadow: 0 0 15px #00aaff; }
-        .reel { display: flex; align-items: center; position: absolute; left: 0; height: 100%; }
-        .reel-item { min-width: 180px; width: 180px; text-align: center; }
+        /* ================= GALLERY & GRID ================= */
+        .weapon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .weapon-card {
+            background: #000;
+            border: 1px solid #00aaff33;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .weapon-card img { 
+            width: 100%;
+            height: 120px;
+            object-fit: contain;
+            transition: filter 0.3s, transform 0.3s; 
+        }
+        
+        .weapon-card img:hover {
+            filter: drop-shadow(0 0 15px #00aaff);
+            transform: scale(1.05);
+        }
+
+        /* New styling for non-editable name labels */
+        .weapon-name-label {
+            margin-top: 12px;
+            font-weight: 700;
+            color: #00aaff;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ================= WHEEL SYSTEM ================= */
+        .viewport {
+            height: 200px;
+            overflow: hidden;
+            border: 2px solid #00aaff;
+            position: relative;
+            background: #000;
+            border-radius: 10px;
+            margin: 20px auto;
+            width: 100%;
+        }
+
+        .center-line {
+            position: absolute; left: 50%; top: 0; bottom: 0;
+            width: 4px; background: #00aaff; z-index: 10; transform: translateX(-50%);
+            box-shadow: 0 0 15px #00aaff;
+        }
+
+        .reel { 
+            display: flex; 
+            align-items: center; 
+            position: absolute;
+            left: 0;
+            height: 100%;
+        }
+
+        .reel-item { 
+            min-width: 180px; 
+            width: 180px;
+            text-align: center; 
+        }
+        
         .reel-item img { height: 100px; width: 150px; object-fit: contain; }
-        #rewards-tray { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 25px; }
-        .reward-pill { background: #001a2e; border: 1px solid #00aaff; padding: 10px; border-radius: 8px; text-align: center; animation: slideUp 0.4s ease-out; }
+
+        .spin-btn:disabled { 
+            background: #111; 
+            border-color: #333; 
+            color: #555; 
+            cursor: not-allowed; 
+            box-shadow: none;
+        }
+
+        #rewards-tray {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .reward-pill {
+            background: #001a2e;
+            border: 1px solid #00aaff;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            animation: slideUp 0.4s ease-out;
+        }
         .reward-pill img { width: 80px; display: block; margin: 0 auto; }
+
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
-
-    <div class="video-bg"><div id="player"></div></div>
-    <div class="vignette"></div>
-    <div id="star-container"></div>
 
     <div class="nav-container">
         <div class="top-nav">
@@ -195,182 +222,172 @@
                 <div class="center-line"></div>
                 <div id="reel" class="reel"></div>
             </div>
+
             <h3 id="spin-status" style="color:#00aaff; min-height: 1.5em;"></h3>
             <div id="rewards-tray"></div>
         </div>
     </div>
 
-    <div class="music-card">
-        <img src="https://i.ytimg.com/vi/W5_RPT0WPYw/maxresdefault.jpg" id="m-art" class="album-art">
-        <div class="track-info">
-            <div class="status-label">NOW PLAYING</div>
-            <span id="m-title" class="song-name">NBA YoungBoy - Speed Racing</span>
-            <div class="controls">
-                <i class="fas fa-backward ctrl-btn" onclick="changeSong(-1)"></i>
-                <i class="fas fa-play ctrl-btn" id="play-btn" onclick="togglePlay()"></i>
-                <i class="fas fa-forward ctrl-btn" onclick="changeSong(1)"></i>
-                <i class="fas fa-volume-mute ctrl-btn" id="mute-btn" onclick="toggleMute()" style="margin-left:auto;"></i>
-            </div>
-        </div>
-    </div>
+<script>
+const DB = {
+    test: [
+        {name:"Sentinel", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721564048523264/WEAPON_RMSENTINELNINE.png?ex=69c782c8&is=69c63148&hm=c10984ab3c4e907ed35b75e1dc5e0eb889d5d407301a74f0d0ec804f1db0f3b5&=&format=webp&quality=lossless&width=563&height=563"}, 
+        {name:"FN509", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png?ex=69c78264&is=69c630e4&hm=6d55ffed1773c8970ad32ad206de26bcd6444abf6166aa4d8e7457b268636f5e&=&format=webp&quality=lossless&width=563&height=563"}, 
+        {name:"365X", img:"https://cdn.discordapp.com/attachments/1428113909616869387/1487234175541969068/27dfae38-4cee-494d-9a51-284bd928dedf.png?ex=69c86642&is=69c714c2&hm=817a5a01aa3100c0f02d98092635ef3f16defab5a8b864355da6ba8bcb85e03e&"}, 
+        {name:"Glock 22", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+        {name:"Glock19X", img:""},
+    ],
+    tier0: [
+        {name:"1911", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+        {name:"Glock 17", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+        {name:"Glock 19Gen 5", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+        {name:"PX4", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}
+        
+    ],
+    tier1: [
+        {name:"RMGlock 17", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+        {name:"RMGlock 17 Gen 5", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+        {name:"Glock 45", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+        {name:"Glock 19x8", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+        {name:"Glock 19 Gen 5", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+        {name:"Glock 22", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+        {name:"Glock 19X", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}
+    ],
+    tier15: [
+        {name:"3 Inch Arp Tan", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+        {name:"Psa Dagger", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+        {name:"Ruger Sr40", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+        {name:"Glock 19XB", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}
+    ],
+    tier2: [
+        {name:"RMG19 FDE Gen 4", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+        {name:"RMG43x Switch", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+        {name:"Glock Camo", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+        {name:"Sig P365x", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+        {name:"Glock 40", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+        {name:"Black Micro Draco", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+        {name:"Glock 21 Gen 5", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}
+    ],
+    attachments: [
+        {name:"Clear Kriss Vector", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187729396662353/at_clip_custom_clear.png?ex=69c83b01&is=69c6e981&hm=213af0d0a30d7b2acfa5ef541fd9aa0a6b3cecce4b2267e30c3f69f2923e3c59&=&format=webp&quality=lossless&width=550&height=550"}, 
+                {name:"Black Kriss Vector", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187732139610142/at_clip_40rnd.png?ex=69c83b01&is=69c6e981&hm=a81a16089eddf1cde5bae59fe843855005fe91208dd8649dcafd92756e684f27&=&format=webp&quality=lossless&width=550&height=550"}, 
+   {name:"White Kriss Vector", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187731695272056/at_clip_40rnd2.png?ex=69c83b01&is=69c6e981&hm=ea2ce045a5f8a1e1562fb080b8f0b7c5071453d5965cce1385d6d7b4d3d91386&=&format=webp&quality=lossless&width=550&height=550"},
+           {name:"Tan Kriss Vector", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187731057606867/at_clip_40rnd3.png?ex=69c83b01&is=69c6e981&hm=3236d491eca7202d2a85c8c7069e7b5a2f6584a6148f011778495f363c879ebd&=&format=webp&quality=lossless&width=550&height=550"},
+           {name:"Black Extended Clip", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187730117951558/at_clip_extendedclip.png?ex=69c83b01&is=69c6e981&hm=e8301453c298c2d926c1ff6071cc3aa04dd4438686217e9cf319b132f8702735&=&format=webp&quality=lossless&width=550&height=550"},
+           {name:"Tan Extended Clip", img:"https://cdn.discordapp.com/attachments/1428113909616869387/1487187732672544889/at_clip_extendedclip2.png?ex=69c83b02&is=69c6e982&hm=e7c86774b6f10fe54cea60c810083631c8ddcf9f8f737902b689622af47ced59&"}
 
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script>
-    const playlist = [
-        { id: 'W5_RPT0WPYw', title: 'NBA YoungBoy - Speed Racing', art: 'https://i.ytimg.com/vi/W5_RPT0WPYw/maxresdefault.jpg' },
-        { id: 'GqYiG9YJ6Ig', title: 'Topoppgen - Cute Like Aspen', art: 'https://i.ytimg.com/vi/GqYiG9YJ6Ig/sddefault.jpg' }
-    ];
-    let currentIdx = 0;
-    let ytPlayer;
 
-    function onYouTubeIframeAPIReady() {
-        ytPlayer = new YT.Player('player', {
-            videoId: playlist[currentIdx].id,
-            playerVars: { 
-                'autoplay': 1, 
-                'controls': 0, 
-                'mute': 1, 
-                'loop': 1, 
-                'playlist': playlist[currentIdx].id,
-                'modestbranding': 1,
-                'rel': 0,
-                'iv_load_policy': 3,
-                'showinfo': 0
-            },
-            events: { 'onReady': (e) => e.target.playVideo() }
-        });
+
+    ]
+};
+
+const config = { test: 2, tier0: 4, tier1: 5, tier15: 5, tier2: 7, attachments: 1 };
+const ITEM_WIDTH = 180;
+
+function showTab(tier) {
+    const gallery = document.getElementById('gallery-view');
+    const randomize = document.getElementById('randomize-view');
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    
+    const buttons = document.querySelectorAll('.nav-btn');
+    buttons.forEach(b => {
+        if(b.innerText.toLowerCase().includes(tier.toLowerCase())) b.classList.add('active');
+    });
+
+    if(tier === 'randomize') {
+        gallery.style.display = 'none';
+        randomize.style.display = 'block';
+    } else {
+        gallery.style.display = 'block';
+        randomize.style.display = 'none';
+        document.getElementById('gallery-title').innerText = tier.toUpperCase();
+        renderGrid(tier);
     }
+}
 
-    function togglePlay() {
-        if (ytPlayer.getPlayerState() === 1) {
-            ytPlayer.pauseVideo();
-            document.getElementById('play-btn').className = "fas fa-play ctrl-btn";
-        } else {
-            ytPlayer.playVideo();
-            document.getElementById('play-btn').className = "fas fa-pause ctrl-btn";
-        }
+function renderGrid(tier) {
+    const grid = document.getElementById('wpn-grid');
+    grid.innerHTML = "";
+    DB[tier].forEach((item) => {
+        const div = document.createElement('div');
+        div.className = "weapon-card";
+        // Removed <input> and added a non-editable <span>
+        div.innerHTML = `
+            <img src="${item.img}">
+            <span class="weapon-name-label">${item.name}</span>
+        `;
+        grid.appendChild(div);
+    });
+}
+
+function buildReel(targetPool) {
+    const reel = document.getElementById('reel');
+    reel.innerHTML = "";
+    const totalItems = 100;
+    const items = [];
+    
+    for(let i=0; i<totalItems; i++) {
+        const weapon = targetPool[Math.floor(Math.random()*targetPool.length)];
+        const div = document.createElement('div');
+        div.className = "reel-item";
+        div.innerHTML = `<img src="${weapon.img}"><br><span>${weapon.name}</span>`;
+        reel.appendChild(div);
+        items.push(weapon);
     }
+    return items;
+}
 
-    function toggleMute() {
-        if (ytPlayer.isMuted()) {
-            ytPlayer.unMute();
-            document.getElementById('mute-btn').className = "fas fa-volume-up ctrl-btn";
-        } else {
-            ytPlayer.mute();
-            document.getElementById('mute-btn').className = "fas fa-volume-mute ctrl-btn";
-        }
+async function processFullDrop() {
+    const tier = document.getElementById('spinTierSelect').value;
+    const count = config[tier];
+    const btn = document.getElementById('masterSpinBtn');
+    const tray = document.getElementById('rewards-tray');
+    const status = document.getElementById('spin-status');
+    
+    btn.disabled = true;
+    tray.innerHTML = "";
+
+    for(let i=0; i<count; i++) {
+        status.innerText = `Spinning ${i+1} of ${count}...`;
+        await performSingleSpin(tier);
+        await new Promise(r => setTimeout(r, 1000));
     }
+    
+    status.innerText = "Drop Complete!";
+    btn.disabled = false;
+}
 
-    function changeSong(dir) {
-        currentIdx = (currentIdx + dir + playlist.length) % playlist.length;
-        ytPlayer.loadVideoById(playlist[currentIdx].id);
-        document.getElementById('m-title').innerText = playlist[currentIdx].title;
-        document.getElementById('m-art').src = playlist[currentIdx].art;
-    }
-
-    function createStar() {
-        const container = document.getElementById('star-container');
-        const star = document.createElement('div');
-        star.className = 'star';
-        const duration = Math.random() * 3 + 2;
-        star.style.left = Math.random() * 100 + 'vw';
-        star.style.top = '-20px';
-        star.style.animationDuration = duration + 's';
-        container.appendChild(star);
-        setTimeout(() => star.remove(), duration * 1000);
-    }
-    setInterval(createStar, 150);
-
-    const DB = {
-        test: [{name:"Sentinel", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721564048523264/WEAPON_RMSENTINELNINE.png"}],
-        tier0: [{name:"1911", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721149903077649/WEAPON_RMTTI2011.png"}],
-        tier1: [{name:"Glock 17", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721145243074850/WEAPON_RMG17.png"}],
-        tier15: [{name:"Psa Dagger", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721563520176229/WEAPON_RMPSADAGGER.png"}],
-        tier2: [{name:"Glock 19 FDE", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721328613982340/WEAPON_RMG19FDEGEN4.png"}],
-        attachments: [{name:"Clip", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187729396662353/at_clip_custom_clear.png"}]
-    };
-
-    const config = { test: 2, tier0: 4, tier1: 5, tier15: 5, tier2: 7, attachments: 1 };
-    const ITEM_WIDTH = 180;
-
-    function showTab(tier) {
-        const gallery = document.getElementById('gallery-view');
-        const randomize = document.getElementById('randomize-view');
-        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-        const buttons = document.querySelectorAll('.nav-btn');
-        buttons.forEach(b => { if(b.innerText.toLowerCase().includes(tier.toLowerCase())) b.classList.add('active'); });
-        if(tier === 'randomize') { gallery.style.display = 'none'; randomize.style.display = 'block'; } 
-        else { gallery.style.display = 'block'; randomize.style.display = 'none'; document.getElementById('gallery-title').innerText = tier.toUpperCase(); renderGrid(tier); }
-    }
-
-    function renderGrid(tier) {
-        const grid = document.getElementById('wpn-grid');
-        grid.innerHTML = "";
-        DB[tier].forEach((item) => {
-            const div = document.createElement('div');
-            div.className = "weapon-card";
-            div.innerHTML = `<img src="${item.img}"><span class="weapon-name-label">${item.name}</span>`;
-            grid.appendChild(div);
-        });
-    }
-
-    function buildReel(targetPool) {
+function performSingleSpin(tier) {
+    return new Promise((resolve) => {
         const reel = document.getElementById('reel');
-        reel.innerHTML = "";
-        const totalItems = 100;
-        const items = [];
-        for(let i=0; i<totalItems; i++) {
-            const weapon = targetPool[Math.floor(Math.random()*targetPool.length)];
-            const div = document.createElement('div');
-            div.className = "reel-item";
-            div.innerHTML = `<img src="${weapon.img}"><br><span>${weapon.name}</span>`;
-            reel.appendChild(div);
-            items.push(weapon);
-        }
-        return items;
-    }
-
-    async function processFullDrop() {
-        const tier = document.getElementById('spinTierSelect').value;
-        const count = config[tier];
-        const btn = document.getElementById('masterSpinBtn');
+        const viewport = document.querySelector('.viewport');
         const tray = document.getElementById('rewards-tray');
-        const status = document.getElementById('spin-status');
-        btn.disabled = true; tray.innerHTML = "";
-        for(let i=0; i<count; i++) {
-            status.innerText = `Spinning ${i+1} of ${count}...`;
-            await performSingleSpin(tier);
-            await new Promise(r => setTimeout(r, 1000));
-        }
-        status.innerText = "Drop Complete!";
-        btn.disabled = false;
-    }
+        
+        const currentReelItems = buildReel(DB[tier]);
+        const winIndex = 70 + Math.floor(Math.random() * 10);
+        const winner = currentReelItems[winIndex];
 
-    function performSingleSpin(tier) {
-        return new Promise((resolve) => {
-            const reel = document.getElementById('reel');
-            const viewport = document.querySelector('.viewport');
-            const tray = document.getElementById('rewards-tray');
-            let spinPool = [...DB[tier]];
-            const currentReelItems = buildReel(spinPool);
-            const winIndex = 75;
-            const winner = currentReelItems[winIndex];
-            reel.style.transition = "none";
-            reel.style.transform = "translateX(0px)";
-            reel.offsetHeight;
-            const centerOffset = (viewport.offsetWidth / 2) - (ITEM_WIDTH / 2);
-            const targetX = (winIndex * ITEM_WIDTH) - centerOffset;
-            reel.style.transition = "transform 3s cubic-bezier(0.15, 0.8, 0.2, 1)";
-            reel.style.transform = `translateX(-${targetX}px)`;
-            setTimeout(() => {
-                const p = document.createElement('div');
-                p.className = "reward-pill";
-                p.innerHTML = `<img src="${winner.img}"><span>${winner.name}</span>`;
-                tray.appendChild(p);
-                resolve();
-            }, 3200);
-        });
-    }
-    </script>
+        reel.style.transition = "none";
+        reel.style.transform = "translateX(0px)";
+        reel.offsetHeight;
+
+        const centerOffset = (viewport.offsetWidth / 2) - (ITEM_WIDTH / 2);
+        const targetX = (winIndex * ITEM_WIDTH) - centerOffset;
+
+        reel.style.transition = "transform 3s cubic-bezier(0.15, 0.8, 0.2, 1)";
+        reel.style.transform = `translateX(-${targetX}px)`;
+
+        setTimeout(() => {
+            const p = document.createElement('div');
+            p.className = "reward-pill";
+            p.innerHTML = `<img src="${winner.img}"><span>${winner.name}</span>`;
+            tray.appendChild(p);
+            resolve();
+        }, 3200);
+    });
+}
+
+buildReel(DB.test);
+</script>
 </body>
 </html>
