@@ -11,7 +11,6 @@
             --accent-blue: #00aaff;
             --accent-green: #00ff44;
             --star-image: url('https://media.discordapp.net/attachments/1438728810265579610/1487566258802135110/image.png?ex=69c99b89&is=69c84a09&hm=af538650e9c2742490672875991a9597c72d3171d88fc675605330044264095e&=&format=webp&quality=lossless&width=550&height=550');
-            --logo-url: url('https://media.discordapp.net/attachments/1438728810265579610/1487566258802135110/image.png?ex=69c99b89&is=69c84a09&hm=af538650e9c2742490672875991a9597c72d3171d88fc675605330044264095e&=&format=webp&quality=lossless&width=550&height=550');
         }
 
         body {
@@ -24,31 +23,6 @@
             align-items: center;
             min-height: 100vh;
             overflow-x: hidden;
-        }
-
-        /* Top Left Logo - UPDATED POSITION AND LOOK */
-        .brand-logo {
-            position: fixed;
-            /* CHANGED top: 20px -> top: 10px to move it up higher */
-            top: 10px; 
-            left: 20px;
-            width: 80px;
-            height: 80px;
-            background-image: var(--logo-url);
-            
-            /* FIXED: These three lines clean up the inner logo */
-            background-size: 140%;    /* Scales inner content like image_8.png */
-            background-position: center 30%; /* Centers the specific skyline/lightning element and shifts content higher */
-            background-repeat: no-repeat;
-
-            border-radius: 50%;
-            border: 2px solid var(--accent-blue);
-            
-            /* FIXED: Multiple shadows for a clean, vibrant blue glow outline */
-            box-shadow: 0 0 10px rgba(0, 170, 255, 0.7), 
-                        0 0 20px rgba(0, 170, 255, 0.5),
-                        inset 0 0 10px rgba(0, 170, 255, 0.3);
-            z-index: 1000;
         }
 
         /* Video Background */
@@ -68,7 +42,7 @@
         .vignette {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.9) 100%);
+            background: radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.95) 100%);
             z-index: -1;
         }
 
@@ -85,7 +59,7 @@
             background-image: var(--star-image);
             background-size: contain;
             background-repeat: no-repeat;
-            opacity: 0.6;
+            opacity: 0.5;
             animation: fall linear forwards;
         }
         @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
@@ -93,19 +67,18 @@
         /* Navigation */
         .nav-container {
             width: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: #000;
             border-bottom: 2px solid #00aaff;
             position: sticky;
             top: 0;
             z-index: 100;
             display: flex;
             justify-content: center;
-            backdrop-filter: blur(10px);
         }
         .top-nav { display: flex; overflow-x: auto; padding: 15px; gap: 15px; }
         .nav-btn, .spin-btn, .theme-select {
             padding: 10px 25px;
-            background: rgba(2, 18, 31, 0.6);
+            background: #02121f;
             border: 1px solid #00aaff;
             color: #00aaff;
             border-radius: 5px;
@@ -127,7 +100,7 @@
             bottom: 30px;
             left: 30px;
             width: 300px;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.9);
             border-radius: 12px;
             padding: 15px;
             display: flex;
@@ -135,7 +108,7 @@
             gap: 15px;
             z-index: 101;
             border: 1px solid rgba(0, 170, 255, 0.3);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(10px);
         }
         .album-art { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid #00aaff33; }
         .track-info { flex-grow: 1; overflow: hidden; }
@@ -155,32 +128,32 @@
             z-index: 2;
         }
         .section-box {
-            background: rgba(2, 18, 31, 0.5); /* Lower opacity for clear effect */
-            border: 1px solid #00aaff66;
+            background: rgba(2, 18, 31, 0.85);
+            border: 1px solid #00aaff44;
             border-radius: 15px;
             padding: 40px;
             margin-bottom: 30px;
-            backdrop-filter: blur(12px); /* Stronger blur for glass feel */
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
         }
+        .weapon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .weapon-card { background: #000; border: 1px solid #00aaff33; border-radius: 10px; padding: 15px; display: flex; flex-direction: column; align-items: center; }
+        .weapon-card img { width: 100%; height: 120px; object-fit: contain; transition: 0.3s; }
+        .weapon-card img:hover { filter: drop-shadow(0 0 15px #00aaff); transform: scale(1.05); }
+        .weapon-name-label { margin-top: 12px; font-weight: 700; color: #00aaff; font-size: 0.9rem; text-transform: uppercase; }
 
-        /* Clear Wheel System */
-        .viewport { height: 200px; overflow: hidden; border: 2px solid #00aaff; position: relative; background: rgba(0, 0, 0, 0.4); border-radius: 10px; margin: 20px auto; width: 100%; backdrop-filter: blur(4px); }
+        /* Wheel System */
+        .viewport { height: 200px; overflow: hidden; border: 2px solid #00aaff; position: relative; background: #000; border-radius: 10px; margin: 20px auto; width: 100%; }
         .center-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: #00aaff; z-index: 10; transform: translateX(-50%); box-shadow: 0 0 15px #00aaff; }
         .reel { display: flex; align-items: center; position: absolute; left: 0; height: 100%; }
         .reel-item { min-width: 180px; width: 180px; text-align: center; }
-        .reel-item img { height: 100px; width: 150px; object-fit: contain; filter: drop-shadow(0 0 5px rgba(0,170,255,0.5)); }
-        
+        .reel-item img { height: 100px; width: 150px; object-fit: contain; }
         #rewards-tray { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 25px; }
-        .reward-pill { background: rgba(0, 26, 46, 0.8); border: 1px solid #00aaff; padding: 10px; border-radius: 8px; text-align: center; animation: slideUp 0.4s ease-out; backdrop-filter: blur(5px); }
+        .reward-pill { background: #001a2e; border: 1px solid #00aaff; padding: 10px; border-radius: 8px; text-align: center; animation: slideUp 0.4s ease-out; }
         .reward-pill img { width: 80px; display: block; margin: 0 auto; }
-        
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
-
-    <div class="brand-logo"></div>
 
     <div class="video-bg"><div id="player"></div></div>
     <div class="vignette"></div>
@@ -309,7 +282,7 @@
     setInterval(createStar, 150);
 
     const DB = {
-        test: [{name:"Sentinel", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721564048523264/WEAPON_RMSENTINELNINE.png?ex=69c97d08&is=69c82b88&hm=d123108d994266c750cd54db36fc34a8cb5d02f14ac5b078948df67d7b96a966&=&format=webp&quality=lossless&width=563&height=563"}],
+        test: [{name:"Sentinel", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721564048523264/WEAPON_RMSENTINELNINE.png"}],
         tier0: [{name:"1911", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721149903077649/WEAPON_RMTTI2011.png"}],
         tier1: [{name:"Glock 17", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721145243074850/WEAPON_RMG17.png"}],
         tier15: [{name:"Psa Dagger", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721563520176229/WEAPON_RMPSADAGGER.png"}],
