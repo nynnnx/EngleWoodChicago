@@ -11,7 +11,6 @@
             --accent-blue: #00aaff;
             --accent-green: #00ff44;
             --star-image: url('https://media.discordapp.net/attachments/1438728810265579610/1487566258802135110/image.png?ex=69c99b89&is=69c84a09&hm=af538650e9c2742490672875991a9597c72d3171d88fc675605330044264095e&=&format=webp&quality=lossless&width=550&height=550');
-            /* Image URL updated to point to the provided image asset */
             --logo-url: url('https://media.discordapp.net/attachments/1344449830847348786/1344452097059160104/image_d1cf2e.jpg?ex=67c24458&is=67c0f2d8&hm=08e7529f798b16987179047913364f3d640289658252277d34346e96998669e1&=&format=webp&width=500&height=500');
         }
 
@@ -27,29 +26,23 @@
             overflow-x: hidden;
         }
 
-        /* Top Left Logo updated for correct image display and glow */
+        /* FIXED LOGO: Center positioned and glowing */
         .brand-logo {
             position: fixed;
             top: 20px;
             left: 20px;
-            width: 80px;
-            height: 80px;
-            /* background-image removed. Image is now in the HTML as an img tag */
+            width: 85px;
+            height: 85px;
+            background-image: var(--logo-url);
+            background-size: cover;
+            background-position: center;
             border-radius: 50%;
-            /* Solid border removed for a pure glow outline */
-            /* border: 2px solid var(--accent-blue); */ 
-            /* Enhanced glowing outline with stronger, pulsing shadow */
-            box-shadow: 0 0 15px rgba(0, 170, 255, 0.8), 0 0 30px rgba(0, 170, 255, 0.6);
+            border: 2px solid var(--accent-blue);
+            /* Added a multi-layered glow */
+            box-shadow: 0 0 10px rgba(0, 170, 255, 0.6), 
+                        0 0 20px rgba(0, 170, 255, 0.4),
+                        inset 0 0 10px rgba(0, 170, 255, 0.3);
             z-index: 1000;
-            overflow: hidden; /* Ensures image stays circular */
-        }
-
-        /* Added to scale the image correctly inside the brand-logo container */
-        .brand-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Keeps image aspect ratio without distortion */
-            display: block;
         }
 
         /* Video Background */
@@ -156,12 +149,12 @@
             z-index: 2;
         }
         .section-box {
-            background: rgba(2, 18, 31, 0.5); /* Lower opacity for clear effect */
+            background: rgba(2, 18, 31, 0.5);
             border: 1px solid #00aaff66;
             border-radius: 15px;
             padding: 40px;
             margin-bottom: 30px;
-            backdrop-filter: blur(12px); /* Stronger blur for glass feel */
+            backdrop-filter: blur(12px);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
         }
 
@@ -171,7 +164,7 @@
             overflow: hidden; 
             border: 2px solid #00aaff; 
             position: relative; 
-            background: rgba(0, 0, 0, 0.4); /* Made it transparent/clear */
+            background: rgba(0, 0, 0, 0.4);
             border-radius: 10px; 
             margin: 20px auto; 
             width: 100%; 
@@ -191,9 +184,7 @@
 </head>
 <body>
 
-    <div class="brand-logo">
-        <img src="https://media.discordapp.net/attachments/1344449830847348786/1344452097059160104/image_d1cf2e.jpg?ex=67c24458&is=67c0f2d8&hm=08e7529f798b16987179047913364f3d640289658252277d34346e96998669e1&=&format=webp&width=500&height=500" alt="Brand Logo">
-    </div>
+    <div class="brand-logo"></div>
 
     <div class="video-bg"><div id="player"></div></div>
     <div class="vignette"></div>
@@ -400,4 +391,17 @@
             reel.offsetHeight;
             const centerOffset = (viewport.offsetWidth / 2) - (ITEM_WIDTH / 2);
             const targetX = (winIndex * ITEM_WIDTH) - centerOffset;
-            reel.style.transition = "transform 3s cubic-
+            reel.style.transition = "transform 3s cubic-bezier(0.15, 0.8, 0.2, 1)";
+            reel.style.transform = `translateX(-${targetX}px)`;
+            setTimeout(() => {
+                const p = document.createElement('div');
+                p.className = "reward-pill";
+                p.innerHTML = `<img src="${winner.img}"><span>${winner.name}</span>`;
+                tray.appendChild(p);
+                resolve();
+            }, 3200);
+        });
+    }
+    </script>
+</body>
+</html>
