@@ -25,7 +25,7 @@
             overflow-x: hidden;
         }
 
-        /* Updated Video Background for Local MP4 */
+        /* Video Background */
         .video-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -34,12 +34,10 @@
             overflow: hidden;
         }
         .video-bg video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Ensures the video fills the screen without stretching */
-            position: absolute;
-            top: 50%;
-            left: 50%;
+            width: 100vw; 
+            height: 100vh;
+            object-fit: cover;
+            position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
         }
         .vignette {
@@ -160,12 +158,14 @@
 
     <div class="video-bg">
         <video id="bg-video" autoplay muted loop playsinline>
-            <source src="Chuckyy.mp4" type="video/mp4">
+            <source src="background.mp4" type="video/mp4">
         </video>
     </div>
-
+    
     <div class="vignette"></div>
     <div id="star-container"></div>
+
+    <audio id="audio-player"></audio>
 
     <div class="nav-container">
         <div class="top-nav">
@@ -209,42 +209,71 @@
     </div>
 
     <div class="music-card">
-        <img src="https://img.youtube.com/vi/fXvEVF89a5E/maxresdefault.jpg" id="m-art" class="album-art">
+        <img src="https://i.ytimg.com/vi/W5_RPT0WPYw/maxresdefault.jpg" id="m-art" class="album-art">
         <div class="track-info">
-            <div class="status-label">Now Playing</div>
-            <span id="m-title" class="song-name">Chuckyy - FREE SMURK OFNG</span>
+            <div class="status-label">NOW PLAYING</div>
+            <span id="m-title" class="song-name">NBA YoungBoy - Speed Racing</span>
             <div class="controls">
+                <i class="fas fa-backward ctrl-btn" onclick="changeSong(-1)"></i>
                 <i class="fas fa-play ctrl-btn" id="play-btn" onclick="togglePlay()"></i>
-                <i class="fas fa-volume-mute ctrl-btn" id="mute-btn" onclick="toggleMute()" style="margin-left:auto;"></i>
+                <i class="fas fa-forward ctrl-btn" onclick="changeSong(1)"></i>
+                <i class="fas fa-volume-up ctrl-btn" id="mute-btn" onclick="toggleMute()" style="margin-left:auto;"></i>
             </div>
         </div>
     </div>
 
     <script>
-    // Logic for local video control
-    const video = document.getElementById('bg-video');
+    // EDIT THESE URLS TO YOUR FILENAMES IN GITHUB
+    const playlist = [
+        { url: 'song1.mp4', title: 'NBA YoungBoy - Speed Racing', art: 'https://i.ytimg.com/vi/W5_RPT0WPYw/maxresdefault.jpg' },
+        { url: 'song2.mp4', title: 'Topoppgen - Cute Like Aspen', art: 'https://i.ytimg.com/vi/GqYiG9YJ6Ig/sddefault.jpg' }
+    ];
+
+    let currentIdx = 0;
+    const audio = document.getElementById('audio-player');
+    const playBtn = document.getElementById('play-btn');
+    const muteBtn = document.getElementById('mute-btn');
+
+    // Initialize Audio
+    function initMusic() {
+        audio.src = playlist[currentIdx].url;
+        audio.volume = 0.5;
+        document.getElementById('m-title').innerText = playlist[currentIdx].title;
+        document.getElementById('m-art').src = playlist[currentIdx].art;
+    }
 
     function togglePlay() {
-        if (video.paused) {
-            video.play();
-            document.getElementById('play-btn').className = "fas fa-pause ctrl-btn";
+        if (audio.paused) {
+            audio.play();
+            playBtn.className = "fas fa-pause ctrl-btn";
         } else {
-            video.pause();
-            document.getElementById('play-btn').className = "fas fa-play ctrl-btn";
+            audio.pause();
+            playBtn.className = "fas fa-play ctrl-btn";
         }
     }
 
     function toggleMute() {
-        if (video.muted) {
-            video.muted = false;
-            document.getElementById('mute-btn').className = "fas fa-volume-up ctrl-btn";
+        if (audio.muted) {
+            audio.muted = false;
+            muteBtn.className = "fas fa-volume-up ctrl-btn";
         } else {
-            video.muted = true;
-            document.getElementById('mute-btn').className = "fas fa-volume-mute ctrl-btn";
+            audio.muted = true;
+            muteBtn.className = "fas fa-volume-mute ctrl-btn";
         }
     }
 
-    // Star rain effect
+    function changeSong(dir) {
+        currentIdx = (currentIdx + dir + playlist.length) % playlist.length;
+        audio.src = playlist[currentIdx].url;
+        document.getElementById('m-title').innerText = playlist[currentIdx].title;
+        document.getElementById('m-art').src = playlist[currentIdx].art;
+        audio.play();
+        playBtn.className = "fas fa-pause ctrl-btn";
+    }
+
+    // Auto-play next song
+    audio.onended = () => changeSong(1);
+
     function createStar() {
         const container = document.getElementById('star-container');
         const star = document.createElement('div');
@@ -348,6 +377,9 @@
             }, 3200);
         });
     }
+
+    // Load initial song info on page load
+    window.onload = initMusic;
     </script>
 </body>
 </html>
