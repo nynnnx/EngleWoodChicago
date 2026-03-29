@@ -9,8 +9,9 @@
         /* ================= EDITABLE SETTINGS ================= */
         :root {
             --accent-blue: #00aaff;
-            --logo-url: url('https://media.discordapp.net/attachments/1344449830847348786/1344452097059160104/image_d1cf2e.jpg?ex=67c24458&is=67c0f2d8&hm=08e7529f798b16987179047913364f3d640289658252277d34346e96998669e1&=&format=webp&width=500&height=500');
+            --accent-green: #00ff44;
             --star-image: url('https://media.discordapp.net/attachments/1438728810265579610/1487566258802135110/image.png?ex=69c99b89&is=69c84a09&hm=af538650e9c2742490672875991a9597c72d3171d88fc675605330044264095e&=&format=webp&quality=lossless&width=550&height=550');
+            --logo-url: url('https://media.discordapp.net/attachments/1344449830847348786/1344452097059160104/image_d1cf2e.jpg?ex=67c24458&is=67c0f2d8&hm=08e7529f798b16987179047913364f3d640289658252277d34346e96998669e1&=&format=webp&width=500&height=500');
         }
 
         body {
@@ -25,21 +26,28 @@
             overflow-x: hidden;
         }
 
-        /* FIXED LOGO: Perfectly centered and positioned higher */
+        /* Top Left Logo - UPDATED POSITION AND LOOK */
         .brand-logo {
             position: fixed;
-            top: 5px; /* Moved up as requested */
-            left: 10px; /* Aligned to the far corner */
-            width: 100px;
-            height: 100px;
+            /* CHANGED top: 20px -> top: 10px to move it up higher */
+            top: 10px; 
+            left: 20px;
+            width: 80px;
+            height: 80px;
             background-image: var(--logo-url);
-            background-size: contain; /* Shows the full image without cropping */
-            background-position: center; /* Centers the logo exactly */
+            
+            /* FIXED: These three lines clean up the inner logo */
+            background-size: 140%;    /* Scales inner content like image_8.png */
+            background-position: center 30%; /* Centers the specific skyline/lightning element and shifts content higher */
             background-repeat: no-repeat;
+
             border-radius: 50%;
             border: 2px solid var(--accent-blue);
-            box-shadow: 0 0 15px rgba(0, 170, 255, 0.8), 
-                        inset 0 0 10px rgba(0, 170, 255, 0.2);
+            
+            /* FIXED: Multiple shadows for a clean, vibrant blue glow outline */
+            box-shadow: 0 0 10px rgba(0, 170, 255, 0.7), 
+                        0 0 20px rgba(0, 170, 255, 0.5),
+                        inset 0 0 10px rgba(0, 170, 255, 0.3);
             z-index: 1000;
         }
 
@@ -113,26 +121,7 @@
             box-shadow: 0 0 15px #00aaff;
         }
 
-        /* Content Area */
-        .main-wrapper {
-            width: 90%;
-            max-width: 1000px;
-            margin: 40px auto;
-            text-align: center;
-            position: relative;
-            z-index: 2;
-        }
-        .section-box {
-            background: rgba(2, 18, 31, 0.5);
-            border: 1px solid #00aaff66;
-            border-radius: 15px;
-            padding: 40px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-        }
-
-        /* Music Card */
+        /* Music Player Tray */
         .music-card {
             position: fixed;
             bottom: 30px;
@@ -148,20 +137,45 @@
             border: 1px solid rgba(0, 170, 255, 0.3);
             backdrop-filter: blur(15px);
         }
-        .album-art { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
+        .album-art { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid #00aaff33; }
         .track-info { flex-grow: 1; overflow: hidden; }
+        .status-label { font-size: 0.6rem; color: var(--accent-blue); font-weight: 900; }
         .song-name { font-size: 0.85rem; font-weight: 700; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        
-        /* Wheel System */
-        .viewport { height: 200px; overflow: hidden; border: 2px solid #00aaff; position: relative; background: rgba(0, 0, 0, 0.4); border-radius: 10px; margin: 20px auto; width: 100%; }
-        .center-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: #00aaff; z-index: 10; transform: translateX(-50%); }
+        .controls { display: flex; gap: 12px; margin-top: 5px; align-items: center; }
+        .ctrl-btn { cursor: pointer; color: white; transition: 0.2s; font-size: 0.9rem; }
+        .ctrl-btn:hover { color: var(--accent-blue); }
+
+        /* Content Area */
+        .main-wrapper {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        .section-box {
+            background: rgba(2, 18, 31, 0.5); /* Lower opacity for clear effect */
+            border: 1px solid #00aaff66;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(12px); /* Stronger blur for glass feel */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        }
+
+        /* Clear Wheel System */
+        .viewport { height: 200px; overflow: hidden; border: 2px solid #00aaff; position: relative; background: rgba(0, 0, 0, 0.4); border-radius: 10px; margin: 20px auto; width: 100%; backdrop-filter: blur(4px); }
+        .center-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: #00aaff; z-index: 10; transform: translateX(-50%); box-shadow: 0 0 15px #00aaff; }
         .reel { display: flex; align-items: center; position: absolute; left: 0; height: 100%; }
         .reel-item { min-width: 180px; width: 180px; text-align: center; }
-        .reel-item img { height: 100px; width: 150px; object-fit: contain; }
+        .reel-item img { height: 100px; width: 150px; object-fit: contain; filter: drop-shadow(0 0 5px rgba(0,170,255,0.5)); }
         
         #rewards-tray { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 25px; }
-        .reward-pill { background: rgba(0, 26, 46, 0.8); border: 1px solid #00aaff; padding: 10px; border-radius: 8px; text-align: center; }
+        .reward-pill { background: rgba(0, 26, 46, 0.8); border: 1px solid #00aaff; padding: 10px; border-radius: 8px; text-align: center; animation: slideUp 0.4s ease-out; backdrop-filter: blur(5px); }
         .reward-pill img { width: 80px; display: block; margin: 0 auto; }
+        
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -216,38 +230,81 @@
     <div class="music-card">
         <img src="https://i.ytimg.com/vi/W5_RPT0WPYw/maxresdefault.jpg" id="m-art" class="album-art">
         <div class="track-info">
+            <div class="status-label">NOW PLAYING</div>
             <span id="m-title" class="song-name">NBA YoungBoy - Speed Racing</span>
-            <div style="display:flex; gap:10px; margin-top:5px;">
-                <i class="fas fa-play" onclick="togglePlay()" style="cursor:pointer;"></i>
-                <i class="fas fa-volume-mute" onclick="toggleMute()" style="cursor:pointer;"></i>
+            <div class="controls">
+                <i class="fas fa-backward ctrl-btn" onclick="changeSong(-1)"></i>
+                <i class="fas fa-play ctrl-btn" id="play-btn" onclick="togglePlay()"></i>
+                <i class="fas fa-forward ctrl-btn" onclick="changeSong(1)"></i>
+                <i class="fas fa-volume-mute ctrl-btn" id="mute-btn" onclick="toggleMute()" style="margin-left:auto;"></i>
             </div>
         </div>
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-    const playlist = [{ id: 'W5_RPT0WPYw', title: 'NBA YoungBoy - Speed Racing' }];
+    const playlist = [
+        { id: 'W5_RPT0WPYw', title: 'NBA YoungBoy - Speed Racing', art: 'https://i.ytimg.com/vi/W5_RPT0WPYw/maxresdefault.jpg' },
+        { id: 'GqYiG9YJ6Ig', title: 'Topoppgen - Cute Like Aspen', art: 'https://i.ytimg.com/vi/GqYiG9YJ6Ig/sddefault.jpg' }
+    ];
+    let currentIdx = 0;
     let ytPlayer;
 
     function onYouTubeIframeAPIReady() {
         ytPlayer = new YT.Player('player', {
-            videoId: playlist[0].id,
-            playerVars: { 'autoplay': 1, 'controls': 0, 'mute': 1, 'loop': 1, 'playlist': playlist[0].id },
+            videoId: playlist[currentIdx].id,
+            playerVars: { 
+                'autoplay': 1, 
+                'controls': 0, 
+                'mute': 1, 
+                'loop': 1, 
+                'playlist': playlist[currentIdx].id,
+                'modestbranding': 1,
+                'rel': 0,
+                'iv_load_policy': 3,
+                'showinfo': 0
+            },
             events: { 'onReady': (e) => e.target.playVideo() }
         });
     }
 
-    function togglePlay() { ytPlayer.getPlayerState() === 1 ? ytPlayer.pauseVideo() : ytPlayer.playVideo(); }
-    function toggleMute() { ytPlayer.isMuted() ? ytPlayer.unMute() : ytPlayer.mute(); }
+    function togglePlay() {
+        if (ytPlayer.getPlayerState() === 1) {
+            ytPlayer.pauseVideo();
+            document.getElementById('play-btn').className = "fas fa-play ctrl-btn";
+        } else {
+            ytPlayer.playVideo();
+            document.getElementById('play-btn').className = "fas fa-pause ctrl-btn";
+        }
+    }
+
+    function toggleMute() {
+        if (ytPlayer.isMuted()) {
+            ytPlayer.unMute();
+            document.getElementById('mute-btn').className = "fas fa-volume-up ctrl-btn";
+        } else {
+            ytPlayer.mute();
+            document.getElementById('mute-btn').className = "fas fa-volume-mute ctrl-btn";
+        }
+    }
+
+    function changeSong(dir) {
+        currentIdx = (currentIdx + dir + playlist.length) % playlist.length;
+        ytPlayer.loadVideoById(playlist[currentIdx].id);
+        document.getElementById('m-title').innerText = playlist[currentIdx].title;
+        document.getElementById('m-art').src = playlist[currentIdx].art;
+    }
 
     function createStar() {
         const container = document.getElementById('star-container');
         const star = document.createElement('div');
         star.className = 'star';
+        const duration = Math.random() * 3 + 2;
         star.style.left = Math.random() * 100 + 'vw';
-        star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        star.style.top = '-20px';
+        star.style.animationDuration = duration + 's';
         container.appendChild(star);
-        setTimeout(() => star.remove(), 5000);
+        setTimeout(() => star.remove(), duration * 1000);
     }
     setInterval(createStar, 150);
 
@@ -260,34 +317,85 @@
         attachments: [{name:"Clip", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187729396662353/at_clip_custom_clear.png"}]
     };
 
+    const config = { test: 2, tier0: 4, tier1: 5, tier15: 5, tier2: 7, attachments: 1 };
+    const ITEM_WIDTH = 180;
+
     function showTab(tier) {
         const gallery = document.getElementById('gallery-view');
         const randomize = document.getElementById('randomize-view');
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        const buttons = document.querySelectorAll('.nav-btn');
+        buttons.forEach(b => { if(b.innerText.toLowerCase().includes(tier.toLowerCase())) b.classList.add('active'); });
         if(tier === 'randomize') { gallery.style.display = 'none'; randomize.style.display = 'block'; } 
-        else { gallery.style.display = 'block'; randomize.style.display = 'none'; document.getElementById('gallery-title').innerText = tier.toUpperCase(); }
+        else { gallery.style.display = 'block'; randomize.style.display = 'none'; document.getElementById('gallery-title').innerText = tier.toUpperCase(); renderGrid(tier); }
+    }
+
+    function renderGrid(tier) {
+        const grid = document.getElementById('wpn-grid');
+        grid.innerHTML = "";
+        DB[tier].forEach((item) => {
+            const div = document.createElement('div');
+            div.className = "weapon-card";
+            div.innerHTML = `<img src="${item.img}"><span class="weapon-name-label">${item.name}</span>`;
+            grid.appendChild(div);
+        });
+    }
+
+    function buildReel(targetPool) {
+        const reel = document.getElementById('reel');
+        reel.innerHTML = "";
+        const totalItems = 100;
+        const items = [];
+        for(let i=0; i<totalItems; i++) {
+            const weapon = targetPool[Math.floor(Math.random()*targetPool.length)];
+            const div = document.createElement('div');
+            div.className = "reel-item";
+            div.innerHTML = `<img src="${weapon.img}"><br><span>${weapon.name}</span>`;
+            reel.appendChild(div);
+            items.push(weapon);
+        }
+        return items;
     }
 
     async function processFullDrop() {
         const tier = document.getElementById('spinTierSelect').value;
-        const count = 5; 
+        const count = config[tier];
+        const btn = document.getElementById('masterSpinBtn');
         const tray = document.getElementById('rewards-tray');
-        tray.innerHTML = "";
+        const status = document.getElementById('spin-status');
+        btn.disabled = true; tray.innerHTML = "";
         for(let i=0; i<count; i++) {
+            status.innerText = `Spinning ${i+1} of ${count}...`;
             await performSingleSpin(tier);
+            await new Promise(r => setTimeout(r, 1000));
         }
+        status.innerText = "Drop Complete!";
+        btn.disabled = false;
     }
 
     function performSingleSpin(tier) {
         return new Promise((resolve) => {
             const reel = document.getElementById('reel');
-            const winner = DB[tier][0];
+            const viewport = document.querySelector('.viewport');
             const tray = document.getElementById('rewards-tray');
-            reel.innerHTML = `<div class="reel-item"><img src="${winner.img}"></div>`;
-            const p = document.createElement('div');
-            p.className = "reward-pill";
-            p.innerHTML = `<img src="${winner.img}"><span>${winner.name}</span>`;
-            tray.appendChild(p);
-            resolve();
+            let spinPool = [...DB[tier]];
+            const currentReelItems = buildReel(spinPool);
+            const winIndex = 75;
+            const winner = currentReelItems[winIndex];
+            reel.style.transition = "none";
+            reel.style.transform = "translateX(0px)";
+            reel.offsetHeight;
+            const centerOffset = (viewport.offsetWidth / 2) - (ITEM_WIDTH / 2);
+            const targetX = (winIndex * ITEM_WIDTH) - centerOffset;
+            reel.style.transition = "transform 3s cubic-bezier(0.15, 0.8, 0.2, 1)";
+            reel.style.transform = `translateX(-${targetX}px)`;
+            setTimeout(() => {
+                const p = document.createElement('div');
+                p.className = "reward-pill";
+                p.innerHTML = `<img src="${winner.img}"><span>${winner.name}</span>`;
+                tray.appendChild(p);
+                resolve();
+            }, 3200);
         });
     }
     </script>
