@@ -11,7 +11,7 @@
             --accent-blue: #00aaff;
             --accent-green: #00ff44;
             --star-image: url('https://media.discordapp.net/attachments/1438728810265579610/1487566258802135110/image.png?ex=69c99b89&is=69c84a09&hm=af538650e9c2742490672875991a9597c72d3171d88fc675605330044264095e&=&format=webp&quality=lossless&width=550&height=550');
-            --logo-url: url('https://media.discordapp.net/attachments/1438728810265579610/1487566258802135110/image.png?ex=69c99b89&is=69c84a09&hm=af538650e9c2742490672875991a9597c72d3171d88fc675605330044264095e&=&format=webp&quality=lossless&width=550&height=550');
+            --logo-url: url('https://media.discordapp.net/attachments/1344449830847348786/1344452097059160104/image_d1cf2e.jpg?ex=67c24458&is=67c0f2d8&hm=08e7529f798b16987179047913364f3d640289658252277d34346e96998669e1&=&format=webp&width=500&height=500');
         }
 
         body {
@@ -26,21 +26,27 @@
             overflow-x: hidden;
         }
 
-        /* FIXED LOGO: Center positioned and glowing */
+        /* Top Left Logo - UPDATED POSITION AND LOOK */
         .brand-logo {
             position: fixed;
-            top: 20px;
+            /* CHANGED top: 20px -> top: 10px to move it up higher */
+            top: 10px; 
             left: 20px;
-            width: 85px;
-            height: 85px;
+            width: 80px;
+            height: 80px;
             background-image: var(--logo-url);
-            background-size: cover;
-            background-position: center;
+            
+            /* FIXED: These three lines clean up the inner logo */
+            background-size: 140%;    /* Scales inner content like image_8.png */
+            background-position: center 30%; /* Centers the specific skyline/lightning element and shifts content higher */
+            background-repeat: no-repeat;
+
             border-radius: 50%;
             border: 2px solid var(--accent-blue);
-            /* Added a multi-layered glow */
-            box-shadow: 0 0 10px rgba(0, 170, 255, 0.6), 
-                        0 0 20px rgba(0, 170, 255, 0.4),
+            
+            /* FIXED: Multiple shadows for a clean, vibrant blue glow outline */
+            box-shadow: 0 0 10px rgba(0, 170, 255, 0.7), 
+                        0 0 20px rgba(0, 170, 255, 0.5),
                         inset 0 0 10px rgba(0, 170, 255, 0.3);
             z-index: 1000;
         }
@@ -149,27 +155,17 @@
             z-index: 2;
         }
         .section-box {
-            background: rgba(2, 18, 31, 0.5);
+            background: rgba(2, 18, 31, 0.5); /* Lower opacity for clear effect */
             border: 1px solid #00aaff66;
             border-radius: 15px;
             padding: 40px;
             margin-bottom: 30px;
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px); /* Stronger blur for glass feel */
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
         }
 
         /* Clear Wheel System */
-        .viewport { 
-            height: 200px; 
-            overflow: hidden; 
-            border: 2px solid #00aaff; 
-            position: relative; 
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 10px; 
-            margin: 20px auto; 
-            width: 100%; 
-            backdrop-filter: blur(4px);
-        }
+        .viewport { height: 200px; overflow: hidden; border: 2px solid #00aaff; position: relative; background: rgba(0, 0, 0, 0.4); border-radius: 10px; margin: 20px auto; width: 100%; backdrop-filter: blur(4px); }
         .center-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: #00aaff; z-index: 10; transform: translateX(-50%); box-shadow: 0 0 15px #00aaff; }
         .reel { display: flex; align-items: center; position: absolute; left: 0; height: 100%; }
         .reel-item { min-width: 180px; width: 180px; text-align: center; }
