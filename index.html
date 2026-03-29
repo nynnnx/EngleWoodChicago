@@ -223,7 +223,7 @@
     </div>
 
     <script>
-    // EDIT THESE URLS TO YOUR FILENAMES IN GITHUB
+    // These link to the mp4 files in your GitHub repository
     const playlist = [
         { url: 'song1.mp4', title: 'NBA YoungBoy - Speed Racing', art: 'https://i.ytimg.com/vi/W5_RPT0WPYw/maxresdefault.jpg' },
         { url: 'song2.mp4', title: 'Topoppgen - Cute Like Aspen', art: 'https://i.ytimg.com/vi/GqYiG9YJ6Ig/sddefault.jpg' }
@@ -234,13 +234,23 @@
     const playBtn = document.getElementById('play-btn');
     const muteBtn = document.getElementById('mute-btn');
 
-    // Initialize Audio
     function initMusic() {
         audio.src = playlist[currentIdx].url;
         audio.volume = 0.5;
+        audio.load();
         document.getElementById('m-title').innerText = playlist[currentIdx].title;
         document.getElementById('m-art').src = playlist[currentIdx].art;
     }
+
+    // UNLOCK AUDIO ON FIRST CLICK (REQUIRED BY BROWSERS)
+    function unlockAudio() {
+        audio.play().then(() => {
+            playBtn.className = "fas fa-pause ctrl-btn";
+        }).catch(e => console.log("User interaction required to start music."));
+        window.removeEventListener('click', unlockAudio);
+    }
+
+    window.addEventListener('click', unlockAudio);
 
     function togglePlay() {
         if (audio.paused) {
@@ -271,7 +281,6 @@
         playBtn.className = "fas fa-pause ctrl-btn";
     }
 
-    // Auto-play next song
     audio.onended = () => changeSong(1);
 
     function createStar() {
@@ -378,7 +387,6 @@
         });
     }
 
-    // Load initial song info on page load
     window.onload = initMusic;
     </script>
 </body>
