@@ -74,8 +74,19 @@
             z-index: 100;
             display: flex;
             justify-content: center;
+            align-items: center; /* To center the logo and nav items vertically */
+            padding: 0 30px; /* Add horizontal padding for spacing */
         }
-        .top-nav { display: flex; overflow-x: auto; padding: 15px; gap: 15px; }
+        .logo {
+            width: 80px; /* Adjust size as needed */
+            height: auto;
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            filter: drop-shadow(0 0 10px #00aaff) drop-shadow(0 0 20px #00aaff); /* Add blue glow */
+        }
+        .top-nav { display: flex; overflow-x: auto; padding: 15px; gap: 15px; margin-left: 110px; /* Shift to make room for logo */ }
         .nav-btn, .spin-btn, .theme-select {
             padding: 10px 25px;
             background: #02121f;
@@ -160,6 +171,8 @@
     <div id="star-container"></div>
 
     <div class="nav-container">
+        <img src="https://media.discordapp.net/attachments/1438728810265579610/1487566258802135110/image.png?ex=69cc3e89&is=69caed09&hm=61585caf5c25836645a728c45c835548a733f072e32ac3b44cd2b32719be2225&=&format=webp&quality=lossless&width=550&height=550" alt="Englewood Logo" class="logo">
+        
         <div class="top-nav">
             <div class="nav-btn" onclick="showTab('test')">Test Drop</div>
             <div class="nav-btn" onclick="showTab('tier0')">Tier 0</div>
