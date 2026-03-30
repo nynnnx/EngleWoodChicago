@@ -74,19 +74,19 @@
             z-index: 100;
             display: flex;
             justify-content: center;
-            align-items: center; /* To center the logo and nav items vertically */
-            padding: 0 30px; /* Add horizontal padding for spacing */
+            align-items: center;
+            padding: 0 30px;
         }
         .logo {
-            width: 80px; /* Adjust size as needed */
+            width: 80px;
             height: auto;
             position: absolute;
             left: 30px;
             top: 50%;
             transform: translateY(-50%);
-            filter: drop-shadow(0 0 10px #00aaff) drop-shadow(0 0 20px #00aaff); /* Add blue glow */
+            filter: drop-shadow(0 0 10px #00aaff) drop-shadow(0 0 20px #00aaff);
         }
-        .top-nav { display: flex; overflow-x: auto; padding: 15px; gap: 15px; margin-left: 110px; /* Shift to make room for logo */ }
+        .top-nav { display: flex; overflow-x: auto; padding: 15px; gap: 15px; margin-left: 110px; }
         .nav-btn, .spin-btn, .theme-select {
             padding: 10px 25px;
             background: #02121f;
@@ -172,7 +172,6 @@
 
     <div class="nav-container">
         <img src="https://media.discordapp.net/attachments/1438728810265579610/1487566258802135110/image.png?ex=69cc3e89&is=69caed09&hm=61585caf5c25836645a728c45c835548a733f072e32ac3b44cd2b32719be2225&=&format=webp&quality=lossless&width=550&height=550" alt="Englewood Logo" class="logo">
-        
         <div class="top-nav">
             <div class="nav-btn" onclick="showTab('test')">Test Drop</div>
             <div class="nav-btn" onclick="showTab('tier0')">Tier 0</div>
@@ -240,15 +239,9 @@
         ytPlayer = new YT.Player('player', {
             videoId: playlist[currentIdx].id,
             playerVars: { 
-                'autoplay': 1, 
-                'controls': 0, 
-                'mute': 1, 
-                'loop': 1, 
-                'playlist': playlist[currentIdx].id,
-                'modestbranding': 1,
-                'rel': 0,
-                'iv_load_policy': 3,
-                'showinfo': 0
+                'autoplay': 1, 'controls': 0, 'mute': 1, 'loop': 1, 
+                'playlist': playlist[currentIdx].id, 'modestbranding': 1,
+                'rel': 0, 'iv_load_policy': 3, 'showinfo': 0
             },
             events: { 'onReady': (e) => e.target.playVideo() }
         });
@@ -294,13 +287,54 @@
     }
     setInterval(createStar, 150);
 
+    // ================= UPDATED WEAPON DATABASE =================
     const DB = {
-        test: [{name:"Sentinel", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721564048523264/WEAPON_RMSENTINELNINE.png"}],
-        tier0: [{name:"1911", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721149903077649/WEAPON_RMTTI2011.png"}],
-        tier1: [{name:"Glock 17", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721145243074850/WEAPON_RMG17.png"}],
-        tier15: [{name:"Psa Dagger", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721563520176229/WEAPON_RMPSADAGGER.png"}],
-        tier2: [{name:"Glock 19 FDE", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721328613982340/WEAPON_RMG19FDEGEN4.png"}],
-        attachments: [{name:"Clip", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187729396662353/at_clip_custom_clear.png"}]
+        test: [
+            {name:"Sentinel", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721564048523264/WEAPON_RMSENTINELNINE.png"}, 
+            {name:"FN509", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+            {name:"365X", img:"https://cdn.discordapp.com/attachments/1428113909616869387/1487234175541969068/27dfae38-4cee-494d-9a51-284bd928dedf.png"}, 
+            {name:"Glock19X", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}
+        ],
+        tier0: [
+            {name:"1911", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+            {name:"Glock 17", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+            {name:"Glock 19Gen 5", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+            {name:"PX4", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+            {name:"Glock 22", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"} // Moved from Test Drop logic
+        ],
+        tier1: [
+            {name:"RMGlock 17", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+            {name:"RMGlock 17 Gen 5", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+            {name:"Glock 45", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+            {name:"Glock 19x8", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+            {name:"Glock 19 Gen 5", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+            {name:"Glock 22", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+            {name:"Glock 19X", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}
+        ],
+        tier15: [
+            {name:"3 Inch Arp Tan", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+            {name:"Psa Dagger", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+            {name:"Ruger Sr40", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+            {name:"Glock 19XB", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+            {name:"RMGlock 17", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"} // Added from T1 logic
+        ],
+        tier2: [
+            {name:"RMG19 FDE Gen 4", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+            {name:"RMG43x Switch", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+            {name:"Glock Camo", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+            {name:"Sig P365x", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+            {name:"Glock 40", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
+            {name:"Black Micro Draco", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
+            {name:"Glock 21 Gen 5", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}
+        ],
+        attachments: [
+            {name:"Clear Kriss Vector", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187729396662353/at_clip_custom_clear.png"}, 
+            {name:"Black Kriss Vector", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187732139610142/at_clip_40rnd.png"}, 
+            {name:"White Kriss Vector", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187731695272056/at_clip_40rnd2.png"},
+            {name:"Tan Kriss Vector", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187731057606867/at_clip_40rnd3.png"},
+            {name:"Black Extended Clip", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187730117951558/at_clip_extendedclip.png"},
+            {name:"Tan Extended Clip", img:"https://cdn.discordapp.com/attachments/1428113909616869387/1487187732672544889/at_clip_extendedclip2.png"}
+        ]
     };
 
     const config = { test: 2, tier0: 4, tier1: 5, tier15: 5, tier2: 7, attachments: 1 };
@@ -364,8 +398,7 @@
             const reel = document.getElementById('reel');
             const viewport = document.querySelector('.viewport');
             const tray = document.getElementById('rewards-tray');
-            let spinPool = [...DB[tier]];
-            const currentReelItems = buildReel(spinPool);
+            const currentReelItems = buildReel(DB[tier]);
             const winIndex = 75;
             const winner = currentReelItems[winIndex];
             reel.style.transition = "none";
