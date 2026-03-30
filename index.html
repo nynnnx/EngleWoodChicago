@@ -300,7 +300,7 @@
             {name:"Glock 17", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
             {name:"Glock 19Gen 5", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
             {name:"PX4", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
-            {name:"Glock 22", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"} // Moved from Test Drop logic
+            {name:"Glock 22", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}
         ],
         tier1: [
             {name:"RMGlock 17", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
@@ -316,7 +316,7 @@
             {name:"Psa Dagger", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}, 
             {name:"Ruger Sr40", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
             {name:"Glock 19XB", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
-            {name:"RMGlock 17", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"} // Added from T1 logic
+            {name:"RMGlock 17", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"}
         ],
         tier2: [
             {name:"RMG19 FDE Gen 4", img:"https://media.discordapp.net/attachments/1428113909616869387/1485721144681169112/WEAPON_RMFN509.png"},
@@ -335,6 +335,14 @@
             {name:"Black Extended Clip", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187730117951558/at_clip_extendedclip.png"},
             {name:"Tan Extended Clip", img:"https://cdn.discordapp.com/attachments/1428113909616869387/1487187732672544889/at_clip_extendedclip2.png"}
         ]
+    };
+
+    // [FIX] CROSS-TIER LOGIC MAPPING
+    const CROSS_TIER_LOGIC = {
+        tier0: ["Sentinel", "FN509"],           // From Test
+        tier1: ["1911", "Glock 17"],            // From Tier 0
+        tier15: ["Glock 45", "Glock 19X"],      // From Tier 1
+        tier2: ["Psa Dagger", "3 Inch Arp Tan"] // From Tier 1.5
     };
 
     const config = { test: 2, tier0: 4, tier1: 5, tier15: 5, tier2: 7, attachments: 1 };
@@ -393,21 +401,41 @@
         btn.disabled = false;
     }
 
+    // [FIX] Updated to include cross-tier items in the spin result
     function performSingleSpin(tier) {
         return new Promise((resolve) => {
             const reel = document.getElementById('reel');
             const viewport = document.querySelector('.viewport');
             const tray = document.getElementById('rewards-tray');
-            const currentReelItems = buildReel(DB[tier]);
+            
+            // Build the specific pool for this spin
+            let spinPool = [...DB[tier]];
+            
+            // Inject items from the tier below based on mapping
+            if (tier === 'tier0') {
+                spinPool.push(...DB.test.filter(w => CROSS_TIER_LOGIC.tier0.includes(w.name)));
+            } else if (tier === 'tier1') {
+                spinPool.push(...DB.tier0.filter(w => CROSS_TIER_LOGIC.tier1.includes(w.name)));
+            } else if (tier === 'tier15') {
+                spinPool.push(...DB.tier1.filter(w => CROSS_TIER_LOGIC.tier15.includes(w.name)));
+            } else if (tier === 'tier2') {
+                spinPool.push(...DB.tier15.filter(w => CROSS_TIER_LOGIC.tier2.includes(w.name)));
+            }
+
+            const currentReelItems = buildReel(spinPool);
             const winIndex = 75;
             const winner = currentReelItems[winIndex];
+            
             reel.style.transition = "none";
             reel.style.transform = "translateX(0px)";
-            reel.offsetHeight;
+            reel.offsetHeight; // Force reflow to allow transition to trigger again
+            
             const centerOffset = (viewport.offsetWidth / 2) - (ITEM_WIDTH / 2);
             const targetX = (winIndex * ITEM_WIDTH) - centerOffset;
+            
             reel.style.transition = "transform 3s cubic-bezier(0.15, 0.8, 0.2, 1)";
             reel.style.transform = `translateX(-${targetX}px)`;
+            
             setTimeout(() => {
                 const p = document.createElement('div');
                 p.className = "reward-pill";
