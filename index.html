@@ -10,7 +10,7 @@
         :root {
             --accent-blue: #00aaff;
             --accent-green: #00ff44;
-            --star-image: url('https://media.discordapp.net/attachments/1438728810265579610/1487566258802135110/image.png?ex=69cc3e89&is=69caed09&hm=61585caf5c25836645a728c45c835548a733f072e32ac3b44cd2b32719be2225&=&format=webp&quality=lossless&width=550&height=550');
+            --star-image: url('Logo's/Star.png');
         }
 
         body {
@@ -171,7 +171,7 @@
     <div id="star-container"></div>
 
     <div class="nav-container">
-        <img src="https://media.discordapp.net/attachments/1438728810265579610/1487566258802135110/image.png?ex=69cc3e89&is=69caed09&hm=61585caf5c25836645a728c45c835548a733f072e32ac3b44cd2b32719be2225&=&format=webp&quality=lossless&width=550&height=550" alt="Englewood Logo" class="logo">
+        <img src="Logo's/Logo.png" alt="Englewood Logo" class="logo">
         <div class="top-nav">
             <div class="nav-btn" onclick="showTab('test')">Test Drop</div>
             <div class="nav-btn" onclick="showTab('tier0')">Tier 0</div>
@@ -291,48 +291,48 @@
     const DB = {
         test: [
             {name:"Sentinel", img:"images/Sentinel.png"}, // [FIXED] Local reference
-            {name:"Glock19X Tan", img:"https://media.discordapp.net/attachments/1428113909616869387/1488347930959151285/weapon_background_cleared.png?ex=69cc7386&is=69cb2206&hm=3656ed1010219e999a4be1c0ee3564c2226022dbed577de273a6cfb169e191f5&=&format=webp&quality=lossless&width=563&height=563"}, 
-            {name:"Glock 22", img:"https://media.discordapp.net/attachments/1428113909616869387/1487255654086475907/content.png?ex=69cbc603&is=69ca7483&hm=c469c65af4eef494bba7312a6743fae7d59a8bf0fb1b5d2bb85832032e6e853f&=&format=webp&quality=lossless&width=1321&height=881"}, 
-            {name:"G365X", img:"https://media.discordapp.net/attachments/1428113909616869387/1487234175541969068/27dfae38-4cee-494d-9a51-284bd928dedf.png?ex=69cc5ac2&is=69cb0942&hm=e17bc7ee040756a5839867d8637a5e523921e3ea5b764106d02e5de206870b51&=&format=webp&quality=lossless&width=1321&height=881"}
+            {name:"Glock19X Tan", img:"Glock19XTan.png"}, 
+            {name:"Glock 22", img:"images/Glock 22.png"}, 
+            {name:"G365X", img:"images/G365X.png"}
         ],
         tier0: [
-            {name:"1911", img:"https://media.discordapp.net/attachments/1428113909616869387/1488329330701369395/WEAPON_RMTTI2011.png?ex=69cc6234&is=69cb10b4&hm=dede71820f88f74f122a8ca6785a5b9d1f8e3203e3a5f62efe2626ed58c49570&=&format=webp&quality=lossless&width=563&height=563"}, 
+            {name:"1911", img:"images/1911.png"}, 
             {name:"Glock 17", img:""},
-            {name:"Glock 40", img:"https://media.discordapp.net/attachments/1338038855122550866/1488685128158019584/11-removebg-preview_1.png?ex=69cdad90&is=69cc5c10&hm=f9ea87ef43331a1e6b9a9879bce9847f63795e6080ae8ce716e0a586c4252cbb&=&format=webp&quality=lossless&width=953&height=953"},
-            {name:"Glock 19Gen 5", img:"https://cdn.discordapp.com/attachments/1428113909616869387/1488329331590697050/WEAPON_RMG19GEN4.png?ex=69cc6234&is=69cb10b4&hm=e2a42d6d740e41a1ba90f1674c505e3be8e1d752d2d13fb8d7d097118cba9ed9&"},
-            {name:"PX4", img:"https://media.discordapp.net/attachments/1428113909616869387/1488351744239866007/308ca43b-6e95-447b-b843-023b9cb4f7f8.png?ex=69cc7714&is=69cb2594&hm=b09a6973022298fc7456e26ba4705e7a1b206f579416fb4ef7ba7956877ebf2b&=&format=webp&quality=lossless&width=838&height=838"},
-            {name:"Glock 21Gen 5", img:"https://media.discordapp.net/attachments/1428113909616869387/1488351743497605160/3a6df9e1-6313-4ade-9275-cc39182abac7.png?ex=69cc7713&is=69cb2593&hm=c170d11de31a49e64613221810cd7ebe2c6bbd1f2fffd8dbed6b94706e1697d6&=&format=webp&quality=lossless&width=838&height=838"}
+            {name:"Glock 40", img:"images/Glock40.png"},
+            {name:"Glock 19Gen 5", img:"images/Glock19Gen5.png"},
+            {name:"PX4", img:"images/PX4.png"},
+            {name:"Glock 21Gen 5", img:"images/Glock21Gen5.png"}
         ],
         tier1: [
-            {name:"RMGlock 17 Gen 5", img:"https://media.discordapp.net/attachments/1428113909616869387/1488340619561537698/WEAPON_RMG17GEN5.png?ex=69cc6cb7&is=69cb1b37&hm=904ee477bd80a275d28fc4d77edd3bb82f8d6550847f3f51c47dbac7269da0c9&=&format=webp&quality=lossless&width=563&height=563"},
+            {name:"RMGlock 17 Gen 5", img:"images/Glockk17Gen5.png"},
             {name:"Glock 45", img:""},
             {name:"Glock 19x8", img:""},
-            {name:"RMGlock 17", img:"https://media.discordapp.net/attachments/1428113909616869387/1488329331267862548/WEAPON_RMG17.png?ex=69cc6234&is=69cb10b4&hm=348471db60151db70ba4170e08a5ab1566e78f82d4d1838826b441207375109d&=&format=webp&quality=lossless&width=563&height=563"},
+            {name:"RMGlock 17", img:"images/Glock17.png"},
             {name:"Glock 19Gen 5", img:""},
-            {name:"RMGlock 17Gen 3", img:"https://cdn.discordapp.com/attachments/1428113909616869387/1488341224963182713/WEAPON_RMG17GEN3.png?ex=69cc6d48&is=69cb1bc8&hm=110d5183c950857a479d2e1f6a0dde99847c5e2377150a86fc4db7b59d1bf928&"}
+            {name:"RMGlock 17Gen 3", img:"images/Glock17GEN5.png"}
         ],
         tier15: [
-            {name:"3 inch Arp Tan", img:"https://media.discordapp.net/attachments/1428113909616869387/1488340341135507576/WEAPON_RM3INCHCUSTOMTAN_-_Copy.png?ex=69cc6c75&is=69cb1af5&hm=08a5362c097ccf09e27e4f29bef3ec7c990338fcf3d2d132ac664e05a3e3e328&=&format=webp&quality=lossless&width=563&height=563"},
-            {name:"Psa Dagger", img:"https://media.discordapp.net/attachments/1428113909616869387/1488340340707557428/WEAPON_RMPSADAGGER.png?ex=69cc6c75&is=69cb1af5&hm=3e54bfd46ed5fc1293418099e8d5630d834a13e46f8a745b55258bed50fcac61&=&format=webp&quality=lossless&width=563&height=563"}, 
-            {name:"Ruger Sr40", img:"https://media.discordapp.net/attachments/1338038855122550866/1488680012986060850/dfe097be-4e23-4c59-9fe1-4bcfc2112875-removebg-preview_1.png?ex=69cda8cd&is=69cc574d&hm=390059ffeb76e17d033d6f517a85faf02f55a3ec3393412b527846145e86292b&=&format=webp&quality=lossless&width=953&height=953"},
+            {name:"3 inch Arp Tan", img:"images/3incharp.png"},
+            {name:"Psa Dagger", img:"images/PSADAGGER.png"}, 
+            {name:"Ruger Sr40", img:"images/Ruger.png"},
             {name:"Glock 19XB", img:""}
         ],
         tier2: [
-            {name:"RMGlock 19 FDE Gen 4", img:"https://cdn.discordapp.com/attachments/1428113909616869387/1488340094539796590/WEAPON_RMG19FDEGEN4.png?ex=69cc6c3a&is=69cb1aba&hm=82b045c2436be3bf45a7320e42d3cb9c1889682354ed69d0c9dd67d03e41ec62&"},
-            {name:"RMGlock 43X Switch", img:"https://media.discordapp.net/attachments/1428113909616869387/1488345147287801907/WEAPON_RMG27GEN5SWITCH.png?ex=69cc70ef&is=69cb1f6f&hm=beb643842f839dd8b8c36716c15e90118397a7fbcd6a81813bf1763f81b29ae9&=&format=webp&quality=lossless&width=563&height=563"}, 
-            {name:"Glock 40 Camo", img:"https://cdn.discordapp.com/attachments/1428113909616869387/1488340093629628526/WEAPON_RMG40CAMOSWITCH.png?ex=69cc6c3a&is=69cb1aba&hm=92cae07bde86250ca5a31c6208d3014ba9f823b978325c28e522aa09deb36f1b&"}, 
+            {name:"RMGlock 19 FDE Gen 4", img:"images/G19FDEGEN4.png"},
+            {name:"RMGlock 43X Switch", img:"images/Glock43XSwitch.png"}, 
+            {name:"Glock 40 Camo", img:"images/Glock40Camo.png"}, 
             {name:"Sig P365x", img:""}, 
-            {name:"Glock 40", img:"https://cdn.discordapp.com/attachments/1428113909616869387/1488340094115905577/WEAPON_RMG40CSTMSW.png?ex=69cc6c3a&is=69cb1aba&hm=1b686e328cfe8fed50d0ae75adb7674e720cc6391d8d29599d73d8d63a461517&"}, 
-            {name:"Glock 17 Switch", img:"https://media.discordapp.net/attachments/1428113909616869387/1488341424360394892/WEAPON_RMG17CSTMSW.png?ex=69cc6d77&is=69cb1bf7&hm=fe267f3a39c44b2ee9c934d09b5c431b552cf987a626902202573b8dd38c65d8&=&format=webp&quality=lossless&width=563&height=563"},
-            {name:"Black Micro Draco", img:"https://media.discordapp.net/attachments/1338038855122550866/1488680999968837642/c3009ffa-ef8c-4207-9fbc-212fcacecccf-removebg-preview_1.png?ex=69cda9b8&is=69cc5838&hm=3d3e88d5fe0dfbc9890be7b899a1fdab429dc6273655c57f75ea1d3df5b2955a&=&format=webp&quality=lossless&width=953&height=953"}
+            {name:"Glock 40", img:"images/Glock40Custom.png"}, 
+            {name:"Glock 17 Switch", img:"images/Glock17Switch.png"},
+            {name:"Black Micro Draco", img:"images/BlackDraco.png"}
         ],
         attachments: [
-            {name:"Clear Kriss Vector", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187729396662353/at_clip_custom_clear.png?ex=69cd8101&is=69cc2f81&hm=8fdd2f7e496843cbb84dcab53e4221d4289c45790cca6349a9f68cda329961c7&=&format=webp&quality=lossless&width=550&height=550"}, 
-            {name:"Black Kriss Vector", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187732139610142/at_clip_40rnd.png?ex=69cd8101&is=69cc2f81&hm=eb43829851c5067d63d4d5a06597e03c8c5d219517112364cfe1975fb833a62c&=&format=webp&quality=lossless&width=550&height=550"}, 
-            {name:"White Kriss Vector", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187731695272056/at_clip_40rnd2.png?ex=69cd8101&is=69cc2f81&hm=32df4314e5afdeb70cabd80089543a344e7d96de16354599f9fd525af2225712&=&format=webp&quality=lossless&width=550&height=550"},
-            {name:"Tan Kriss Vector", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187731057606867/at_clip_40rnd3.png?ex=69cd8101&is=69cc2f81&hm=2167f210d1dd436866668cd291c3bd6147636a5058caed555bed54b59815b837&=&format=webp&quality=lossless&width=550&height=550"},
-            {name:"Black Extended Mag", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187730117951558/at_clip_extendedclip.png?ex=69cd8101&is=69cc2f81&hm=ba5a65b8d1c088c82efca2e06f0da44a05210290e2f683acd68d42436ea1e3d2&=&format=webp&quality=lossless&width=550&height=550"},
-            {name:"Tan Extended Mag", img:"https://media.discordapp.net/attachments/1428113909616869387/1487187732672544889/at_clip_extendedclip2.png?ex=69cd8102&is=69cc2f82&hm=dc5095cecefb072a62f28c58de78fa2d0019a12618e2f0b303a7ed12dcba2196&=&format=webp&quality=lossless&width=550&height=550"}
+            {name:"Clear Kriss Vector", img:"images/ClearKriss.png"}, 
+            {name:"Black Kriss Vector", img:"images/BlackKriss.png"}, 
+            {name:"White Kriss Vector", img:"images/WhiteKriss.png"},
+            {name:"Tan Kriss Vector", img:"images/TanKriss.png"},
+            {name:"Black Extended Mag", img:"images/Blackextendedclip.png"},
+            {name:"Tan Extended Mag", img:"images/Tanextendedclip.png"}
         ]
     };
 
