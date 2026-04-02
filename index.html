@@ -287,10 +287,10 @@
     }
     setInterval(createStar, 150);
 
-    // ================= UPDATED WEAPON DATABASE =================
+    // ================= WEAPON DATABASE =================
     const DB = {
         test: [
-            {name:"Sentinel", img:"images/Sentinel.png"}, 
+            {name:"Sentinel", img:"images/Sentinel.png"}, // [FIXED] Local reference
             {name:"Glock19X Tan", img:"https://media.discordapp.net/attachments/1428113909616869387/1488347930959151285/weapon_background_cleared.png?ex=69cc7386&is=69cb2206&hm=3656ed1010219e999a4be1c0ee3564c2226022dbed577de273a6cfb169e191f5&=&format=webp&quality=lossless&width=563&height=563"}, 
             {name:"Glock 22", img:"https://media.discordapp.net/attachments/1428113909616869387/1487255654086475907/content.png?ex=69cbc603&is=69ca7483&hm=c469c65af4eef494bba7312a6743fae7d59a8bf0fb1b5d2bb85832032e6e853f&=&format=webp&quality=lossless&width=1321&height=881"}, 
             {name:"G365X", img:"https://media.discordapp.net/attachments/1428113909616869387/1487234175541969068/27dfae38-4cee-494d-9a51-284bd928dedf.png?ex=69cc5ac2&is=69cb0942&hm=e17bc7ee040756a5839867d8637a5e523921e3ea5b764106d02e5de206870b51&=&format=webp&quality=lossless&width=1321&height=881"}
@@ -336,12 +336,11 @@
         ]
     };
 
-    // [FIX] CROSS-TIER LOGIC MAPPING
     const CROSS_TIER_LOGIC = {
-        tier0: ["Sentinel", "G365X"],           // From Test
-        tier1: ["Glock 21Gen 5", "PX4"],            // From Tier 0
-        tier15: ["Glock 19x8", "RMGlock 17Gen 3", "Glock 45", "RMGlock 17"],      // From Tier 1
-        tier2: ["Ruger Sr40", "Glock 19XB"] // From Tier 1.5
+        tier0: ["Sentinel", "G365X"],
+        tier1: ["Glock 21Gen 5", "PX4"],
+        tier15: ["Glock 19x8", "RMGlock 17Gen 3", "Glock 45", "RMGlock 17"],
+        tier2: ["Ruger Sr40", "Glock 19XB"]
     };
 
     const config = { test: 2, tier0: 4, tier1: 5, tier15: 5, tier2: 7, attachments: 1 };
@@ -400,17 +399,14 @@
         btn.disabled = false;
     }
 
-    // [FIX] Updated to include cross-tier items in the spin result
     function performSingleSpin(tier) {
         return new Promise((resolve) => {
             const reel = document.getElementById('reel');
             const viewport = document.querySelector('.viewport');
             const tray = document.getElementById('rewards-tray');
             
-            // Build the specific pool for this spin
             let spinPool = [...DB[tier]];
             
-            // Inject items from the tier below based on mapping
             if (tier === 'tier0') {
                 spinPool.push(...DB.test.filter(w => CROSS_TIER_LOGIC.tier0.includes(w.name)));
             } else if (tier === 'tier1') {
@@ -427,7 +423,7 @@
             
             reel.style.transition = "none";
             reel.style.transform = "translateX(0px)";
-            reel.offsetHeight; // Force reflow to allow transition to trigger again
+            reel.offsetHeight; 
             
             const centerOffset = (viewport.offsetWidth / 2) - (ITEM_WIDTH / 2);
             const targetX = (winIndex * ITEM_WIDTH) - centerOffset;
