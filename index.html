@@ -213,10 +213,10 @@
     </div>
 
     <div class="music-card">
-        <img src="https://i.ytimg.com/vi/W5_RPT0WPYw/maxresdefault.jpg" id="m-art" class="album-art">
+        <img src="" id="m-art" class="album-art">
         <div class="track-info">
             <div class="status-label">NOW PLAYING</div>
-            <span id="m-title" class="song-name">NBA YoungBoy - Speed Racing</span>
+            <span id="m-title" class="song-name"></span>
             <div class="controls">
                 <i class="fas fa-backward ctrl-btn" onclick="changeSong(-1)"></i>
                 <i class="fas fa-play ctrl-btn" id="play-btn" onclick="togglePlay()"></i>
@@ -228,23 +228,45 @@
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
+    // ================= FULL PLAYLIST =================
     const playlist = [
-        { id: 'W5_RPT0WPYw', title: 'NBA YoungBoy - Speed Racing', art: 'https://i.ytimg.com/vi/W5_RPT0WPYw/maxresdefault.jpg' },
+        { id: 'P-t6zMIicF8', title: 'Quan Get\'em Gone x FullyChop x Q50 - Triple 3', art: 'https://i.ytimg.com/vi/P-t6zMIicF8/maxresdefault.jpg' },
+        { id: 'D49adOjVNcs', title: 'Lil Scoom89 - Button Land', art: 'https://i.ytimg.com/vi/D49adOjVNcs/maxresdefault.jpg' },
+        { id: 'Crz8OzEFCtM', title: 'L\'A Capone - Murder', art: 'https://i.ytimg.com/vi/Crz8OzEFCtM/maxresdefault.jpg' },
+        { id: 'SdRxE6mV3Ng', title: 'Babyy Walk - Flowers', art: 'https://i.ytimg.com/vi/SdRxE6mV3Ng/maxresdefault.jpg' },
+        { id: 'm87x04K3IPA', title: 'Meezy - Jada Juke', art: 'https://i.ytimg.com/vi/m87x04K3IPA/sddefault.jpg' },
+        { id: 'o-Q-59Nmp3c', title: 'Chuckyy - Me vs Me', art: 'https://i.ytimg.com/vi/o-Q-59Nmp3c/maxresdefault.jpg' },
+        { id: 'MGVvaHEY27Y', title: 'Lil Scoom89 - Nightcrawler', art: 'https://i.ytimg.com/vi/MGVvaHEY27Y/maxresdefault.jpg' },
+        { id: 'wS3CdFA9tFA', title: 'YFG Fatso - Dawg Baby', art: 'https://i.ytimg.com/vi/wS3CdFA9tFA/maxresdefault.jpg' },
+        { id: '4BQZ-YgVGsk', title: 'Chuckyy - My World', art: 'https://i.ytimg.com/vi/4BQZ-YgVGsk/maxresdefault.jpg' },
+        { id: '2mHDEqezA8I', title: 'YFG Fatso - Rylo Rod', art: 'https://i.ytimg.com/vi/2mHDEqezA8I/maxresdefault.jpg' },
+        { id: 'tdzZlnRkVL4', title: 'YFG Fatso - Remedy', art: 'https://i.ytimg.com/vi/tdzZlnRkVL4/maxresdefault.jpg' },
+        { id: '0XpIEXC9Qoo', title: 'Lil Twin - Hate Being Sober', art: 'https://i.ytimg.com/vi/0XpIEXC9Qoo/maxresdefault.jpg' },
         { id: 'GqYiG9YJ6Ig', title: 'Topoppgen - Cute Like Aspen', art: 'https://i.ytimg.com/vi/GqYiG9YJ6Ig/sddefault.jpg' }
     ];
-    let currentIdx = 0;
+
+    // THIS LINE PICKS THE RANDOM SONG ON START
+    let currentIdx = Math.floor(Math.random() * playlist.length);
     let ytPlayer;
 
     function onYouTubeIframeAPIReady() {
+        updateUI();
         ytPlayer = new YT.Player('player', {
             videoId: playlist[currentIdx].id,
             playerVars: { 
-                'autoplay': 1, 'controls': 0, 'mute': 1, 'loop': 5, 
-                'playlist': playlist[currentIdx].id, 'modestbranding': 1,
-                'rel': 0, 'iv_load_policy': 3, 'showinfo': 0
+                'autoplay': 1, 'controls': 0, 'mute': 1, 'loop': 0, 
+                'modestbranding': 1, 'rel': 0, 'iv_load_policy': 3, 'showinfo': 0
             },
-            events: { 'onReady': (e) => e.target.playVideo() }
+            events: { 
+                'onReady': (e) => e.target.playVideo(),
+                'onStateChange': (e) => { if (e.data === YT.PlayerState.ENDED) changeSong(1); }
+            }
         });
+    }
+
+    function updateUI() {
+        document.getElementById('m-title').innerText = playlist[currentIdx].title;
+        document.getElementById('m-art').src = playlist[currentIdx].art;
     }
 
     function togglePlay() {
@@ -270,8 +292,8 @@
     function changeSong(dir) {
         currentIdx = (currentIdx + dir + playlist.length) % playlist.length;
         ytPlayer.loadVideoById(playlist[currentIdx].id);
-        document.getElementById('m-title').innerText = playlist[currentIdx].title;
-        document.getElementById('m-art').src = playlist[currentIdx].art;
+        updateUI();
+        document.getElementById('play-btn').className = "fas fa-pause ctrl-btn";
     }
 
     function createStar() {
@@ -290,7 +312,7 @@
     // ================= WEAPON DATABASE =================
     const DB = {
         test: [
-            {name:"Sentinel", img:"images/Sentinel.png"}, // [FIXED] Local reference
+            {name:"Sentinel", img:"images/Sentinel.png"},
             {name:"Glock19X Tan", img:"images/Glock19XTan.png"}, 
             {name:"Glock 22", img:"images/Glock 22.png"}, 
             {name:"G365X", img:"images/G365X.png"}
