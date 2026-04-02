@@ -228,7 +228,7 @@
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-    // ================= FULL PLAYLIST =================
+    // ================= MUSIC LOGIC =================
     const playlist = [
         { id: 'P-t6zMIicF8', title: 'Quan Get\'em Gone x FullyChop x Q50 - Triple 3', art: 'https://i.ytimg.com/vi/P-t6zMIicF8/maxresdefault.jpg' },
         { id: 'D49adOjVNcs', title: 'Lil Scoom89 - Button Land', art: 'https://i.ytimg.com/vi/D49adOjVNcs/maxresdefault.jpg' },
@@ -251,7 +251,6 @@
         { id: 'u-IXlswneL4', title: '9BMEECHIE - PINK SWITCH', art: 'https://i.ytimg.com/vi/u-IXlswneL4/maxresdefault.jpg' }
     ];
 
-    // THIS LINE PICKS THE RANDOM SONG ON START
     let currentIdx = Math.floor(Math.random() * playlist.length);
     let ytPlayer;
 
@@ -259,10 +258,7 @@
         updateUI();
         ytPlayer = new YT.Player('player', {
             videoId: playlist[currentIdx].id,
-            playerVars: { 
-                'autoplay': 1, 'controls': 0, 'mute': 1, 'loop': 0, 
-                'modestbranding': 1, 'rel': 0, 'iv_load_policy': 3, 'showinfo': 0
-            },
+            playerVars: { 'autoplay': 1, 'controls': 0, 'mute': 1, 'loop': 0 },
             events: { 
                 'onReady': (e) => e.target.playVideo(),
                 'onStateChange': (e) => { if (e.data === YT.PlayerState.ENDED) changeSong(1); }
@@ -275,31 +271,20 @@
         document.getElementById('m-art').src = playlist[currentIdx].art;
     }
 
-    function togglePlay() {
-        if (ytPlayer.getPlayerState() === 1) {
-            ytPlayer.pauseVideo();
-            document.getElementById('play-btn').className = "fas fa-play ctrl-btn";
-        } else {
-            ytPlayer.playVideo();
-            document.getElementById('play-btn').className = "fas fa-pause ctrl-btn";
-        }
-    }
-
-    function toggleMute() {
-        if (ytPlayer.isMuted()) {
-            ytPlayer.unMute();
-            document.getElementById('mute-btn').className = "fas fa-volume-up ctrl-btn";
-        } else {
-            ytPlayer.mute();
-            document.getElementById('mute-btn').className = "fas fa-volume-mute ctrl-btn";
-        }
-    }
-
     function changeSong(dir) {
         currentIdx = (currentIdx + dir + playlist.length) % playlist.length;
         ytPlayer.loadVideoById(playlist[currentIdx].id);
         updateUI();
-        document.getElementById('play-btn').className = "fas fa-pause ctrl-btn";
+    }
+
+    function togglePlay() {
+        if (ytPlayer.getPlayerState() === 1) ytPlayer.pauseVideo();
+        else ytPlayer.playVideo();
+    }
+
+    function toggleMute() {
+        if (ytPlayer.isMuted()) ytPlayer.unMute();
+        else ytPlayer.mute();
     }
 
     function createStar() {
@@ -308,7 +293,6 @@
         star.className = 'star';
         const duration = Math.random() * 3 + 2;
         star.style.left = Math.random() * 100 + 'vw';
-        star.style.top = '-20px';
         star.style.animationDuration = duration + 's';
         container.appendChild(star);
         setTimeout(() => star.remove(), duration * 1000);
@@ -317,51 +301,12 @@
 
     // ================= WEAPON DATABASE =================
     const DB = {
-        test: [
-            {name:"Sentinel", img:"images/Sentinel.png"},
-            {name:"Glock19X Tan", img:"images/Glock19XTan.png"}, 
-            {name:"Glock 22", img:"images/Glock 22.png"}, 
-            {name:"G365X", img:"images/G365X.png"}
-        ],
-        tier0: [
-            {name:"1911", img:"images/1911.png"}, 
-            {name:"Glock 17", img:"images/Glockk17.png"},
-            {name:"Glock 40", img:"images/Glock40.png"},
-            {name:"PX4", img:"images/PX4.png"},
-            {name:"Glock 19Gen 5", img:"images/Glock19Gen5.png"},
-            {name:"Glock 21Gen 5", img:"images/Glock21Gen5.png"}
-        ],
-        tier1: [
-            {name:"Glock 17 Gen 5", img:"images/Glockk17Gen5.png"},
-            {name:"Glock 45", img:"images/Glock45.png"},
-            {name:"Glock 19x8", img:""},
-            {name:"Glock 19 GEN5", img:"images/Glockk19Gen5.png"},
-            {name:"Glock 17", img:"images/Glock17.png"},
-            {name:"Glock 17 Gen 3", img:"images/Glock17GEN5.png"}
-        ],
-        tier15: [
-            {name:"3 inch Arp Tan", img:"images/3incharp.png"},
-            {name:"Psa Dagger", img:"images/PSADAGGER.png"}, 
-            {name:"Glock 19 FDE Gen 4", img:"images/G19FDEGEN4.png"},
-            {name:"Ruger Sr40", img:"images/Ruger.png"},
-            {name:"Glock 19XB", img:"images/Glock19XB.png"}
-        ],
-        tier2: [
-            {name:"Glock 43X Switch", img:"images/Glock43XSwitch.png"}, 
-            {name:"Glock 40 Camo", img:"images/Glock40Camo.png"}, 
-            {name:"Sig P365x", img:"images/Sig.png"}, 
-            {name:"Glock 40", img:"images/Glock40Custom.png"}, 
-            {name:"Glock 17 Switch", img:"images/Glock17Switch.png"},
-            {name:"Black Micro Draco", img:"images/BlackDraco.png"}
-        ],
-        attachments: [
-            {name:"Clear Kriss Vector", img:"images/ClearKriss.png"}, 
-            {name:"Black Kriss Vector", img:"images/BlackKriss.png"}, 
-            {name:"White Kriss Vector", img:"images/WhiteKriss.png"},
-            {name:"Tan Kriss Vector", img:"images/TanKriss.png"},
-            {name:"Black Extended Mag", img:"images/Blackextendedclip.png"},
-            {name:"Tan Extended Mag", img:"images/Tanextendedclip.png"}
-        ]
+        test: [{name:"Sentinel", img:"images/Sentinel.png"}, {name:"Glock19X Tan", img:"images/Glock19XTan.png"}, {name:"Glock 22", img:"images/Glock 22.png"}, {name:"G365X", img:"images/G365X.png"}],
+        tier0: [{name:"1911", img:"images/1911.png"}, {name:"Glock 17", img:"images/Glockk17.png"}, {name:"Glock 40", img:"images/Glock40.png"}, {name:"PX4", img:"images/PX4.png"}, {name:"Glock 19Gen 5", img:"images/Glock19Gen5.png"}, {name:"Glock 21Gen 5", img:"images/Glock21Gen5.png"}],
+        tier1: [{name:"Glock 17 Gen 5", img:"images/Glockk17Gen5.png"}, {name:"Glock 45", img:"images/Glock45.png"}, {name:"Glock 19x8", img:""}, {name:"Glock 19 GEN5", img:"images/Glockk19Gen5.png"}, {name:"Glock 17", img:"images/Glock17.png"}, {name:"Glock 17 Gen 3", img:"images/Glock17GEN5.png"}],
+        tier15: [{name:"3 inch Arp Tan", img:"images/3incharp.png"}, {name:"Psa Dagger", img:"images/PSADAGGER.png"}, {name:"Glock 19 FDE Gen 4", img:"images/G19FDEGEN4.png"}, {name:"Ruger Sr40", img:"images/Ruger.png"}, {name:"Glock 19XB", img:"images/Glock19XB.png"}],
+        tier2: [{name:"Glock 43X Switch", img:"images/Glock43XSwitch.png"}, {name:"Glock 40 Camo", img:"images/Glock40Camo.png"}, {name:"Sig P365x", img:"images/Sig.png"}, {name:"Glock 40", img:"images/Glock40Custom.png"}, {name:"Glock 17 Switch", img:"images/Glock17Switch.png"}, {name:"Black Micro Draco", img:"images/BlackDraco.png"}],
+        attachments: [{name:"Clear Kriss Vector", img:"images/ClearKriss.png"}, {name:"Black Kriss Vector", img:"images/BlackKriss.png"}, {name:"White Kriss Vector", img:"images/WhiteKriss.png"}, {name:"Tan Kriss Vector", img:"images/TanKriss.png"}, {name:"Black Extended Mag", img:"images/Blackextendedclip.png"}, {name:"Tan Extended Mag", img:"images/Tanextendedclip.png"}]
     };
 
     const CROSS_TIER_LOGIC = {
@@ -373,13 +318,14 @@
 
     const config = { test: 2, tier0: 4, tier1: 5, tier15: 5, tier2: 7, attachments: 1 };
     const ITEM_WIDTH = 180;
+    
+    // HISTORY BUFFER (Tracks the last won weapon)
+    let lastWonWeaponName = "";
 
     function showTab(tier) {
         const gallery = document.getElementById('gallery-view');
         const randomize = document.getElementById('randomize-view');
         document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-        const buttons = document.querySelectorAll('.nav-btn');
-        buttons.forEach(b => { if(b.innerText.toLowerCase().includes(tier.toLowerCase())) b.classList.add('active'); });
         if(tier === 'randomize') { gallery.style.display = 'none'; randomize.style.display = 'block'; } 
         else { gallery.style.display = 'block'; randomize.style.display = 'none'; document.getElementById('gallery-title').innerText = tier.toUpperCase(); renderGrid(tier); }
     }
@@ -387,7 +333,7 @@
     function renderGrid(tier) {
         const grid = document.getElementById('wpn-grid');
         grid.innerHTML = "";
-        DB[tier].forEach((item) => {
+        DB[tier].forEach(item => {
             const div = document.createElement('div');
             div.className = "weapon-card";
             div.innerHTML = `<img src="${item.img}"><span class="weapon-name-label">${item.name}</span>`;
@@ -395,20 +341,20 @@
         });
     }
 
-    function buildReel(targetPool) {
+    function buildReel(targetPool, winner) {
         const reel = document.getElementById('reel');
         reel.innerHTML = "";
         const totalItems = 100;
         const items = [];
         for(let i=0; i<totalItems; i++) {
-            const weapon = targetPool[Math.floor(Math.random()*targetPool.length)];
+            // Index 75 is the winner
+            const weapon = (i === 75) ? winner : targetPool[Math.floor(Math.random()*targetPool.length)];
             const div = document.createElement('div');
             div.className = "reel-item";
             div.innerHTML = `<img src="${weapon.img}"><br><span>${weapon.name}</span>`;
             reel.appendChild(div);
             items.push(weapon);
         }
-        return items;
     }
 
     async function processFullDrop() {
@@ -417,7 +363,11 @@
         const btn = document.getElementById('masterSpinBtn');
         const tray = document.getElementById('rewards-tray');
         const status = document.getElementById('spin-status');
-        btn.disabled = true; tray.innerHTML = "";
+        
+        btn.disabled = true; 
+        tray.innerHTML = "";
+        lastWonWeaponName = ""; // Reset history for new drop session
+
         for(let i=0; i<count; i++) {
             status.innerText = `Spinning ${i+1} of ${count}...`;
             await performSingleSpin(tier);
@@ -432,27 +382,37 @@
             const reel = document.getElementById('reel');
             const viewport = document.querySelector('.viewport');
             const tray = document.getElementById('rewards-tray');
+            const status = document.getElementById('spin-status');
             
             let spinPool = [...DB[tier]];
-            
-            if (tier === 'tier0') {
-                spinPool.push(...DB.test.filter(w => CROSS_TIER_LOGIC.tier0.includes(w.name)));
-            } else if (tier === 'tier1') {
-                spinPool.push(...DB.tier0.filter(w => CROSS_TIER_LOGIC.tier1.includes(w.name)));
-            } else if (tier === 'tier15') {
-                spinPool.push(...DB.tier1.filter(w => CROSS_TIER_LOGIC.tier15.includes(w.name)));
-            } else if (tier === 'tier2') {
-                spinPool.push(...DB.tier15.filter(w => CROSS_TIER_LOGIC.tier2.includes(w.name)));
-            }
+            // Add cross-tier luck logic
+            if (tier === 'tier0') spinPool.push(...DB.test.filter(w => CROSS_TIER_LOGIC.tier0.includes(w.name)));
+            else if (tier === 'tier1') spinPool.push(...DB.tier0.filter(w => CROSS_TIER_LOGIC.tier1.includes(w.name)));
+            else if (tier === 'tier15') spinPool.push(...DB.tier1.filter(w => CROSS_TIER_LOGIC.tier15.includes(w.name)));
+            else if (tier === 'tier2') spinPool.push(...DB.tier15.filter(w => CROSS_TIER_LOGIC.tier2.includes(w.name)));
 
-            const currentReelItems = buildReel(spinPool);
-            const winIndex = 75;
-            const winner = currentReelItems[winIndex];
+            // 1. PICK WINNER WITH ANTI-DUPLICATE LOGIC
+            let winner = spinPool[Math.floor(Math.random() * spinPool.length)];
+            let attempts = 0;
+
+            // If winner is same as last one, try to re-pick up to 3 times
+            while(winner.name === lastWonWeaponName && attempts < 3) {
+                winner = spinPool[Math.floor(Math.random() * spinPool.length)];
+                attempts++;
+                if(attempts > 0) console.log("Anti-Duplicate: Re-rolling...");
+            }
             
+            lastWonWeaponName = winner.name; // Update history
+
+            // 2. BUILD THE REEL VISUALLY
+            buildReel(spinPool, winner);
+            
+            // 3. ANIMATION
             reel.style.transition = "none";
             reel.style.transform = "translateX(0px)";
             reel.offsetHeight; 
             
+            const winIndex = 75;
             const centerOffset = (viewport.offsetWidth / 2) - (ITEM_WIDTH / 2);
             const targetX = (winIndex * ITEM_WIDTH) - centerOffset;
             
